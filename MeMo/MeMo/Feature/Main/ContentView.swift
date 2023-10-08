@@ -6,20 +6,21 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    
     @ObservedObject var navigator: AppNavigator = .init()
 
     var body: some View {
         NavigationStack(path: $navigator.routes) {
-            Text("Hello, world")
+            Text(LocalizedText.helloWorld)
+            Text(LocalizedText.withValue(value: "lalalala"))
         }
         .navigationDestination(for: Route.self) { $0 }
     }
 }
 
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView()
+        
 }
