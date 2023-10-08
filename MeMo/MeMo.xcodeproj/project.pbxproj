@@ -21,6 +21,12 @@
 		4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AAA2AD2C7370086910F /* Encodable+toJSON.swift */; };
 		4BD12AAF2AD2CAB20086910F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12AAE2AD2CAB20086910F /* Localizable.xcstrings */; };
 		4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AB02AD2CC380086910F /* LocalizedText.swift */; };
+		4BD12AB72AD2D1BF0086910F /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12AB42AD2D1BE0086910F /* Roboto-Medium.ttf */; };
+		4BD12AB82AD2D1BF0086910F /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12AB52AD2D1BF0086910F /* Roboto-Regular.ttf */; };
+		4BD12AB92AD2D1BF0086910F /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12AB62AD2D1BF0086910F /* Roboto-Bold.ttf */; };
+		4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12ABA2AD2D2820086910F /* Font+Roboto.swift */; };
+		4BD12ABE2AD2D5000086910F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12ABD2AD2D5000086910F /* Color.xcassets */; };
+		4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12ABF2AD2D8690086910F /* Color+Default.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +66,12 @@
 		4BD12AAA2AD2C7370086910F /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
 		4BD12AAE2AD2CAB20086910F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		4BD12AB02AD2CC380086910F /* LocalizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedText.swift; sourceTree = "<group>"; };
+		4BD12AB42AD2D1BE0086910F /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		4BD12AB52AD2D1BF0086910F /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		4BD12AB62AD2D1BF0086910F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		4BD12ABA2AD2D2820086910F /* Font+Roboto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Roboto.swift"; sourceTree = "<group>"; };
+		4BD12ABD2AD2D5000086910F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		4BD12ABF2AD2D8690086910F /* Color+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Default.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +189,8 @@
 		4BD12A9F2AD2C0B10086910F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BD12ABC2AD2D4C20086910F /* Color */,
+				4BD12AB22AD2D0650086910F /* Font */,
 				4BD12AAC2AD2C7E00086910F /* Image */,
 			);
 			path = Resources;
@@ -246,6 +260,26 @@
 				4BD12AB02AD2CC380086910F /* LocalizedText.swift */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		4BD12AB22AD2D0650086910F /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AB62AD2D1BF0086910F /* Roboto-Bold.ttf */,
+				4BD12AB42AD2D1BE0086910F /* Roboto-Medium.ttf */,
+				4BD12AB52AD2D1BF0086910F /* Roboto-Regular.ttf */,
+				4BD12ABA2AD2D2820086910F /* Font+Roboto.swift */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		4BD12ABC2AD2D4C20086910F /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12ABD2AD2D5000086910F /* Color.xcassets */,
+				4BD12ABF2AD2D8690086910F /* Color+Default.swift */,
+			);
+			path = Color;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -353,7 +387,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BD12AB72AD2D1BF0086910F /* Roboto-Medium.ttf in Resources */,
 				4BD12A732AD2BFC40086910F /* Preview Assets.xcassets in Resources */,
+				4BD12AB92AD2D1BF0086910F /* Roboto-Bold.ttf in Resources */,
+				4BD12AB82AD2D1BF0086910F /* Roboto-Regular.ttf in Resources */,
+				4BD12ABE2AD2D5000086910F /* Color.xcassets in Resources */,
 				4BD12A702AD2BFC40086910F /* Assets.xcassets in Resources */,
 				4BD12AAF2AD2CAB20086910F /* Localizable.xcstrings in Resources */,
 			);
@@ -380,12 +418,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */,
 				4BD12A752AD2BFC40086910F /* Persistence.swift in Sources */,
 				4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */,
 				4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */,
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
 				4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */,
 				4BD12A782AD2BFC40086910F /* MeMo.xcdatamodeld in Sources */,
+				4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */,
 				4BD12AA82AD2C6D60086910F /* Optional+defaultValue.swift in Sources */,
 				4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */,
 			);
@@ -560,8 +600,10 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -593,8 +635,10 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
