@@ -17,6 +17,10 @@
 		4BD12A8E2AD2BFC40086910F /* MeMoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12A8D2AD2BFC40086910F /* MeMoUITests.swift */; };
 		4BD12A902AD2BFC40086910F /* MeMoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12A8F2AD2BFC40086910F /* MeMoUITestsLaunchTests.swift */; };
 		4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AA32AD2C1D50086910F /* AppNavigator.swift */; };
+		4BD12AA82AD2C6D60086910F /* Optional+defaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AA72AD2C6D60086910F /* Optional+defaultValue.swift */; };
+		4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AAA2AD2C7370086910F /* Encodable+toJSON.swift */; };
+		4BD12AAF2AD2CAB20086910F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12AAE2AD2CAB20086910F /* Localizable.xcstrings */; };
+		4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AB02AD2CC380086910F /* LocalizedText.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +56,10 @@
 		4BD12A8D2AD2BFC40086910F /* MeMoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeMoUITests.swift; sourceTree = "<group>"; };
 		4BD12A8F2AD2BFC40086910F /* MeMoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeMoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4BD12AA32AD2C1D50086910F /* AppNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigator.swift; sourceTree = "<group>"; };
+		4BD12AA72AD2C6D60086910F /* Optional+defaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+defaultValue.swift"; sourceTree = "<group>"; };
+		4BD12AAA2AD2C7370086910F /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
+		4BD12AAE2AD2CAB20086910F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		4BD12AB02AD2CC380086910F /* LocalizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedText.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,9 +147,11 @@
 		4BD12A9C2AD2C0830086910F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4BD12AA52AD2C6880086910F /* Extension */,
 				4BD12AA22AD2C1AB0086910F /* Navigator */,
 				4BD12AA12AD2C17D0086910F /* LocalDB */,
 				4BD12AA02AD2C0D00086910F /* Data */,
+				4BD12AAD2AD2C8CB0086910F /* Localization */,
 				4BD12A9F2AD2C0B10086910F /* Resources */,
 			);
 			path = Common;
@@ -167,7 +177,7 @@
 		4BD12A9F2AD2C0B10086910F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4BD12A6F2AD2BFC40086910F /* Assets.xcassets */,
+				4BD12AAC2AD2C7E00086910F /* Image */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -194,6 +204,48 @@
 				4BD12AA32AD2C1D50086910F /* AppNavigator.swift */,
 			);
 			path = Navigator;
+			sourceTree = "<group>";
+		};
+		4BD12AA52AD2C6880086910F /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AA92AD2C7250086910F /* Encodable */,
+				4BD12AA62AD2C6910086910F /* Optional */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		4BD12AA62AD2C6910086910F /* Optional */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AA72AD2C6D60086910F /* Optional+defaultValue.swift */,
+			);
+			path = Optional;
+			sourceTree = "<group>";
+		};
+		4BD12AA92AD2C7250086910F /* Encodable */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AAA2AD2C7370086910F /* Encodable+toJSON.swift */,
+			);
+			path = Encodable;
+			sourceTree = "<group>";
+		};
+		4BD12AAC2AD2C7E00086910F /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12A6F2AD2BFC40086910F /* Assets.xcassets */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		4BD12AAD2AD2C8CB0086910F /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AAE2AD2CAB20086910F /* Localizable.xcstrings */,
+				4BD12AB02AD2CC380086910F /* LocalizedText.swift */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,6 +334,7 @@
 			knownRegions = (
 				en,
 				Base,
+				id,
 			);
 			mainGroup = 4BD12A5F2AD2BFC30086910F;
 			productRefGroup = 4BD12A692AD2BFC30086910F /* Products */;
@@ -302,6 +355,7 @@
 			files = (
 				4BD12A732AD2BFC40086910F /* Preview Assets.xcassets in Resources */,
 				4BD12A702AD2BFC40086910F /* Assets.xcassets in Resources */,
+				4BD12AAF2AD2CAB20086910F /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,9 +382,12 @@
 			files = (
 				4BD12A752AD2BFC40086910F /* Persistence.swift in Sources */,
 				4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */,
+				4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */,
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
 				4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */,
 				4BD12A782AD2BFC40086910F /* MeMo.xcdatamodeld in Sources */,
+				4BD12AA82AD2C6D60086910F /* Optional+defaultValue.swift in Sources */,
+				4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,7 +476,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -476,7 +533,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
