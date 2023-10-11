@@ -8,11 +8,42 @@
 import SwiftUI
 
 struct RecentNoteCard: View {
+    
+    var title: String
+    var description: String
+    var action: () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            action()
+        } label: {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.robotoTitle3)
+                    .foregroundColor(.black1.opacity(0.8))
+                    .lineLimit(1)
+                
+                Text(description)
+                    .font(.robotoBody)
+                    .foregroundColor(.black2)
+                    .lineLimit(2)
+            }
+            .padding()
+            .frame(width: 200, height: 92, alignment: .topLeading)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .foregroundColor(.orange3)
+            )
+        }
+        .scaledButtonStyle()
     }
 }
 
 #Preview {
-    RecentNoteCard()
+    RecentNoteCard(
+        title: "This is Dummy Title ✨",
+        description: "This is dummy description of recent notes, for testing purposes only."
+    ) {
+        
+    }
 }
