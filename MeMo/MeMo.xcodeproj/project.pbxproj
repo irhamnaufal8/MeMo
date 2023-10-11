@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */; };
+		4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */; };
+		4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */; };
+		4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10882AD66641001D09F0 /* FolderCard.swift */; };
+		4BBA108C2AD66887001D09F0 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */; };
 		4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12A6B2AD2BFC30086910F /* MeMoApp.swift */; };
 		4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12A6D2AD2BFC30086910F /* ContentView.swift */; };
 		4BD12A702AD2BFC40086910F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12A6F2AD2BFC40086910F /* Assets.xcassets */; };
@@ -27,6 +32,8 @@
 		4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12ABA2AD2D2820086910F /* Font+Roboto.swift */; };
 		4BD12ABE2AD2D5000086910F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12ABD2AD2D5000086910F /* Color.xcassets */; };
 		4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12ABF2AD2D8690086910F /* Color+Default.swift */; };
+		4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AC42AD2DD0C0086910F /* HomeView.swift */; };
+		4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AC62AD2DD310086910F /* HomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +54,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
+		4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentNoteCard.swift; sourceTree = "<group>"; };
+		4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
+		4BBA10882AD66641001D09F0 /* FolderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCard.swift; sourceTree = "<group>"; };
+		4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
 		4BD12A682AD2BFC30086910F /* MeMo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeMo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD12A6B2AD2BFC30086910F /* MeMoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeMoApp.swift; sourceTree = "<group>"; };
 		4BD12A6D2AD2BFC30086910F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +84,8 @@
 		4BD12ABA2AD2D2820086910F /* Font+Roboto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Roboto.swift"; sourceTree = "<group>"; };
 		4BD12ABD2AD2D5000086910F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		4BD12ABF2AD2D8690086910F /* Color+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Default.swift"; sourceTree = "<group>"; };
+		4BD12AC42AD2DD0C0086910F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		4BD12AC62AD2DD310086910F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +113,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4BBA107F2AD65BD1001D09F0 /* InputField */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */,
+			);
+			path = InputField;
+			sourceTree = "<group>";
+		};
+		4BBA10822AD65CD9001D09F0 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */,
+				4BBA10882AD66641001D09F0 /* FolderCard.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		4BBA10852AD65EA4001D09F0 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		4BBA108A2AD6686B001D09F0 /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */,
+			);
+			path = Sheet;
+			sourceTree = "<group>";
+		};
 		4BD12A5F2AD2BFC30086910F = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +206,7 @@
 		4BD12A9C2AD2C0830086910F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4BD12AC82AD2DFD40086910F /* Component */,
 				4BD12AA52AD2C6880086910F /* Extension */,
 				4BD12AA22AD2C1AB0086910F /* Navigator */,
 				4BD12AA12AD2C17D0086910F /* LocalDB */,
@@ -172,6 +220,7 @@
 		4BD12A9D2AD2C08A0086910F /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				4BD12AC12AD2DCF30086910F /* Home */,
 				4BD12A9E2AD2C0930086910F /* Main */,
 			);
 			path = Feature;
@@ -223,6 +272,7 @@
 		4BD12AA52AD2C6880086910F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				4BBA10852AD65EA4001D09F0 /* Button */,
 				4BD12AA92AD2C7250086910F /* Encodable */,
 				4BD12AA62AD2C6910086910F /* Optional */,
 			);
@@ -280,6 +330,41 @@
 				4BD12ABF2AD2D8690086910F /* Color+Default.swift */,
 			);
 			path = Color;
+			sourceTree = "<group>";
+		};
+		4BD12AC12AD2DCF30086910F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AC32AD2DCFC0086910F /* View */,
+				4BD12AC22AD2DCF70086910F /* ViewModel */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		4BD12AC22AD2DCF70086910F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AC62AD2DD310086910F /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4BD12AC32AD2DCFC0086910F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AC42AD2DD0C0086910F /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4BD12AC82AD2DFD40086910F /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA108A2AD6686B001D09F0 /* Sheet */,
+				4BBA10822AD65CD9001D09F0 /* Card */,
+				4BBA107F2AD65BD1001D09F0 /* InputField */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -418,16 +503,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */,
+				4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */,
 				4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */,
 				4BD12A752AD2BFC40086910F /* Persistence.swift in Sources */,
 				4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */,
 				4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */,
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
+				4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */,
 				4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */,
+				4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */,
 				4BD12A782AD2BFC40086910F /* MeMo.xcdatamodeld in Sources */,
+				4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */,
 				4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */,
 				4BD12AA82AD2C6D60086910F /* Optional+defaultValue.swift in Sources */,
 				4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */,
+				4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */,
+				4BBA108C2AD66887001D09F0 /* EmojiPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
