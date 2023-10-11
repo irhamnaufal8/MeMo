@@ -1,6 +1,15 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "📚" : {
+
+    },
+    "7 Notes" : {
+
+    },
+    "Folder" : {
+
+    },
     "Hello, world" : {
       "localizations" : {
         "en" : {
@@ -16,6 +25,27 @@
           }
         }
       }
+    },
+    "MeMo" : {
+
+    },
+    "Our Space" : {
+
+    },
+    "Recent" : {
+
+    },
+    "Search your notes.." : {
+
+    },
+    "See all" : {
+
+    },
+    "Thanks, God I'm still alive until 20. I want to summarize my life with" : {
+
+    },
+    "Wish at 20 ✨" : {
+
     },
     "With Value" : {
       "extractionState" : "manual",

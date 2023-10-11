@@ -13,11 +13,8 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack(path: $navigator.routes) {
-            Text(LocalizedText.helloWorld)
-                .font(.robotoTitle1)
-            
-            Text(LocalizedText.withValue(value: "lalalala"))
-                .font(.robotoCaption)
+            HomeView()
+                .environmentObject(HomeViewModel())
         }
         .navigationDestination(for: Route.self) { $0 }
     }
