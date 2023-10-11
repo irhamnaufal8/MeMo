@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct SearchTextField: View {
+    
+    var placeholder: String = "Search your notes.."
+    @Binding var text: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .font(.headline)
+                
+            TextField(placeholder, text: $text)
+                .font(.robotoBody)
+        }
+        .foregroundColor(.black2)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .foregroundColor(.orange2)
+        )
     }
 }
 
 #Preview {
-    SearchTextField()
+    SearchTextField(text: .constant(""))
 }
