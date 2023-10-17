@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B3913BA2ADE007D00ADE9BC /* UIFont+Roboto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */; };
 		4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */; };
 		4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */; };
 		4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */; };
 		4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10882AD66641001D09F0 /* FolderCard.swift */; };
 		4BBA108C2AD66887001D09F0 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */; };
+		4BBA108F2AD679C6001D09F0 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA108E2AD679C6001D09F0 /* Note.swift */; };
+		4BBA10912AD67D62001D09F0 /* Image+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10902AD67D62001D09F0 /* Image+Default.swift */; };
+		4BBA10962AD67FBB001D09F0 /* NoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10952AD67FBB001D09F0 /* NoteViewModel.swift */; };
+		4BBA10982AD68003001D09F0 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10972AD68003001D09F0 /* NoteView.swift */; };
+		4BBA109A2AD6A4DE001D09F0 /* MultilineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10992AD6A4DE001D09F0 /* MultilineTextField.swift */; };
 		4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12A6B2AD2BFC30086910F /* MeMoApp.swift */; };
 		4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12A6D2AD2BFC30086910F /* ContentView.swift */; };
 		4BD12A702AD2BFC40086910F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BD12A6F2AD2BFC40086910F /* Assets.xcassets */; };
@@ -54,11 +60,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Roboto.swift"; sourceTree = "<group>"; };
 		4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentNoteCard.swift; sourceTree = "<group>"; };
 		4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
 		4BBA10882AD66641001D09F0 /* FolderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCard.swift; sourceTree = "<group>"; };
 		4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
+		4BBA108E2AD679C6001D09F0 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		4BBA10902AD67D62001D09F0 /* Image+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Default.swift"; sourceTree = "<group>"; };
+		4BBA10952AD67FBB001D09F0 /* NoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewModel.swift; sourceTree = "<group>"; };
+		4BBA10972AD68003001D09F0 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
+		4BBA10992AD6A4DE001D09F0 /* MultilineTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextField.swift; sourceTree = "<group>"; };
 		4BD12A682AD2BFC30086910F /* MeMo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeMo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD12A6B2AD2BFC30086910F /* MeMoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeMoApp.swift; sourceTree = "<group>"; };
 		4BD12A6D2AD2BFC30086910F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */,
+				4BBA10992AD6A4DE001D09F0 /* MultilineTextField.swift */,
 			);
 			path = InputField;
 			sourceTree = "<group>";
@@ -144,6 +157,39 @@
 				4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */,
 			);
 			path = Sheet;
+			sourceTree = "<group>";
+		};
+		4BBA108D2AD67909001D09F0 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA108E2AD679C6001D09F0 /* Note.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		4BBA10922AD67F8B001D09F0 /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA10942AD67FA9001D09F0 /* View */,
+				4BBA10932AD67FA0001D09F0 /* ViewModel */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
+		4BBA10932AD67FA0001D09F0 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA10952AD67FBB001D09F0 /* NoteViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4BBA10942AD67FA9001D09F0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4BBA10972AD68003001D09F0 /* NoteView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		4BD12A5F2AD2BFC30086910F = {
@@ -206,6 +252,7 @@
 		4BD12A9C2AD2C0830086910F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4BBA108D2AD67909001D09F0 /* Entities */,
 				4BD12AC82AD2DFD40086910F /* Component */,
 				4BD12AA52AD2C6880086910F /* Extension */,
 				4BD12AA22AD2C1AB0086910F /* Navigator */,
@@ -220,6 +267,7 @@
 		4BD12A9D2AD2C08A0086910F /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				4BBA10922AD67F8B001D09F0 /* Note */,
 				4BD12AC12AD2DCF30086910F /* Home */,
 				4BD12A9E2AD2C0930086910F /* Main */,
 			);
@@ -299,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				4BD12A6F2AD2BFC40086910F /* Assets.xcassets */,
+				4BBA10902AD67D62001D09F0 /* Image+Default.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -319,6 +368,7 @@
 				4BD12AB42AD2D1BE0086910F /* Roboto-Medium.ttf */,
 				4BD12AB52AD2D1BF0086910F /* Roboto-Regular.ttf */,
 				4BD12ABA2AD2D2820086910F /* Font+Roboto.swift */,
+				4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -503,23 +553,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BBA10962AD67FBB001D09F0 /* NoteViewModel.swift in Sources */,
 				4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */,
 				4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */,
 				4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */,
 				4BD12A752AD2BFC40086910F /* Persistence.swift in Sources */,
+				4BBA10982AD68003001D09F0 /* NoteView.swift in Sources */,
 				4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */,
+				4BBA108F2AD679C6001D09F0 /* Note.swift in Sources */,
 				4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */,
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
 				4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */,
 				4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */,
 				4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */,
 				4BD12A782AD2BFC40086910F /* MeMo.xcdatamodeld in Sources */,
+				4BBA10912AD67D62001D09F0 /* Image+Default.swift in Sources */,
 				4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */,
 				4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */,
 				4BD12AA82AD2C6D60086910F /* Optional+defaultValue.swift in Sources */,
 				4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */,
 				4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */,
 				4BBA108C2AD66887001D09F0 /* EmojiPicker.swift in Sources */,
+				4BBA109A2AD6A4DE001D09F0 /* MultilineTextField.swift in Sources */,
+				4B3913BA2ADE007D00ADE9BC /* UIFont+Roboto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
