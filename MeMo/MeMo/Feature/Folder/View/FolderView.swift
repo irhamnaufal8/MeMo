@@ -43,22 +43,53 @@ struct FolderView: View {
             )
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(viewModel.searchedNotes, id: \.id) { note in
-                        RecentNoteCard(
-                            title: note.title,
-                            description: viewModel.description(from: note.notes),
-                            date: note.modifiedAt,
-                            color: viewModel.bgColor(from: note.theme)) {
-                                
+                switch viewModel.state {
+                case .initiate:
+                    VStack(alignment: .leading, spacing: 8) {
+                        ForEach(viewModel.searchedNotes, id: \.id) { note in
+                            HStack(spacing: 12) {
+                                RecentNoteCard(
+                                    title: note.title,
+                                    description: viewModel.description(from: note.notes),
+                                    date: note.modifiedAt,
+                                    color: viewModel.bgColor(from: note.theme)) {
+                                        
+                                    }
+                                    .disabled(viewModel.isSelecting)
                             }
+                        }
                     }
+                    .padding()
+                case .empty:
+                    VStack {
+                        Text("Folder is still empty..")
+                            .font(.robotoTitle1)
+                            .foregroundColor(.black2)
+                        
+                        Text("Let's make a note for today!!")
+                            .font(.robotoBody)
+                            .foregroundColor(.black3)
+                    }
+                    .multilineTextAlignment(.center)
+                    .padding(32)
+                case .notFound:
+                    VStack {
+                        Text("Hmm..")
+                            .font(.robotoTitle1)
+                            .foregroundColor(.black2)
+                        
+                        Text("It looks like the note you are looking for doesn't exist")
+                            .font(.robotoBody)
+                            .foregroundColor(.black3)
+                    }
+                    .multilineTextAlignment(.center)
+                    .padding(32)
                 }
-                .padding()
-                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchText)
-                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.sortBy)
-                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.orderBy)
             }
+            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchText)
+            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.sortBy)
+            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.orderBy)
+            .frame(maxWidth: .infinity)
             .overlay(alignment: .bottomTrailing, content: {
                 Button {
                     
@@ -79,13 +110,13 @@ struct FolderView: View {
     func MenuView() -> some View {
         Menu {
             Button {
-                
+                viewModel.isEditing = true
             } label: {
                 Label("Edit", systemImage: "slider.horizontal.3")
             }
             
             Button {
-                
+                viewModel.isSelecting = true
             } label: {
                 Label("Select Notes", systemImage: "checkmark.circle")
             }
