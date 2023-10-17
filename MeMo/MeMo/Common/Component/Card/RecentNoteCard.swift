@@ -20,25 +20,28 @@ struct RecentNoteCard: View {
             action()
         } label: {
             VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.robotoTitle3)
-                    .foregroundColor(.black1.opacity(0.8))
-                    .lineLimit(1)
-                
-                Text(description)
-                    .font(.robotoBody)
-                    .foregroundColor(.black2)
-                    .lineLimit(2)
-                    .frame(maxHeight: .infinity, alignment: .topLeading)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.robotoTitle3)
+                        .foregroundColor(.black1.opacity(0.8))
+                        .lineLimit(1)
+                    
+                    Text(description)
+                        .font(.robotoBody)
+                        .foregroundColor(.black2)
+                        .lineLimit(2)
+                        .frame(maxHeight: .infinity, alignment: .topLeading)
+                }
+                .frame(height: 64, alignment: .topLeading)
                 
                 if let date = date {
-                    Text(relativeTime(from: date))
+                    Text("Edited \(relativeTime(from: date))")
                         .font(.robotoCaption)
                         .foregroundColor(.black3)
                 }
             }
             .padding()
-            .frame(height: 120, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
             .background(
                 RoundedRectangle(cornerRadius: 12)
                     .foregroundColor(color)
