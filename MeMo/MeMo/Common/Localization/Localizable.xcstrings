@@ -1,10 +1,10 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "📚" : {
+    "%lld Notes" : {
 
     },
-    "7 Notes" : {
+    "Add List" : {
 
     },
     "Folder" : {
@@ -29,22 +29,16 @@
     "MeMo" : {
 
     },
-    "Our Space" : {
-
-    },
     "Recent" : {
-
-    },
-    "Search your notes.." : {
 
     },
     "See all" : {
 
     },
-    "Thanks, God I'm still alive until 20. I want to summarize my life with" : {
+    "Select your emoji" : {
 
     },
-    "Wish at 20 ✨" : {
+    "Show" : {
 
     },
     "With Value" : {
@@ -63,6 +57,12 @@
           }
         }
       }
+    },
+    "Your text here.." : {
+
+    },
+    "Your Title" : {
+
     }
   },
   "version" : "1.0"
