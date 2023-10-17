@@ -11,6 +11,7 @@ struct SearchTextField: View {
     
     var placeholder: String = "Search your notes.."
     @Binding var text: String
+    var bgColor: Color = .white
     
     var body: some View {
         HStack(spacing: 8) {
@@ -24,7 +25,7 @@ struct SearchTextField: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .foregroundColor(.orange2)
+                .foregroundColor(bgColor)
         )
     }
 }
