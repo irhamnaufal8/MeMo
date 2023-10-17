@@ -18,7 +18,7 @@ struct HomeView: View {
                     .font(.robotoRegular(size: 32))
                     .foregroundColor(.black1)
                 
-                SearchTextField(text: $viewModel.searchText)
+                SearchTextField(text: $viewModel.searchText, bgColor: .orange2)
             }
             .padding()
             .background(
