@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4B3913BA2ADE007D00ADE9BC /* UIFont+Roboto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */; };
+		4B3913BC2ADE0E4A00ADE9BC /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BB2ADE0E4A00ADE9BC /* ThemeColor.swift */; };
+		4B3913BE2ADE0EA100ADE9BC /* NoteContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BD2ADE0EA100ADE9BC /* NoteContent.swift */; };
 		4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */; };
 		4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */; };
 		4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */; };
@@ -61,6 +63,8 @@
 
 /* Begin PBXFileReference section */
 		4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Roboto.swift"; sourceTree = "<group>"; };
+		4B3913BB2ADE0E4A00ADE9BC /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
+		4B3913BD2ADE0EA100ADE9BC /* NoteContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteContent.swift; sourceTree = "<group>"; };
 		4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentNoteCard.swift; sourceTree = "<group>"; };
 		4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				4BBA108E2AD679C6001D09F0 /* Note.swift */,
+				4B3913BB2ADE0E4A00ADE9BC /* ThemeColor.swift */,
+				4B3913BD2ADE0EA100ADE9BC /* NoteContent.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -556,8 +562,10 @@
 				4BBA10962AD67FBB001D09F0 /* NoteViewModel.swift in Sources */,
 				4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */,
 				4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */,
+				4B3913BE2ADE0EA100ADE9BC /* NoteContent.swift in Sources */,
 				4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */,
 				4BD12A752AD2BFC40086910F /* Persistence.swift in Sources */,
+				4B3913BC2ADE0E4A00ADE9BC /* ThemeColor.swift in Sources */,
 				4BBA10982AD68003001D09F0 /* NoteView.swift in Sources */,
 				4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */,
 				4BBA108F2AD679C6001D09F0 /* Note.swift in Sources */,
