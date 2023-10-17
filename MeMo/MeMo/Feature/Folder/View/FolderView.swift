@@ -30,7 +30,26 @@ struct FolderView: View {
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    MenuView()
+                    if viewModel.isSelecting {
+                        Button {
+                            withAnimation {
+                                viewModel.isSelecting = false
+                                viewModel.notesForDelete = []
+                            }
+                        } label: {
+                            Text("Done")
+                                .font(.robotoHeadline)
+                                .foregroundColor(.white)
+                                .padding(4)
+                                .padding(.horizontal, 6)
+                                .background(
+                                    Capsule()
+                                        .foregroundColor(viewModel.accentColor)
+                                )
+                        }
+                    } else {
+                        MenuView()
+                    }
                 }
                 
                 SearchTextField(text: $viewModel.searchText)
@@ -48,6 +67,10 @@ struct FolderView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(viewModel.searchedNotes, id: \.id) { note in
                             HStack(spacing: 12) {
+                                Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
+                                    .foregroundColor(viewModel.accentColor)
+                                    .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
+                                
                                 RecentNoteCard(
                                     title: note.title,
                                     description: viewModel.description(from: note.notes),
@@ -57,6 +80,10 @@ struct FolderView: View {
                                     }
                                     .disabled(viewModel.isSelecting)
                             }
+                            .onTapGesture {
+                                viewModel.toggleSelection(note)
+                            }
+                            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.isSelecting)
                         }
                     }
                     .padding()
@@ -101,25 +128,38 @@ struct FolderView: View {
                         .shadow(color: .black3.opacity(0.2), radius: 15)
                 }
                 .scaledButtonStyle()
+                .transition(.move(edge: .trailing).animation(.spring(response: 0.5, dampingFraction: 0.6)))
+                .isHidden(viewModel.isSelecting, remove: viewModel.isSelecting)
+                
             })
             .background(Color.gray2.opacity(0.2))
         }
+        
+        FooterView()
+            .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
     }
-    
+}
+
+extension FolderView {
     @ViewBuilder
     func MenuView() -> some View {
         Menu {
             Button {
-                viewModel.isEditing = true
+                withAnimation {
+                    viewModel.isEditing = true
+                }
             } label: {
                 Label("Edit", systemImage: "slider.horizontal.3")
             }
             
             Button {
-                viewModel.isSelecting = true
+                withAnimation {
+                    viewModel.isSelecting = true
+                }
             } label: {
                 Label("Select Notes", systemImage: "checkmark.circle")
             }
+            .isHidden(viewModel.data.notes.isEmpty, remove: viewModel.data.notes.isEmpty)
             
             Menu {
                 Picker("", selection: $viewModel.sortBy) {
@@ -155,6 +195,35 @@ struct FolderView: View {
                 .foregroundColor(.black1)
                 .padding(4)
         }
+    }
+    
+    @ViewBuilder
+    func FooterView() -> some View {
+        HStack {
+            Button {
+                withAnimation {
+                    viewModel.notesForDelete = viewModel.searchedNotes
+                }
+            } label: {
+                Text("Select All")
+                    .font(.robotoHeadline)
+                    .foregroundColor(viewModel.accentColor)
+            }
+            
+            Spacer()
+            
+            Button {
+                viewModel.deleteNotes()
+            } label: {
+                Text("Delete")
+                    .font(.robotoHeadline)
+                    .foregroundColor(viewModel.notesForDelete.isEmpty ? .gray1 : viewModel.accentColor)
+            }
+            .disabled(viewModel.notesForDelete.isEmpty)
+        }
+        .padding()
+        .background(Color.white.ignoresSafeArea())
+        .transition(.move(edge: .bottom).animation(.spring(response: 0.5, dampingFraction: 0.6)))
     }
 }
 

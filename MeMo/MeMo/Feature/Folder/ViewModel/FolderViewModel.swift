@@ -35,6 +35,8 @@ final class FolderViewModel: ObservableObject {
     @Published var isSelecting = false
     @Published var isEditing = false
     
+    @Published var notesForDelete: [NoteFile] = []
+    
     var searchedNotes: [NoteFile] {
         guard !searchText.isEmpty else {
             return data.notes.sorted(by: {
@@ -144,6 +146,28 @@ final class FolderViewModel: ObservableObject {
             return .red3
         default:
             return .gray2
+        }
+    }
+    
+    func isForDelete(_ note: NoteFile) -> Bool {
+        notesForDelete.contains(where: { $0.id == note.id })
+    }
+    
+    func toggleSelection(_ note: NoteFile) {
+        if isSelecting {
+            isForDelete(note) ?
+            notesForDelete.removeAll(where: { $0.id == note.id }) :
+            notesForDelete.append(note)
+        }
+    }
+    
+    func deleteNotes() {
+        if !notesForDelete.isEmpty {
+            withAnimation {
+                data.notes.removeAll { item in
+                    return notesForDelete.contains { $0.id == item.id }
+                }
+            }
         }
     }
 }
