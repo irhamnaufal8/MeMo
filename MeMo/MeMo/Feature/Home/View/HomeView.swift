@@ -15,11 +15,22 @@ struct HomeView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 12) {
-                Text("MeMo")
-                    .font(.robotoRegular(size: 32))
-                    .foregroundColor(.black1)
+                HStack {
+                    Text("MeMo")
+                        .font(.robotoRegular(size: 32))
+                        .foregroundColor(.black1)
+                    
+                    Spacer()
+                    
+                    Button {
+                        viewModel.isShowSheet = true
+                    } label: {
+                        Image(systemName: "paintpalette.fill")
+                            .foregroundColor(viewModel.accentColor(from: viewModel.currentTheme))
+                    }
+                }
                 
-                SearchTextField(text: $viewModel.searchText, bgColor: .purple2)
+                SearchTextField(text: $viewModel.searchText, bgColor: viewModel.secondaryColor(from: viewModel.currentTheme))
             }
             .padding()
             .background(
@@ -101,7 +112,7 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 48))
-                        .foregroundColor(.purple1)
+                        .foregroundColor(viewModel.accentColor(from: viewModel.currentTheme))
                         .padding()
                         .shadow(color: .black3.opacity(0.2), radius: 15)
                 }
@@ -111,6 +122,69 @@ struct HomeView: View {
         }
         .navigationTitle("")
         .navigationBarBackButtonHidden()
+        .sheet(isPresented: $viewModel.isShowSheet) {
+            ThemeSheet()
+        }
+    }
+}
+
+extension HomeView {
+    @ViewBuilder
+    func ThemeSheet() -> some View {
+        VStack(alignment: .trailing, spacing: 12) {
+            Button {
+                viewModel.isShowSheet = false
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundColor(.black3.opacity(0.5))
+                    .font(.title2)
+            }
+            .padding([.top, .horizontal])
+            
+            VStack(alignment: .leading) {
+                Text("Theme Color")
+                    .font(.robotoTitle1)
+                    .foregroundColor(.black1)
+                
+                Text("Select your favorite theme color")
+                    .font(.robotoBody)
+                    .foregroundColor(.black3)
+            }
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            
+            ScrollView {
+                VStack(spacing: 8) {
+                    ForEach(viewModel.themes, id: \.self) { theme in
+                        Button {
+                            viewModel.selectTheme(theme.rawValue)
+                        } label: {
+                            HStack(spacing: 12) {
+                                viewModel.appIcon(from: theme.rawValue)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(12)
+                                
+                                VStack(alignment: .leading) {
+                                    Text(theme.rawValue)
+                                        .font(.robotoHeadline)
+                                        .foregroundColor(.black2)
+                                }
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .foregroundColor(viewModel.bgColor(from: theme.rawValue))
+                            )
+                        }
+                        .scaledButtonStyle()
+                    }
+                }
+                .padding([.bottom, .horizontal])
+            }
+        }
     }
 }
 
