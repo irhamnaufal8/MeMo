@@ -11,6 +11,8 @@ struct RecentNoteCard: View {
     
     var title: String
     var description: String
+    var date: Date?
+    var color: Color = .orange3
     var action: () -> Void
     
     var body: some View {
@@ -27,23 +29,39 @@ struct RecentNoteCard: View {
                     .font(.robotoBody)
                     .foregroundColor(.black2)
                     .lineLimit(2)
+                    .frame(maxHeight: .infinity, alignment: .topLeading)
+                
+                if let date = date {
+                    Text(relativeTime(from: date))
+                        .font(.robotoCaption)
+                        .foregroundColor(.black3)
+                }
             }
             .padding()
-            .frame(width: 200, height: 92, alignment: .topLeading)
+            .frame(height: 120, alignment: .topLeading)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .foregroundColor(.orange3)
+                    .foregroundColor(color)
             )
         }
         .scaledButtonStyle()
+    }
+    
+    private func relativeTime(from date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        formatter.locale = Locale.current
+        return formatter.localizedString(for: date, relativeTo: .now)
     }
 }
 
 #Preview {
     RecentNoteCard(
         title: "This is Dummy Title ✨",
-        description: "This is dummy description of recent notes, for testing purposes only."
+        description: "This is dummy description of recent notes, for testing purposes only.",
+        date: .now - 10000
     ) {
         
     }
+    .frame(width: 200)
 }
