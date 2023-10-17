@@ -124,6 +124,7 @@ struct HomeView: View {
         .navigationBarBackButtonHidden()
         .sheet(isPresented: $viewModel.isShowSheet) {
             ThemeSheet()
+                .presentationDetents([.fraction(0.8)])
         }
     }
 }
@@ -132,26 +133,27 @@ extension HomeView {
     @ViewBuilder
     func ThemeSheet() -> some View {
         VStack(alignment: .trailing, spacing: 12) {
-            Button {
-                viewModel.isShowSheet = false
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.black3.opacity(0.5))
-                    .font(.title2)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Theme Color")
+                        .font(.robotoTitle1)
+                        .foregroundColor(.black1)
+                    
+                    Text("Select your favorite theme color")
+                        .font(.robotoBody)
+                        .foregroundColor(.black3)
+                }
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                
+                Button {
+                    viewModel.isShowSheet = false
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.black3.opacity(0.5))
+                        .font(.title2)
+                }
             }
             .padding([.top, .horizontal])
-            
-            VStack(alignment: .leading) {
-                Text("Theme Color")
-                    .font(.robotoTitle1)
-                    .foregroundColor(.black1)
-                
-                Text("Select your favorite theme color")
-                    .font(.robotoBody)
-                    .foregroundColor(.black3)
-            }
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, alignment: .topLeading)
             
             ScrollView {
                 VStack(spacing: 8) {
@@ -171,6 +173,13 @@ extension HomeView {
                                         .font(.robotoHeadline)
                                         .foregroundColor(.black2)
                                 }
+                                
+                                Spacer()
+                                
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.title)
+                                    .foregroundColor(viewModel.accentColor(from: theme.rawValue))
+                                    .isHidden(viewModel.currentTheme != theme.rawValue, remove: viewModel.currentTheme != theme.rawValue)
                             }
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -178,11 +187,18 @@ extension HomeView {
                                 RoundedRectangle(cornerRadius: 16)
                                     .foregroundColor(viewModel.bgColor(from: theme.rawValue))
                             )
+                            .overlay {
+                                if viewModel.currentTheme == theme.rawValue {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(lineWidth: 2)
+                                        .foregroundColor(viewModel.accentColor(from: theme.rawValue))
+                                }
+                            }
                         }
                         .scaledButtonStyle()
                     }
                 }
-                .padding([.bottom, .horizontal])
+                .padding()
             }
         }
     }
