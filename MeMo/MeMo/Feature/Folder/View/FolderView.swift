@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FolderView: View {
     
-    @EnvironmentObject var viewModel: FolderViewModel
+    @ObservedObject var viewModel: FolderViewModel
     @ObservedObject var navigator: AppNavigator
     
     var body: some View {
@@ -76,7 +76,7 @@ struct FolderView: View {
                                     description: viewModel.description(from: note.notes),
                                     date: note.modifiedAt,
                                     color: viewModel.bgColor(from: note.theme)) {
-                                        
+                                        navigator.navigateTo(.note(navigator, .init(data: note)))
                                     }
                                     .disabled(viewModel.isSelecting)
                             }
@@ -133,10 +133,12 @@ struct FolderView: View {
                 
             })
             .background(Color.gray2.opacity(0.2))
+            
+            FooterView()
+                .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
         }
-        
-        FooterView()
-            .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
+        .navigationTitle("")
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -228,6 +230,5 @@ extension FolderView {
 }
 
 #Preview {
-    FolderView(navigator: .init())
-        .environmentObject(FolderViewModel(data: .dummy))
+    FolderView(viewModel: .init(data: .dummy), navigator: .init())
 }

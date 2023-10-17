@@ -8,7 +8,7 @@
 import SwiftUI
 
 final class NoteViewModel: ObservableObject {
-    @Published var data: NoteFile = .dummy
+    @Published var data: NoteFile
     
     @Published var isShowEmojiPicker = false
     
@@ -48,5 +48,9 @@ final class NoteViewModel: ObservableObject {
         default:
             return .black2
         }
+    }
+    
+    init(data: NoteFile) {
+        self.data = data
     }
 }

@@ -24,7 +24,8 @@ final class AppNavigator: ObservableObject {
 }
 
 enum Route {
-    
+    case folder(AppNavigator, FolderViewModel)
+    case note(AppNavigator, NoteViewModel)
 }
 
 extension Route: Hashable {
@@ -40,7 +41,12 @@ extension Route: Hashable {
 extension Route: View {
     var body: some View {
         switch self {
-        default: EmptyView()
+        case .folder(let navigator, let viewModel):
+            FolderView(viewModel: viewModel, navigator: navigator)
+
+        case .note(let navigator, let viewModel):
+            NoteView(viewModel: viewModel, navigator: navigator)
+            
         }
     }
 }

@@ -59,4 +59,49 @@ extension NoteFile {
         createdAt: .now - 200000,
         modifiedAt: .now - 30000
     )
+    
+    static let dummy4: NoteFile = .init(
+        title: "Say You Won't Let Go",
+        image: "🎹",
+        notes: [
+            NoteTextContent(text: "I met you in the dark, you lit me up"),
+            NoteImageContent(image: .dummy1),
+            NoteTextContent(text: "You made me feel as though I was enough"),
+            NoteTextContent(text: "We danced the night away, we drank too much"),
+            
+        ],
+        theme: ThemeColor.blue.rawValue,
+        createdAt: .now - 90000,
+        modifiedAt: .now - 15000
+    )
+    
+    static let dummy5: NoteFile = .init(
+        title: "Love is an Open Door",
+        image: "❄️",
+        notes: [
+            NoteTextContent(text: "All my life has been a series of doors in my face"),
+            NoteImageContent(image: .dummy1),
+            NoteTextContent(text: "And then suddenly I bump into you"),
+            NoteTextContent(text: "I was thinking the same thing! 'Cause like"),
+            
+        ],
+        theme: ThemeColor.pink.rawValue,
+        createdAt: .now - 120000,
+        modifiedAt: .now - 17000
+    )
+    
+    static let dummy6: NoteFile = .init(
+        title: "Into the Unknown",
+        image: "🌈",
+        notes: [
+            NoteTextContent(text: "I can hear you, but I won't"),
+            NoteImageContent(image: .dummy1),
+            NoteTextContent(text: "Some look for trouble"),
+            NoteTextContent(text: "While others don't"),
+            
+        ],
+        theme: ThemeColor.purple.rawValue,
+        createdAt: .now - 160000,
+        modifiedAt: .now - 22000
+    )
 }

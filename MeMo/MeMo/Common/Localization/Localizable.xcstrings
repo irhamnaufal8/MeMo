@@ -1,13 +1,53 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
     "%lld Notes" : {
 
     },
-    "Add List" : {
+    "Ascending" : {
+
+    },
+    "Date Created" : {
+
+    },
+    "Date Edited" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete Folder" : {
+
+    },
+    "Descending" : {
+
+    },
+    "Done" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Edited %@" : {
 
     },
     "Folder" : {
+
+    },
+    "Folder is still empty.." : {
 
     },
     "Hello, world" : {
@@ -26,7 +66,22 @@
         }
       }
     },
+    "Hmm.." : {
+
+    },
+    "It looks like the note you are looking for doesn't exist" : {
+
+    },
+    "Let's make a note for today!!" : {
+
+    },
     "MeMo" : {
+
+    },
+    "Newest First" : {
+
+    },
+    "Oldest First" : {
 
     },
     "Recent" : {
@@ -35,10 +90,22 @@
     "See all" : {
 
     },
+    "Select All" : {
+
+    },
+    "Select Notes" : {
+
+    },
     "Select your emoji" : {
 
     },
     "Show" : {
+
+    },
+    "Sort By" : {
+
+    },
+    "Title" : {
 
     },
     "With Value" : {
@@ -57,12 +124,6 @@
           }
         }
       }
-    },
-    "Your text here.." : {
-
-    },
-    "Your Title" : {
-
     }
   },
   "version" : "1.0"
