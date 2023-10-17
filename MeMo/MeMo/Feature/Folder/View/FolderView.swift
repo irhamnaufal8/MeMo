@@ -23,6 +23,7 @@ struct FolderView: View {
                             .font(.headline)
                             .foregroundColor(.black1)
                     }
+                    .isHidden(viewModel.isSelecting, remove: viewModel.isSelecting)
                     
                     Text("\(viewModel.data.icon.orEmpty()) \(viewModel.data.title)")
                         .font(.robotoTitle2)
@@ -64,53 +65,17 @@ struct FolderView: View {
             ScrollView {
                 switch viewModel.state {
                 case .initiate:
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(viewModel.searchedNotes, id: \.id) { note in
-                            HStack(spacing: 12) {
-                                Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
-                                    .foregroundColor(viewModel.accentColor)
-                                    .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
-                                
-                                RecentNoteCard(
-                                    title: note.title,
-                                    description: viewModel.description(from: note.notes),
-                                    date: note.modifiedAt,
-                                    color: viewModel.bgColor(from: note.theme)) {
-                                        navigator.navigateTo(.note(navigator, .init(data: note)))
-                                    }
-                                    .disabled(viewModel.isSelecting)
-                            }
-                            .onTapGesture {
-                                viewModel.toggleSelection(note)
-                            }
-                            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.isSelecting)
-                        }
-                    }
-                    .padding()
+                    NoteListView()
                 case .empty:
-                    VStack {
-                        Text("Folder is still empty..")
-                            .font(.robotoTitle1)
-                            .foregroundColor(.black2)
-                        
-                        Text("Let's make a note for today!!")
-                            .font(.robotoBody)
-                            .foregroundColor(.black3)
-                    }
-                    .multilineTextAlignment(.center)
-                    .padding(32)
+                    EmptyStateView(
+                        title: "Folder is still empty..",
+                        desc: "Let's make a note for today!!"
+                    )
                 case .notFound:
-                    VStack {
-                        Text("Hmm..")
-                            .font(.robotoTitle1)
-                            .foregroundColor(.black2)
-                        
-                        Text("It looks like the note you are looking for doesn't exist")
-                            .font(.robotoBody)
-                            .foregroundColor(.black3)
-                    }
-                    .multilineTextAlignment(.center)
-                    .padding(32)
+                    EmptyStateView(
+                        title: "Hmm..",
+                        desc: "It looks like the note you are looking for doesn't exist"
+                    )
                 }
             }
             .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchText)
@@ -204,12 +169,12 @@ extension FolderView {
         HStack {
             Button {
                 withAnimation {
-                    viewModel.notesForDelete = viewModel.searchedNotes
+                    viewModel.toggleSelectAll()
                 }
             } label: {
-                Text("Select All")
+                Text(viewModel.isAllSelected() ? "Unselect All" : "Select All")
                     .font(.robotoHeadline)
-                    .foregroundColor(viewModel.accentColor)
+                    .foregroundColor(.white)
             }
             
             Spacer()
@@ -219,13 +184,55 @@ extension FolderView {
             } label: {
                 Text("Delete")
                     .font(.robotoHeadline)
-                    .foregroundColor(viewModel.notesForDelete.isEmpty ? .gray1 : viewModel.accentColor)
+                    .foregroundColor(viewModel.notesForDelete.isEmpty ? .gray1 : .white)
             }
             .disabled(viewModel.notesForDelete.isEmpty)
         }
         .padding()
-        .background(Color.white.ignoresSafeArea())
+        .background(viewModel.accentColor)
         .transition(.move(edge: .bottom).animation(.spring(response: 0.5, dampingFraction: 0.6)))
+    }
+    
+    @ViewBuilder
+    func NoteListView() -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(viewModel.searchedNotes, id: \.id) { note in
+                HStack(spacing: 12) {
+                    Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(viewModel.accentColor)
+                        .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
+                    
+                    RecentNoteCard(
+                        title: note.title,
+                        description: viewModel.description(from: note.notes),
+                        date: note.modifiedAt,
+                        color: viewModel.bgColor(from: note.theme)) {
+                            navigator.navigateTo(.note(navigator, .init(data: note)))
+                        }
+                        .disabled(viewModel.isSelecting)
+                }
+                .onTapGesture {
+                    viewModel.toggleSelection(note)
+                }
+                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.isSelecting)
+            }
+        }
+        .padding()
+    }
+    
+    @ViewBuilder
+    func EmptyStateView(title: String, desc: String) -> some View {
+        VStack {
+            Text(title)
+                .font(.robotoTitle1)
+                .foregroundColor(.black2)
+            
+            Text(desc)
+                .font(.robotoBody)
+                .foregroundColor(.black3)
+        }
+        .multilineTextAlignment(.center)
+        .padding(32)
     }
 }
 

@@ -153,6 +153,20 @@ final class FolderViewModel: ObservableObject {
         notesForDelete.contains(where: { $0.id == note.id })
     }
     
+    func isAllSelected() -> Bool {
+        searchedNotes.allSatisfy({
+            isForDelete($0)
+        })
+    }
+    
+    func toggleSelectAll() {
+        if isAllSelected() {
+            notesForDelete = []
+        } else {
+            notesForDelete = searchedNotes
+        }
+    }
+    
     func toggleSelection(_ note: NoteFile) {
         if isSelecting {
             isForDelete(note) ?
