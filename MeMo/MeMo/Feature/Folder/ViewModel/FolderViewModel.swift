@@ -18,6 +18,12 @@ enum OrderBy {
     case descending
 }
 
+enum DataState {
+    case initiate
+    case empty
+    case notFound
+}
+
 final class FolderViewModel: ObservableObject {
     
     @Published var searchText = ""
@@ -25,6 +31,9 @@ final class FolderViewModel: ObservableObject {
     
     @Published var sortBy: SortBy = .edited
     @Published var orderBy: OrderBy = .ascending
+    
+    @Published var isSelecting = false
+    @Published var isEditing = false
     
     var searchedNotes: [NoteFile] {
         guard !searchText.isEmpty else {
@@ -71,6 +80,16 @@ final class FolderViewModel: ObservableObject {
                 $0.title > $1.title
             }
         })
+    }
+    
+    var state: DataState {
+        if !searchText.isEmpty && searchedNotes.isEmpty {
+            return .notFound
+        } else if searchText.isEmpty && searchedNotes.isEmpty {
+            return .empty
+        } else {
+            return .initiate
+        }
     }
     
     var accentColor: Color {
