@@ -13,8 +13,8 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack(path: $navigator.routes) {
-            HomeView()
-                .environmentObject(HomeViewModel())
+            NoteView()
+                .environmentObject(NoteViewModel())
         }
         .navigationDestination(for: Route.self) { $0 }
     }
