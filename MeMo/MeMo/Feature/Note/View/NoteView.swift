@@ -9,7 +9,8 @@ import SwiftUI
 
 struct NoteView: View {
     
-    @EnvironmentObject var viewModel: NoteViewModel
+    @ObservedObject var viewModel: NoteViewModel
+    @ObservedObject var navigator: AppNavigator
     
     var body: some View {
         ScrollView {
@@ -63,10 +64,11 @@ struct NoteView: View {
         .background(
             viewModel.bgColor
         )
+        .navigationTitle("")
+        .navigationBarBackButtonHidden()
     }
 }
 
 #Preview {
-    NoteView()
-        .environmentObject(NoteViewModel())
+    NoteView(viewModel: .init(data: .dummy), navigator: .init())
 }

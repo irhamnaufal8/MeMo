@@ -13,14 +13,12 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack(path: $navigator.routes) {
-            HomeView()
-                .environmentObject(HomeViewModel())
+            HomeView(viewModel: .init(), navigator: navigator)
+                .navigationDestination(for: Route.self) { $0 }
         }
-        .navigationDestination(for: Route.self) { $0 }
     }
 }
 
 #Preview {
     ContentView()
-        
 }

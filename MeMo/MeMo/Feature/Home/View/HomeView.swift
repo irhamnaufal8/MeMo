@@ -9,7 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @EnvironmentObject var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var navigator: AppNavigator
     
     var body: some View {
         VStack(spacing: 0) {
@@ -18,7 +19,7 @@ struct HomeView: View {
                     .font(.robotoRegular(size: 32))
                     .foregroundColor(.black1)
                 
-                SearchTextField(text: $viewModel.searchText, bgColor: .orange2)
+                SearchTextField(text: $viewModel.searchText, bgColor: .purple2)
             }
             .padding()
             .background(
@@ -48,12 +49,15 @@ struct HomeView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(1...5, id: \.self) { _ in
+                                ForEach(viewModel.recentNotes, id: \.id) { note in
                                     RecentNoteCard(
-                                        title: "Dummy Title",
-                                        description: "Dummy description"
-                                    ) {}
-                                        .frame(width: 200)
+                                        title: note.title,
+                                        description: viewModel.description(from: note.notes),
+                                        color: viewModel.bgColor(from: note.theme)
+                                    ) {
+                                        navigator.navigateTo(.note(navigator, .init(data: note)))
+                                    }
+                                    .frame(width: 200)
                                 }
                             }
                             .padding(.horizontal)
@@ -76,15 +80,18 @@ struct HomeView: View {
                             }
                         }
                         
-                        ForEach(0...10, id: \.self) { index in
+                        ForEach(viewModel.folders, id: \.id) { folder in
                             FolderCard(
-                                image: "💌",
-                                notes: index,
-                                title: "Dummy Title"
-                            ) {}
+                                image: folder.icon.orEmpty(),
+                                notes: viewModel.countNotes(from: folder),
+                                title: folder.title,
+                                color: viewModel.bgColor(from: folder.theme.orEmpty())
+                            ) {
+                                navigator.navigateTo(.folder(navigator, .init(data: folder)))
+                            }
                         }
                     }
-                    .padding(.horizontal)
+                    .padding([.horizontal, .bottom])
                 }
                 .padding(.top)
             }
@@ -94,7 +101,7 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 48))
-                        .foregroundColor(.orange1)
+                        .foregroundColor(.purple1)
                         .padding()
                         .shadow(color: .black3.opacity(0.2), radius: 15)
                 }
@@ -102,10 +109,11 @@ struct HomeView: View {
             })
             .background(Color.gray2.opacity(0.2))
         }
+        .navigationTitle("")
+        .navigationBarBackButtonHidden()
     }
 }
 
 #Preview {
-    HomeView()
-        .environmentObject(HomeViewModel())
+    HomeView(viewModel: .init(), navigator: .init())
 }
