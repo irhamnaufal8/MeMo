@@ -13,6 +13,7 @@
 		4B3913C02ADE127C00ADE9BC /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BF2ADE127C00ADE9BC /* Folder.swift */; };
 		4B3913C52ADE154000ADE9BC /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C42ADE154000ADE9BC /* FolderViewModel.swift */; };
 		4B3913C72ADE155C00ADE9BC /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C62ADE155C00ADE9BC /* FolderView.swift */; };
+		4B3913CC2ADEA17600ADE9BC /* View+isHidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */; };
 		4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */; };
 		4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */; };
 		4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */; };
@@ -71,6 +72,7 @@
 		4B3913BF2ADE127C00ADE9BC /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		4B3913C42ADE154000ADE9BC /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		4B3913C62ADE155C00ADE9BC /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
+		4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+isHidden.swift"; sourceTree = "<group>"; };
 		4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentNoteCard.swift; sourceTree = "<group>"; };
 		4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
@@ -156,6 +158,14 @@
 			isa = PBXGroup;
 			children = (
 				4B3913C62ADE155C00ADE9BC /* FolderView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4B3913CA2ADEA16700ADE9BC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -359,6 +369,7 @@
 		4BD12AA52AD2C6880086910F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				4B3913CA2ADEA16700ADE9BC /* View */,
 				4BBA10852AD65EA4001D09F0 /* Button */,
 				4BD12AA92AD2C7250086910F /* Encodable */,
 				4BD12AA62AD2C6910086910F /* Optional */,
@@ -611,6 +622,7 @@
 				4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */,
 				4BD12A782AD2BFC40086910F /* MeMo.xcdatamodeld in Sources */,
 				4BBA10912AD67D62001D09F0 /* Image+Default.swift in Sources */,
+				4B3913CC2ADEA17600ADE9BC /* View+isHidden.swift in Sources */,
 				4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */,
 				4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */,
 				4BD12AA82AD2C6D60086910F /* Optional+defaultValue.swift in Sources */,
