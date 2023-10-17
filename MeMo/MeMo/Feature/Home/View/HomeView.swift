@@ -53,6 +53,7 @@ struct HomeView: View {
                                         title: "Dummy Title",
                                         description: "Dummy description"
                                     ) {}
+                                        .frame(width: 200)
                                 }
                             }
                             .padding(.horizontal)

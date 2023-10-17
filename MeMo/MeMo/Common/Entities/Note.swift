@@ -13,6 +13,8 @@ struct NoteFile: Identifiable {
     var image: String
     var notes: [any Note]
     var theme: String
+    var createdAt: Date?
+    var modifiedAt: Date?
 }
 
 extension NoteFile {
@@ -22,25 +24,39 @@ extension NoteFile {
         notes: [
             NoteTextContent(text: "First sentence here.."),
             NoteImageContent(image: .dummy1),
-            NoteTextContent(text: "\n"),
             NoteTextContent(text: "Second sentence lalala. asldkjasd alskdja slkjjlakj alksjdalksjd laksjd alksj alkjlakjsla dlaks laksjd alskdj laksj ads"),
             NoteImageContent(image: .dummy1)
         ],
-        theme: ThemeColor.red.rawValue
+        theme: ThemeColor.red.rawValue,
+        createdAt: .now - 100000,
+        modifiedAt: .now - 10000
     )
     
     static let dummy2: NoteFile = .init(
-        title: "Shopping List",
-        image: "🍽️",
+        title: "Before You Go",
+        image: "💌",
         notes: [
-            NoteListContent(list: [
-                .init(isChecked: false, text: "Pencil"),
-                .init(isChecked: false, text: "Soap"),
-                .init(isChecked: false, text: "Shampoo"),
-                .init(isChecked: false, text: "Red T-Shirt"),
-                .init(isChecked: false, text: "Tomato"),
-            ])
+            NoteTextContent(text: "I fell by the west side"),
+            NoteImageContent(image: .dummy1),
+            NoteTextContent(text: "Like everyone else"),
+            NoteImageContent(image: .dummy1)
         ],
-        theme: ThemeColor.purple.rawValue
+        theme: ThemeColor.orange.rawValue,
+        createdAt: .now - 150000,
+        modifiedAt: .now - 20000
+    )
+    
+    static let dummy3: NoteFile = .init(
+        title: "Art for Life",
+        image: "🎨",
+        notes: [
+            NoteTextContent(text: "Welcome to my modern art class!"),
+            NoteImageContent(image: .dummy1),
+            NoteTextContent(text: "All we need here is a brush type A"),
+            NoteImageContent(image: .dummy1)
+        ],
+        theme: ThemeColor.green.rawValue,
+        createdAt: .now - 200000,
+        modifiedAt: .now - 30000
     )
 }
