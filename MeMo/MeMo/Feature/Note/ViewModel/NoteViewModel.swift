@@ -14,6 +14,14 @@ final class NoteViewModel: ObservableObject {
     @Published var newTag = ""
     @Published var isShowModified = true
     
+    @Published var isShowColorPicker = false
+    
+    @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
+    var currentTheme: String {
+        get { data.theme }
+        set { data.theme = newValue }
+    }
+    
     var bgColor: Color {
         switch data.theme {
         case ThemeColor.blue.rawValue:
@@ -88,6 +96,25 @@ final class NoteViewModel: ObservableObject {
                 data.tags?.append(newTag)
                 newTag = ""
             }
+        }
+    }
+    
+    func accentColor(from color: String) -> Color {
+        switch color {
+        case ThemeColor.blue.rawValue:
+            return .blue1
+        case ThemeColor.green.rawValue:
+            return .green1
+        case ThemeColor.orange.rawValue:
+            return .orange1
+        case ThemeColor.pink.rawValue:
+            return .pink1
+        case ThemeColor.purple.rawValue:
+            return .purple1
+        case ThemeColor.red.rawValue:
+            return .red1
+        default:
+            return .black2
         }
     }
 }

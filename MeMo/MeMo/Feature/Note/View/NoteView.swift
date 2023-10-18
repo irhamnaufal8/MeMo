@@ -13,73 +13,125 @@ struct NoteView: View {
     @ObservedObject var navigator: AppNavigator
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                MultilineTextField(
-                    "Your Title",
-                    text: $viewModel.data.title,
-                    font: .robotoTitle1
-                )
-                
-                HStack {
-                    Image(systemName: "tag.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20)
-                        .foregroundColor(viewModel.accentColor)
-                    
-                    Rectangle()
-                        .frame(width: 1)
-                        .foregroundColor(.black3)
-                    
-                    Button {
-                        viewModel.isShowTagSheet = true
-                    } label: {
-                        Text(viewModel.tagsText)
-                            .font((viewModel.data.tags ?? []).isEmpty ? .robotoBody : .robotoHeadline)
-                            .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .black2 : .white)
-                            .lineLimit(1)
-                            .padding(6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .clear : viewModel.accentColor)
-                            )
-                    }
-                }
-                
+        VStack(spacing: 0) {
+            HStack {
                 Button {
-                    viewModel.isShowModified.toggle()
+                    navigator.back()
                 } label: {
-                    Text(viewModel.timeStampText)
-                        .font(.robotoCaption)
-                        .foregroundColor(.black3)
+                    Image(systemName: "arrow.left")
+                        .font(.headline)
+                        .foregroundColor(.black1)
                 }
                 
-                Divider()
+                Spacer()
                 
-                ForEach(viewModel.data.notes, id: \.id) { note in
-                    if var text = note as? NoteTextContent {
-                        MultilineTextField(
-                            "Your text here..",
-                            text: Binding<String>(get: {
-                                return text.text
-                            }, set: { newValue in
-                                text.text = newValue
-                            }),
-                            font: .robotoBody
-                        )
-                    } else if let image = note as? NoteImageContent {
-                        image.image
+                MenuView()
+            }
+            .padding()
+            
+            ScrollView {
+                VStack(alignment: .leading) {
+                    MultilineTextField(
+                        "Your Title",
+                        text: $viewModel.data.title,
+                        font: .robotoTitle1
+                    )
+                    
+                    HStack {
+                        Image(systemName: "tag.fill")
                             .resizable()
                             .scaledToFit()
-                            .cornerRadius(4)
+                            .frame(width: 20)
+                            .foregroundColor(viewModel.accentColor)
+                        
+                        Rectangle()
+                            .frame(width: 1)
+                            .foregroundColor(.black3)
+                        
+                        Button {
+                            viewModel.isShowTagSheet = true
+                        } label: {
+                            Text(viewModel.tagsText)
+                                .font((viewModel.data.tags ?? []).isEmpty ? .robotoBody : .robotoHeadline)
+                                .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .black2 : .white)
+                                .lineLimit(1)
+                                .padding(6)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .clear : viewModel.accentColor)
+                                )
+                        }
+                    }
+                    
+                    Button {
+                        viewModel.isShowModified.toggle()
+                    } label: {
+                        Text(viewModel.timeStampText)
+                            .font(.robotoCaption)
+                            .foregroundColor(.black3)
+                    }
+                    
+                    Divider()
+                    
+                    ForEach(viewModel.data.notes, id: \.id) { note in
+                        if var text = note as? NoteTextContent {
+                            MultilineTextField(
+                                "Your text here..",
+                                text: Binding<String>(get: {
+                                    return text.text
+                                }, set: { newValue in
+                                    text.text = newValue
+                                }),
+                                font: .robotoBody
+                            )
+                        } else if let image = note as? NoteImageContent {
+                            image.image
+                                .resizable()
+                                .scaledToFit()
+                                .cornerRadius(4)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+        .overlay(alignment: .topTrailing) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Select a color")
+                    .font(.robotoHeadline)
+                    .foregroundColor(.black3)
+                
+                HStack(spacing: 4) {
+                    ForEach(viewModel.themes, id: \.self) { theme in
+                        Button {
+                            withAnimation {
+                                viewModel.data.theme = theme.rawValue
+                            }
+                        } label: {
+                            Image(systemName: viewModel.data.theme == theme.rawValue ? "checkmark.circle.fill" : "circle.fill")
+                                .font(.title2)
+                                .foregroundColor(viewModel.accentColor(from: theme.rawValue))
+                        }
                     }
                 }
             }
-            .padding(.horizontal)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundColor(.white)
+            )
+            .transition(.scale(scale: 0, anchor: .topTrailing).animation(.spring(response: 0.5, dampingFraction: 0.6)))
+            .padding()
+            .offset(y: 20)
+            .isHidden(!viewModel.isShowColorPicker, remove: !viewModel.isShowColorPicker)
         }
         .background(
-            viewModel.bgColor
+            viewModel.bgColor.ignoresSafeArea()
+                .onTapGesture(perform: {
+                    withAnimation {
+                        viewModel.isShowColorPicker = false
+                    }
+                })
         )
         .navigationTitle("")
         .navigationBarBackButtonHidden()
@@ -164,6 +216,31 @@ extension NoteView {
                 .padding()
             }
         }
+    }
+    
+    @ViewBuilder
+    func MenuView() -> some View {
+        Menu {
+            Button {
+                withAnimation {
+                    viewModel.isShowColorPicker = true
+                }
+            } label: {
+                Label("Change Theme Color", systemImage: "paintpalette")
+            }
+            
+            Button(role: .destructive) {
+                
+            } label: {
+                Label("Delete Note", systemImage: "delete.left")
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.black1)
+                .padding(4)
+        }
+
     }
 }
 
