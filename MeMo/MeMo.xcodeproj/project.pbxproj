@@ -14,6 +14,7 @@
 		4B3913C52ADE154000ADE9BC /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C42ADE154000ADE9BC /* FolderViewModel.swift */; };
 		4B3913C72ADE155C00ADE9BC /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C62ADE155C00ADE9BC /* FolderView.swift */; };
 		4B3913CC2ADEA17600ADE9BC /* View+isHidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */; };
+		4B3913CF2ADF6F5700ADE9BC /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913CE2ADF6F5700ADE9BC /* KeyboardReadable.swift */; };
 		4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */; };
 		4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */; };
 		4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */; };
@@ -73,6 +74,7 @@
 		4B3913C42ADE154000ADE9BC /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		4B3913C62ADE155C00ADE9BC /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+isHidden.swift"; sourceTree = "<group>"; };
+		4B3913CE2ADF6F5700ADE9BC /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
 		4BBA10802AD65BE3001D09F0 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentNoteCard.swift; sourceTree = "<group>"; };
 		4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */,
+				4B3913CE2ADF6F5700ADE9BC /* KeyboardReadable.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 			files = (
 				4BBA10962AD67FBB001D09F0 /* NoteViewModel.swift in Sources */,
 				4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */,
+				4B3913CF2ADF6F5700ADE9BC /* KeyboardReadable.swift in Sources */,
 				4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */,
 				4B3913BE2ADE0EA100ADE9BC /* NoteContent.swift in Sources */,
 				4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */,

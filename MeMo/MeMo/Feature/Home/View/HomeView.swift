@@ -108,7 +108,7 @@ struct HomeView: View {
             }
             .overlay(alignment: .bottomTrailing, content: {
                 Button {
-                    
+                    navigator.navigateTo(.note(navigator, viewModel.createNewNote()))
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 48))

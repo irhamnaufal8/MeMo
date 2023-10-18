@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoteView: View {
+struct NoteView: View, KeyboardReadable {
     
     @ObservedObject var viewModel: NoteViewModel
     @ObservedObject var navigator: AppNavigator
@@ -29,71 +29,131 @@ struct NoteView: View {
             }
             .padding()
             
-            ScrollView {
-                VStack(alignment: .leading) {
-                    MultilineTextField(
-                        "Your Title",
-                        text: $viewModel.data.title,
-                        font: .robotoTitle1
-                    )
-                    
-                    HStack {
-                        Image(systemName: "tag.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20)
-                            .foregroundColor(viewModel.accentColor)
+            ScrollViewReader { scrollView in
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        MultilineTextField(
+                            "Your Title",
+                            text: $viewModel.data.title,
+                            font: .robotoTitle1,
+                            onCommit: {
+                                withAnimation {
+                                    viewModel.isEditTitle = false
+                                    viewModel.isShowBottomBar = false
+                                }
+                            },
+                            onEdit:  {
+                                withAnimation {
+                                    viewModel.isEditTitle = true
+                                    viewModel.isShowBottomBar = false
+                                }
+                            },
+                            onDoneEdit: {
+                                withAnimation {
+                                    viewModel.isEditTitle = true
+                                    viewModel.isShowBottomBar = false
+                                }
+                            }
+                        )
                         
-                        Rectangle()
-                            .frame(width: 1)
-                            .foregroundColor(.black3)
-                        
-                        Button {
-                            viewModel.isShowTagSheet = true
-                        } label: {
-                            Text(viewModel.tagsText)
-                                .font((viewModel.data.tags ?? []).isEmpty ? .robotoBody : .robotoHeadline)
-                                .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .black2 : .white)
-                                .lineLimit(1)
-                                .padding(6)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .clear : viewModel.accentColor)
-                                )
-                        }
-                    }
-                    
-                    Button {
-                        viewModel.isShowModified.toggle()
-                    } label: {
-                        Text(viewModel.timeStampText)
-                            .font(.robotoCaption)
-                            .foregroundColor(.black3)
-                    }
-                    
-                    Divider()
-                    
-                    ForEach(viewModel.data.notes, id: \.id) { note in
-                        if var text = note as? NoteTextContent {
-                            MultilineTextField(
-                                "Your text here..",
-                                text: Binding<String>(get: {
-                                    return text.text
-                                }, set: { newValue in
-                                    text.text = newValue
-                                }),
-                                font: .robotoBody
-                            )
-                        } else if let image = note as? NoteImageContent {
-                            image.image
+                        HStack {
+                            Image(systemName: "tag.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .cornerRadius(4)
+                                .frame(width: 20)
+                                .foregroundColor(viewModel.accentColor)
+                            
+                            Rectangle()
+                                .frame(width: 1)
+                                .foregroundColor(.black3)
+                            
+                            Button {
+                                viewModel.isShowTagSheet = true
+                            } label: {
+                                Text(viewModel.tagsText)
+                                    .font((viewModel.data.tags ?? []).isEmpty ? .robotoBody : .robotoHeadline)
+                                    .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .black2 : .white)
+                                    .lineLimit(1)
+                                    .padding(6)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .clear : viewModel.accentColor)
+                                    )
+                            }
+                        }
+                        
+                        Button {
+                            viewModel.isShowModified.toggle()
+                        } label: {
+                            Text(viewModel.timeStampText)
+                                .font(.robotoCaption)
+                                .foregroundColor(.black3)
+                        }
+                        
+                        Divider()
+                        
+                        ForEach($viewModel.data.notes, id: \.id) { $note in
+                            Group {
+                                if let noteText = note as? NoteTextContent {
+                                    MultilineTextField(
+                                        "Your text here..",
+                                        text: $note.text,
+                                        font: .robotoBody,
+                                        onCommit: {
+                                            viewModel.addNoteText(after: noteText)
+                                        },
+                                        onEdit: {
+                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: noteText)
+                                            withAnimation {
+                                                viewModel.isShowBottomBar = true
+                                            }
+                                        }
+                                    )
+                                } else if let image = note as? NoteImageContent {
+                                    image.image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .cornerRadius(4)
+                                } else if var check = note as? NoteListContent {
+                                    HStack {
+                                        Button {
+                                            check.isChecked.toggle()
+                                        } label: {
+                                            Image(systemName: check.isChecked ? "checkmark.circle.fill" : "circle")
+                                                .foregroundColor(viewModel.accentColor)
+                                        }
+                                        
+                                        MultilineTextField(
+                                            "Your text here..",
+                                            text: $note.text,
+                                            font: .robotoBody,
+                                            onCommit: {
+                                                viewModel.addNextNoteList()
+                                            },
+                                            onEdit: {
+                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: check)
+                                                withAnimation {
+                                                    viewModel.isShowBottomBar = true
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                            .id(viewModel.getCurrentIndex(of: note))
                         }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .onChange(of: viewModel.currentIndex) { newValue in
+                    withAnimation {
+                        scrollView.scrollTo(newValue, anchor: .bottom)
+                    }
+                }
             }
+            
+            BottomBar()
+                .isHidden(!viewModel.isShowBottomBar, remove: !viewModel.isShowBottomBar)
         }
         .overlay(alignment: .topTrailing) {
             NoteColorPicker()
@@ -103,8 +163,16 @@ struct NoteView: View {
         )
         .navigationTitle("")
         .navigationBarBackButtonHidden()
+        .onReceive(keyboardPublisher, perform: { value in
+            if !viewModel.isEditTitle {
+                withAnimation {
+                    viewModel.isShowBottomBar = value
+                }
+            }
+        })
         .sheet(isPresented: $viewModel.isShowTagSheet) {
             TagsSheet()
+                .presentationDetents([.fraction(0.99)])
         }
     }
 }
@@ -136,7 +204,7 @@ extension NoteView {
                             .font(.robotoHeadline)
                             .foregroundColor(.black2)
                         
-                        if let tags = viewModel.data.tags, !tags.isEmpty {
+                        if let tags = viewModel.data.tags {
                             ForEach(tags, id: \.self) { tag in
                                 HStack {
                                     Text(tag)
@@ -250,6 +318,41 @@ extension NoteView {
             .offset(y: 20)
             .isHidden(!viewModel.isShowColorPicker, remove: !viewModel.isShowColorPicker)
         }
+    }
+    
+    @ViewBuilder
+    func BottomBar() -> some View {
+        HStack {
+            Button {
+                viewModel.addNoteImage()
+            } label: {
+                Image(systemName: "photo")
+            }
+            .frame(maxWidth: .infinity)
+            
+            Button {
+                viewModel.addNoteList()
+            } label: {
+                Image(systemName: "checklist")
+            }
+            .frame(maxWidth: .infinity)
+            
+            Rectangle()
+                .foregroundColor(viewModel.accentColor)
+                .frame(width: 0.5)
+            
+            Button {
+                hideKeyboard()
+            } label: {
+                Image(systemName: "keyboard.chevron.compact.down")
+            }
+            .padding(.leading, 8)
+        }
+        .foregroundColor(.black2)
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: 50)
+        .background(viewModel.secondaryColor)
+        .transition(.move(edge: .bottom).animation(.spring(response: 0.5, dampingFraction: 0.6)))
     }
 }
 

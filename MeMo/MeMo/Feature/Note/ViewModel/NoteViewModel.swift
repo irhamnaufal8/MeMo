@@ -10,11 +10,15 @@ import SwiftUI
 final class NoteViewModel: ObservableObject {
     @Published var data: NoteFile
     
+    @Published var currentIndex = 0
+    
     @Published var isShowTagSheet = false
     @Published var newTag = ""
     @Published var isShowModified = true
     
     @Published var isShowColorPicker = false
+    @Published var isShowBottomBar = false
+    @Published var isEditTitle = false
     
     @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
     var currentTheme: String {
@@ -36,6 +40,25 @@ final class NoteViewModel: ObservableObject {
             return .purple3
         case ThemeColor.red.rawValue:
             return .red3
+        default:
+            return .gray2
+        }
+    }
+    
+    var secondaryColor: Color {
+        switch data.theme {
+        case ThemeColor.blue.rawValue:
+            return .blue2
+        case ThemeColor.green.rawValue:
+            return .green2
+        case ThemeColor.orange.rawValue:
+            return .orange2
+        case ThemeColor.pink.rawValue:
+            return .pink2
+        case ThemeColor.purple.rawValue:
+            return .purple2
+        case ThemeColor.red.rawValue:
+            return .red2
         default:
             return .gray2
         }
@@ -93,7 +116,12 @@ final class NoteViewModel: ObservableObject {
     func addNewTag() {
         if !newTag.isEmpty {
             withAnimation {
-                data.tags?.append(newTag)
+                if let _ = data.tags {
+                    data.tags?.append(newTag)
+                } else {
+                    data.tags = []
+                    data.tags?.append(newTag)
+                }
                 newTag = ""
             }
         }
@@ -115,6 +143,40 @@ final class NoteViewModel: ObservableObject {
             return .red1
         default:
             return .black2
+        }
+    }
+    
+    func getCurrentIndex(of note: any Note) -> Int {
+        return data.notes.firstIndex(where: { $0.id == note.id }) ?? currentIndex
+    }
+    
+    func addNoteText(after note: NoteTextContent) {
+        let noteText = NoteTextContent(text: "")
+        withAnimation {
+            data.notes.insert(noteText, at: currentIndex + 1)
+        }
+    }
+    
+    func addNoteImage() {
+        let noteImage = NoteImageContent(text: "", image: .dummy1)
+        withAnimation {
+            data.notes[currentIndex].text = ""
+            data.notes.insert(noteImage, at: currentIndex)
+        }
+    }
+    
+    func addNoteList() {
+        let noteList = NoteListContent(text: "")
+        withAnimation {
+            data.notes[currentIndex].text = ""
+            data.notes.insert(noteList, at: currentIndex)
+        }
+    }
+    
+    func addNextNoteList() {
+        let noteList = NoteListContent(text: "")
+        withAnimation {
+            data.notes.insert(noteList, at: currentIndex+1)
         }
     }
 }
