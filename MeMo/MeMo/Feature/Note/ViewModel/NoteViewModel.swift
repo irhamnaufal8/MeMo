@@ -12,6 +12,7 @@ final class NoteViewModel: ObservableObject {
     
     @Published var isShowTagSheet = false
     @Published var newTag = ""
+    @Published var isShowModified = true
     
     var bgColor: Color {
         switch data.theme {
@@ -57,6 +58,18 @@ final class NoteViewModel: ObservableObject {
         } else {
             return "Empty"
         }
+    }
+    
+    var timeStampText: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        formatter.locale = .current
+        
+        let createdDate = formatter.string(from: data.createdAt.orCurrentDate())
+        let modifiedDate = formatter.string(from: data.createdAt.orCurrentDate())
+        
+        return isShowModified ? "Last Modified at \(modifiedDate)" : "Created at \(createdDate)"
     }
     
     init(data: NoteFile) {
