@@ -23,11 +23,14 @@ struct NoteView: View {
                 
                 HStack {
                     Image(systemName: "tag.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20)
                         .foregroundColor(viewModel.accentColor)
                     
                     Rectangle()
                         .frame(width: 1)
-                        .foregroundColor(.black2)
+                        .foregroundColor(.black3)
                     
                     Button {
                         viewModel.isShowTagSheet = true
@@ -43,7 +46,16 @@ struct NoteView: View {
                             )
                     }
                 }
-                .padding(.bottom)
+                
+                Button {
+                    viewModel.isShowModified.toggle()
+                } label: {
+                    Text(viewModel.timeStampText)
+                        .font(.robotoCaption)
+                        .foregroundColor(.black3)
+                }
+                
+                Divider()
                 
                 ForEach(viewModel.data.notes, id: \.id) { note in
                     if var text = note as? NoteTextContent {
