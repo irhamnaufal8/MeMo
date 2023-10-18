@@ -96,42 +96,10 @@ struct NoteView: View {
             }
         }
         .overlay(alignment: .topTrailing) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Select a color")
-                    .font(.robotoHeadline)
-                    .foregroundColor(.black3)
-                
-                HStack(spacing: 4) {
-                    ForEach(viewModel.themes, id: \.self) { theme in
-                        Button {
-                            withAnimation {
-                                viewModel.data.theme = theme.rawValue
-                            }
-                        } label: {
-                            Image(systemName: viewModel.data.theme == theme.rawValue ? "checkmark.circle.fill" : "circle.fill")
-                                .font(.title2)
-                                .foregroundColor(viewModel.accentColor(from: theme.rawValue))
-                        }
-                    }
-                }
-            }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.white)
-            )
-            .transition(.scale(scale: 0, anchor: .topTrailing).animation(.spring(response: 0.5, dampingFraction: 0.6)))
-            .padding()
-            .offset(y: 20)
-            .isHidden(!viewModel.isShowColorPicker, remove: !viewModel.isShowColorPicker)
+            NoteColorPicker()
         }
         .background(
             viewModel.bgColor.ignoresSafeArea()
-                .onTapGesture(perform: {
-                    withAnimation {
-                        viewModel.isShowColorPicker = false
-                    }
-                })
         )
         .navigationTitle("")
         .navigationBarBackButtonHidden()
@@ -241,6 +209,47 @@ extension NoteView {
                 .padding(4)
         }
 
+    }
+    
+    @ViewBuilder
+    func NoteColorPicker() -> some View {
+        ZStack(alignment: .topTrailing) {
+            Color.black.opacity(0.2).ignoresSafeArea()
+                .onTapGesture(perform: {
+                    withAnimation {
+                        viewModel.isShowColorPicker = false
+                    }
+                })
+                .isHidden(!viewModel.isShowColorPicker, remove: !viewModel.isShowColorPicker)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Select a color")
+                    .font(.robotoHeadline)
+                    .foregroundColor(.black3)
+                
+                HStack(spacing: 4) {
+                    ForEach(viewModel.themes, id: \.self) { theme in
+                        Button {
+                            withAnimation {
+                                viewModel.data.theme = theme.rawValue
+                            }
+                        } label: {
+                            Image(systemName: viewModel.data.theme == theme.rawValue ? "checkmark.circle.fill" : "circle.fill")
+                                .font(.title2)
+                                .foregroundColor(viewModel.accentColor(from: theme.rawValue))
+                        }
+                    }
+                }
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundColor(.white)
+            )
+            .transition(.scale(scale: 0, anchor: .topTrailing).animation(.spring(response: 0.5, dampingFraction: 0.6)))
+            .padding()
+            .offset(y: 20)
+            .isHidden(!viewModel.isShowColorPicker, remove: !viewModel.isShowColorPicker)
+        }
     }
 }
 
