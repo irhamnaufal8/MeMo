@@ -10,7 +10,8 @@ import SwiftUI
 final class NoteViewModel: ObservableObject {
     @Published var data: NoteFile
     
-    @Published var isShowEmojiPicker = false
+    @Published var isShowTagSheet = false
+    @Published var newTag = ""
     
     var bgColor: Color {
         switch data.theme {
@@ -50,7 +51,30 @@ final class NoteViewModel: ObservableObject {
         }
     }
     
+    var tagsText: String {
+        if let tags = data.tags, !tags.isEmpty {
+            return tags.joined(separator: ", ")
+        } else {
+            return "Empty"
+        }
+    }
+    
     init(data: NoteFile) {
         self.data = data
+    }
+    
+    func deleteTag(_ tag: String) {
+        withAnimation {
+            data.tags?.removeAll(where: { $0 == tag })
+        }
+    }
+    
+    func addNewTag() {
+        if !newTag.isEmpty {
+            withAnimation {
+                data.tags?.append(newTag)
+                newTag = ""
+            }
+        }
     }
 }

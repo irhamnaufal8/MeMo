@@ -10,7 +10,7 @@ import SwiftUI
 struct NoteFile: Identifiable {
     var id: UUID = .init()
     var title: String
-    var image: String
+    var tags: [String]?
     var notes: [any Note]
     var theme: String
     var createdAt: Date?
@@ -20,7 +20,6 @@ struct NoteFile: Identifiable {
 extension NoteFile {
     static let dummy: NoteFile = .init(
         title: "This is Dummy Title",
-        image: "🎮",
         notes: [
             NoteTextContent(text: "First sentence here.."),
             NoteImageContent(image: .dummy1),
@@ -34,7 +33,6 @@ extension NoteFile {
     
     static let dummy2: NoteFile = .init(
         title: "Before You Go",
-        image: "💌",
         notes: [
             NoteTextContent(text: "I fell by the west side"),
             NoteImageContent(image: .dummy1),
@@ -48,7 +46,6 @@ extension NoteFile {
     
     static let dummy3: NoteFile = .init(
         title: "Art for Life",
-        image: "🎨",
         notes: [
             NoteTextContent(text: "Welcome to my modern art class!"),
             NoteImageContent(image: .dummy1),
@@ -62,7 +59,7 @@ extension NoteFile {
     
     static let dummy4: NoteFile = .init(
         title: "Say You Won't Let Go",
-        image: "🎹",
+        tags: ["Inspiration", "Music", "Notes", "Draft", "Piano", "In Progress", "Guitar"],
         notes: [
             NoteTextContent(text: "I met you in the dark, you lit me up"),
             NoteImageContent(image: .dummy1),
@@ -77,7 +74,6 @@ extension NoteFile {
     
     static let dummy5: NoteFile = .init(
         title: "Love is an Open Door",
-        image: "❄️",
         notes: [
             NoteTextContent(text: "All my life has been a series of doors in my face"),
             NoteImageContent(image: .dummy1),
@@ -92,7 +88,6 @@ extension NoteFile {
     
     static let dummy6: NoteFile = .init(
         title: "Into the Unknown",
-        image: "🌈",
         notes: [
             NoteTextContent(text: "I can hear you, but I won't"),
             NoteImageContent(image: .dummy1),
