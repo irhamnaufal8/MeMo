@@ -115,4 +115,15 @@ final class HomeViewModel: ObservableObject {
             self.isShowSheet = false
         }
     }
+    
+    func createNewNote() -> NoteViewModel {
+        let note: NoteFile = .init(
+            title: "",
+            notes: [NoteTextContent(text: "")],
+            theme: self.currentTheme,
+            createdAt: .now,
+            modifiedAt: .now
+        )
+        return .init(data: note)
+    }
 }

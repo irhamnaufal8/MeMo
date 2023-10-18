@@ -124,6 +124,8 @@ struct MultilineTextField: View {
     @Binding private var text: String
     private var font: UIFont?
     private var onCommit: (() -> Void)?
+    private var onEdit: (() -> Void)?
+    private var onDoneEdit: (() -> Void)?
 
     private var internalText: Binding<String> {
         Binding<String>(get: { self.text }) { self.text = $0 }
@@ -136,12 +138,16 @@ struct MultilineTextField: View {
         _ placeholder: String = "Your text here..",
         text: Binding<String>,
         font: UIFont? = .robotoBody,
-        onCommit: (() -> Void)? = nil
+        onCommit: (() -> Void)? = nil,
+        onEdit: (() -> Void)? = nil,
+        onDoneEdit: (() -> Void)? = nil
     ) {
         self.placeholder = placeholder
         self.onCommit = onCommit
         self._text = text
         self.font = font
+        self.onEdit = onEdit
+        self.onDoneEdit = onDoneEdit
     }
     
     var body: some View {
@@ -160,9 +166,11 @@ struct MultilineTextField: View {
                 font: self.font,
                 onDone: onCommit,
                 onStartEditing: {
+                    (onEdit ?? {})()
                     isShowingPlaceholder = false
                 },
                 onEndEditing: {
+                    (onDoneEdit ?? {})()
                     isShowingPlaceholder = internalText.wrappedValue.isEmpty
                 }
             )

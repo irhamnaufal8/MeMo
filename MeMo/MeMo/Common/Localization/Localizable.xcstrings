@@ -20,6 +20,12 @@
     "Ascending" : {
 
     },
+    "Change Theme Color" : {
+
+    },
+    "Create new tag" : {
+
+    },
     "Date Created" : {
 
     },
@@ -30,6 +36,9 @@
 
     },
     "Delete Folder" : {
+
+    },
+    "Delete Note" : {
 
     },
     "Descending" : {
@@ -44,10 +53,10 @@
     "Edited %@" : {
 
     },
-    "Folder" : {
+    "Empty" : {
 
     },
-    "Folder is still empty.." : {
+    "Folder" : {
 
     },
     "Hello, world" : {
@@ -66,15 +75,6 @@
         }
       }
     },
-    "Hmm.." : {
-
-    },
-    "It looks like the note you are looking for doesn't exist" : {
-
-    },
-    "Let's make a note for today!!" : {
-
-    },
     "MeMo" : {
 
     },
@@ -88,6 +88,9 @@
 
     },
     "See all" : {
+
+    },
+    "Select a color" : {
 
     },
     "Select All" : {
@@ -108,10 +111,16 @@
     "Sort By" : {
 
     },
+    "Tags" : {
+
+    },
     "Theme Color" : {
 
     },
     "Title" : {
+
+    },
+    "Unselect All" : {
 
     },
     "With Value" : {
@@ -130,6 +139,9 @@
           }
         }
       }
+    },
+    "Your Tags" : {
+
     }
   },
   "version" : "1.0"

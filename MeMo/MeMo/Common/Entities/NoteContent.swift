@@ -16,6 +16,7 @@ enum NoteContentType {
 protocol Note: Identifiable {
     var id: UUID { get set }
     var type: NoteContentType { get }
+    var text: String { get set }
 }
 
 struct NoteTextContent: Note {
@@ -27,17 +28,13 @@ struct NoteTextContent: Note {
 struct NoteImageContent: Note {
     var id: UUID = .init()
     let type: NoteContentType = .image
+    var text: String
     var image: Image
 }
 
 struct NoteListContent: Note {
     var id: UUID = .init()
     let type: NoteContentType = .list
-    var list: [NoteList]
-}
-
-struct NoteList: Identifiable {
-    var id: UUID = .init()
-    var isChecked: Bool = false
     var text: String
+    var isChecked: Bool = false
 }
