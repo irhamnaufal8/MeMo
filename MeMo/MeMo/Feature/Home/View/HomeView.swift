@@ -30,7 +30,26 @@ struct HomeView: View {
                     }
                 }
                 
-                SearchTextField(text: $viewModel.searchText, bgColor: viewModel.secondaryColor(from: viewModel.currentTheme))
+                Button {
+                    navigator.navigateTo(.folder(navigator, viewModel.navigateToMainFolder(state: .search)))
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.headline)
+                            .foregroundColor(.black2)
+                            
+                        Text("Search your notes..")
+                            .font(.robotoBody)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.black1.opacity(0.5))
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundColor(viewModel.secondaryColor(from: viewModel.currentTheme))
+                    )
+                }
+                .buttonStyle(.plain)
             }
             .padding()
             .background(
@@ -49,7 +68,7 @@ struct HomeView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Button {
-                                
+                                navigator.navigateTo(.folder(navigator, viewModel.navigateToMainFolder(state: .initiate)))
                             } label: {
                                 Text("See all")
                                     .foregroundColor(.black2)
@@ -98,7 +117,7 @@ struct HomeView: View {
                                 title: folder.title,
                                 color: viewModel.bgColor(from: folder.theme.orEmpty())
                             ) {
-                                navigator.navigateTo(.folder(navigator, .init(data: folder)))
+                                navigator.navigateTo(.folder(navigator, .init(data: folder, isMainFolder: false)))
                             }
                         }
                     }

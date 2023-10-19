@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct FolderView: View {
+struct FolderView: View, KeyboardReadable {
     
     @ObservedObject var viewModel: FolderViewModel
     @ObservedObject var navigator: AppNavigator
+    
+    @FocusState var focused
     
     var body: some View {
         VStack(spacing: 0) {
@@ -23,7 +25,7 @@ struct FolderView: View {
                             .font(.headline)
                             .foregroundColor(.black1)
                     }
-                    .isHidden(viewModel.isSelecting, remove: viewModel.isSelecting)
+                    .isHidden(viewModel.searchState == .select, remove: true)
                     
                     Text("\(viewModel.data.icon) \(viewModel.data.title)")
                         .font(.robotoTitle2)
@@ -31,10 +33,10 @@ struct FolderView: View {
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    if viewModel.isSelecting {
+                    if viewModel.searchState == .select {
                         Button {
                             withAnimation {
-                                viewModel.isSelecting = false
+                                viewModel.searchState = .initiate
                                 viewModel.notesForDelete = []
                             }
                         } label: {
@@ -54,6 +56,7 @@ struct FolderView: View {
                 }
                 
                 SearchTextField(text: $viewModel.searchText)
+                    .focused($focused)
             }
             .padding()
             .background(
@@ -94,23 +97,29 @@ struct FolderView: View {
                 }
                 .scaledButtonStyle()
                 .transition(.move(edge: .trailing).animation(.spring(response: 0.5, dampingFraction: 0.6)))
-                .isHidden(viewModel.isSelecting, remove: viewModel.isSelecting)
+                .isHidden(viewModel.searchState == .select, remove: true)
                 
             })
             .background(Color.gray2.opacity(0.2))
             
             FooterView()
-                .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
+                .isHidden(viewModel.searchState != .select, remove: true)
         }
         .onAppear {
             viewModel.editFolderWhenFirstCreated()
+            focused = viewModel.searchState == .search
+        }
+        .onDisappear {
+            viewModel.searchState = .initiate
         }
         .overlay {
             EditFolderView()
         }
         .sheet(isPresented: $viewModel.isShowEmojiPicker, content: {
-            EmojiPicker(value: $viewModel.data.icon)
-                .presentationDetents([.height(280)])
+            EmojiPicker(value: $viewModel.data.icon) {
+                viewModel.isShowEmojiPicker = false
+            }
+            .presentationDetents([.height(280)])
         })
         .tint(viewModel.accentColor)
         .navigationTitle("")
@@ -124,15 +133,16 @@ extension FolderView {
         Menu {
             Button {
                 withAnimation {
-                    viewModel.isEditing = true
+                    viewModel.searchState = .edit
                 }
             } label: {
                 Label("Edit", systemImage: "slider.horizontal.3")
             }
+            .isHidden(viewModel.isMainFolder, remove: true)
             
             Button {
                 withAnimation {
-                    viewModel.isSelecting = true
+                    viewModel.searchState = .select
                 }
             } label: {
                 Label("Select Notes", systemImage: "checkmark.circle")
@@ -167,6 +177,7 @@ extension FolderView {
             } label: {
                 Label("Delete Folder", systemImage: "delete.left")
             }
+            .isHidden(viewModel.isMainFolder, remove: true)
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 20, weight: .bold))
@@ -211,7 +222,7 @@ extension FolderView {
                 HStack(spacing: 12) {
                     Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
                         .foregroundColor(viewModel.accentColor)
-                        .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
+                        .isHidden(viewModel.searchState != .select, remove: true)
                     
                     RecentNoteCard(
                         title: note.title,
@@ -220,12 +231,12 @@ extension FolderView {
                         color: viewModel.bgColor(from: note.theme)) {
                             navigator.navigateTo(.note(navigator, .init(data: note)))
                         }
-                        .disabled(viewModel.isSelecting)
+                        .disabled(viewModel.searchState == .select)
                 }
                 .onTapGesture {
                     viewModel.toggleSelection(note)
                 }
-                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.isSelecting)
+                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchState)
             }
         }
         .padding()
@@ -250,7 +261,7 @@ extension FolderView {
     func EditFolderView() -> some View {
         ZStack {
             Color.black.opacity(0.2).ignoresSafeArea()
-                .isHidden(!viewModel.isEditing, remove: true)
+                .isHidden(viewModel.searchState != .edit, remove: true)
             
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -292,7 +303,7 @@ extension FolderView {
                 
                 Button {
                     withAnimation {
-                        viewModel.isEditing = false
+                        viewModel.searchState = .initiate
                     }
                 } label: {
                     Text("Done")
@@ -312,6 +323,7 @@ extension FolderView {
             .frame(maxWidth: 512)
             .background(Color.white)
             .cornerRadius(16)
+            .offset(y: 20)
             .overlay(alignment: .top) {
                 Button {
                     viewModel.isShowEmojiPicker = true
@@ -329,15 +341,15 @@ extension FolderView {
                         .clipShape(.circle)
                 }
                 .scaledButtonStyle()
-                .offset(y: -40)
+                .offset(y: -20)
             }
             .padding()
             .transition(.scale.animation(.spring(response: 0.5, dampingFraction: 0.6)))
-            .isHidden(!viewModel.isEditing, remove: true)
+            .isHidden(viewModel.searchState != .edit, remove: true)
         }
     }
 }
 
 #Preview {
-    FolderView(viewModel: .init(data: .dummy), navigator: .init())
+    FolderView(viewModel: .init(data: .dummy, isMainFolder: true), navigator: .init())
 }

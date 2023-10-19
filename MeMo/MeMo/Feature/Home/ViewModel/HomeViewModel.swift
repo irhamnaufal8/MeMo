@@ -137,6 +137,19 @@ final class HomeViewModel: ObservableObject {
             modifiedAt: .now
         )
         
-        return .init(data: folder)
+        return .init(data: folder, isMainFolder: false)
+    }
+    
+    func navigateToMainFolder(state: SearchState) -> FolderViewModel {
+        let folder: Folder = .init(
+            title: "All Your Notes",
+            icon: "",
+            theme: currentTheme,
+            notes: [.dummy, .dummy2, .dummy3, .dummy4, .dummy5, .dummy6],
+            createdAt: .now,
+            modifiedAt: .now
+        )
+        
+        return .init(data: folder, isMainFolder: true, state: state)
     }
 }
