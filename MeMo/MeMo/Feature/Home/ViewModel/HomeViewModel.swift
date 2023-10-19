@@ -126,4 +126,17 @@ final class HomeViewModel: ObservableObject {
         )
         return .init(data: note)
     }
+    
+    func createNewFolder() -> FolderViewModel {
+        let folder: Folder = .init(
+            title: "",
+            icon: "🎁",
+            theme: currentTheme,
+            notes: [],
+            createdAt: .now,
+            modifiedAt: .now
+        )
+        
+        return .init(data: folder)
+    }
 }

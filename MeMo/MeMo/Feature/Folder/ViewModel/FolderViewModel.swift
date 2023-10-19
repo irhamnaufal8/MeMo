@@ -37,6 +37,10 @@ final class FolderViewModel: ObservableObject {
     
     @Published var notesForDelete: [NoteFile] = []
     
+    @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
+    
+    @Published var isShowEmojiPicker = false
+    
     var searchedNotes: [NoteFile] {
         guard !searchText.isEmpty else {
             return data.notes.sorted(by: {
@@ -113,6 +117,25 @@ final class FolderViewModel: ObservableObject {
         }
     }
     
+    var secondaryColor: Color {
+        switch data.theme {
+        case ThemeColor.blue.rawValue:
+            return .blue2
+        case ThemeColor.green.rawValue:
+            return .green2
+        case ThemeColor.orange.rawValue:
+            return .orange2
+        case ThemeColor.pink.rawValue:
+            return .pink2
+        case ThemeColor.purple.rawValue:
+            return .purple2
+        case ThemeColor.red.rawValue:
+            return .red2
+        default:
+            return .black2
+        }
+    }
+    
     init(data: Folder) {
         self.data = data
     }
@@ -128,6 +151,25 @@ final class FolderViewModel: ObservableObject {
         }).joined(separator: " ")
         
         return description
+    }
+    
+    func accentColor(from color: String) -> Color {
+        switch color {
+        case ThemeColor.blue.rawValue:
+            return .blue1
+        case ThemeColor.green.rawValue:
+            return .green1
+        case ThemeColor.orange.rawValue:
+            return .orange1
+        case ThemeColor.pink.rawValue:
+            return .pink1
+        case ThemeColor.purple.rawValue:
+            return .purple1
+        case ThemeColor.red.rawValue:
+            return .red1
+        default:
+            return .black2
+        }
     }
     
     func bgColor(from color: String) -> Color {
@@ -183,5 +225,28 @@ final class FolderViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func createNewNote() -> NoteViewModel {
+        let note: NoteFile = .init(
+            title: "",
+            notes: [NoteTextContent(text: "")],
+            theme: data.theme ?? "PURPLE",
+            createdAt: .now,
+            modifiedAt: .now
+        )
+        return .init(data: note)
+    }
+    
+    func editFolderWhenFirstCreated() {
+        if data.title.isEmpty {
+            withAnimation {
+                isEditing = true
+            }
+        }
+    }
+    
+    func disableDoneButton() -> Bool {
+        data.title.isEmpty || data.title.isWhitespace || data.icon.isEmpty || data.icon.isWhitespace
     }
 }
