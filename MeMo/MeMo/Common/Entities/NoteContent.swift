@@ -18,12 +18,14 @@ protocol Note: Identifiable {
     var id: UUID { get set }
     var type: NoteContentType { get }
     var text: String { get set }
+    var isChecked: Bool { get set }
 }
 
 struct NoteTextContent: Note {
     var id: UUID = .init()
     let type: NoteContentType = .text
     var text: String
+    var isChecked: Bool = false
 }
 
 struct NoteImageContent: Note {
@@ -31,6 +33,7 @@ struct NoteImageContent: Note {
     let type: NoteContentType = .image
     var text: String
     var image: Image
+    var isChecked: Bool = false
 }
 
 struct NoteListContent: Note {
@@ -44,4 +47,5 @@ struct NoteBulletListContent: Note {
     var id: UUID = .init()
     let type: NoteContentType = .bulletList
     var text: String
+    var isChecked: Bool = false
 }
