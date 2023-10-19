@@ -179,4 +179,34 @@ final class NoteViewModel: ObservableObject {
             data.notes.insert(noteList, at: currentIndex+1)
         }
     }
+    
+    func addNextBulletList() {
+        let bulletList = NoteBulletListContent(text: "")
+        withAnimation {
+            data.notes.insert(bulletList, at: currentIndex+1)
+        }
+    }
+    
+    func deleteCurrentLine(if isEmpty: Bool) {
+        if isEmpty {
+            data.notes.remove(at: currentIndex)
+        }
+    }
+    
+    func deleteNoteImage(_ image: NoteImageContent) {
+        currentIndex = getCurrentIndex(of: image)
+        turnIntoText(if: true)
+    }
+    
+    func turnIntoText(if isEmpty: Bool) {
+        if isEmpty {
+            data.notes[currentIndex] = NoteTextContent(text: "")
+        }
+    }
+    
+    func turnIntoBulletList() {
+        if data.notes[currentIndex].text.hasPrefix("- ") {
+            data.notes[currentIndex] = NoteBulletListContent(text: String(data.notes[currentIndex].text.dropFirst(2)))
+        }
+    }
 }
