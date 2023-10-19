@@ -10,7 +10,7 @@ import Foundation
 struct Folder: Identifiable {
     var id: UUID = .init()
     var title: String
-    var icon: String?
+    var icon: String
     var theme: String?
     var notes: [NoteFile]
     var createdAt: Date

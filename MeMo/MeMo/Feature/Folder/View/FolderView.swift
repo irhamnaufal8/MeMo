@@ -25,7 +25,7 @@ struct FolderView: View {
                     }
                     .isHidden(viewModel.isSelecting, remove: viewModel.isSelecting)
                     
-                    Text("\(viewModel.data.icon.orEmpty()) \(viewModel.data.title)")
+                    Text("\(viewModel.data.icon) \(viewModel.data.title)")
                         .font(.robotoTitle2)
                         .foregroundColor(.black1)
                         .lineLimit(1)
@@ -84,7 +84,7 @@ struct FolderView: View {
             .frame(maxWidth: .infinity)
             .overlay(alignment: .bottomTrailing, content: {
                 Button {
-                    
+                    navigator.navigateTo(.note(navigator, viewModel.createNewNote()))
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 48))
@@ -102,6 +102,17 @@ struct FolderView: View {
             FooterView()
                 .isHidden(!viewModel.isSelecting, remove: !viewModel.isSelecting)
         }
+        .onAppear {
+            viewModel.editFolderWhenFirstCreated()
+        }
+        .overlay {
+            EditFolderView()
+        }
+        .sheet(isPresented: $viewModel.isShowEmojiPicker, content: {
+            EmojiPicker(value: $viewModel.data.icon)
+                .presentationDetents([.height(280)])
+        })
+        .tint(viewModel.accentColor)
         .navigationTitle("")
         .navigationBarBackButtonHidden()
     }
@@ -233,6 +244,97 @@ extension FolderView {
         }
         .multilineTextAlignment(.center)
         .padding(32)
+    }
+    
+    @ViewBuilder
+    func EditFolderView() -> some View {
+        ZStack {
+            Color.black.opacity(0.2).ignoresSafeArea()
+                .isHidden(!viewModel.isEditing, remove: true)
+            
+            VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Folder Title")
+                        .font(.robotoHeadline)
+                        .foregroundColor(.black2)
+                    
+                    TextField("Programming Stuffs", text: $viewModel.data.title)
+                        .font(.robotoBody)
+                        .foregroundColor(.black1)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .foregroundColor(viewModel.secondaryColor)
+                        )
+                }
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Folder Color")
+                        .font(.robotoHeadline)
+                        .foregroundColor(.black2)
+                    
+                    HStack(spacing: 8) {
+                        ForEach(viewModel.themes, id: \.self) { theme in
+                            Button {
+                                withAnimation {
+                                    viewModel.data.theme = theme.rawValue
+                                }
+                            } label: {
+                                Image(systemName: viewModel.data.theme == theme.rawValue ? "checkmark.circle.fill" : "circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: 40, maxHeight: 40)
+                                    .foregroundColor(viewModel.accentColor(from: theme.rawValue))
+                            }
+                        }
+                    }
+                }
+                
+                Button {
+                    withAnimation {
+                        viewModel.isEditing = false
+                    }
+                } label: {
+                    Text("Done")
+                        .foregroundColor(.white)
+                        .font(.robotoHeadline)
+                        .padding(14)
+                        .frame(maxWidth: .infinity)
+                        .background(viewModel.disableDoneButton() ? Color.gray1 : viewModel.accentColor)
+                        .cornerRadius(8)
+                }
+                .scaledButtonStyle()
+                .disabled(viewModel.disableDoneButton())
+            }
+            .padding()
+            .padding(.vertical)
+            .padding(.top)
+            .frame(maxWidth: 512)
+            .background(Color.white)
+            .cornerRadius(16)
+            .overlay(alignment: .top) {
+                Button {
+                    viewModel.isShowEmojiPicker = true
+                } label: {
+                    Text(viewModel.data.icon)
+                        .font(.robotoRegular(size: 42))
+                        .padding()
+                        .frame(maxWidth: 80, maxHeight: 80)
+                        .background(
+                            Circle()
+                                .strokeBorder(lineWidth: 4)
+                                .foregroundColor(viewModel.accentColor)
+                        )
+                        .background(Color.white)
+                        .clipShape(.circle)
+                }
+                .scaledButtonStyle()
+                .offset(y: -40)
+            }
+            .padding()
+            .transition(.scale.animation(.spring(response: 0.5, dampingFraction: 0.6)))
+            .isHidden(!viewModel.isEditing, remove: true)
+        }
     }
 }
 

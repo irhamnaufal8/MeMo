@@ -83,7 +83,7 @@ struct HomeView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Button {
-                                
+                                navigator.navigateTo(.folder(navigator, viewModel.createNewFolder()))
                             } label: {
                                 Image(systemName: "plus.app")
                                     .foregroundColor(.black2)
@@ -93,7 +93,7 @@ struct HomeView: View {
                         
                         ForEach(viewModel.folders, id: \.id) { folder in
                             FolderCard(
-                                image: folder.icon.orEmpty(),
+                                image: folder.icon,
                                 notes: viewModel.countNotes(from: folder),
                                 title: folder.title,
                                 color: viewModel.bgColor(from: folder.theme.orEmpty())
@@ -118,8 +118,9 @@ struct HomeView: View {
                 }
                 .scaledButtonStyle()
             })
-            .background(Color.gray2.opacity(0.2))
+            .background(viewModel.secondaryColor(from: viewModel.currentTheme).opacity(0.1))
         }
+        .tint(viewModel.accentColor(from: viewModel.currentTheme))
         .navigationTitle("")
         .navigationBarBackButtonHidden()
         .sheet(isPresented: $viewModel.isShowSheet) {

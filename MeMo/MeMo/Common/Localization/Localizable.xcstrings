@@ -65,6 +65,12 @@
     "Folder" : {
 
     },
+    "Folder Color" : {
+
+    },
+    "Folder Title" : {
+
+    },
     "Hello, world" : {
       "localizations" : {
         "en" : {
@@ -88,6 +94,9 @@
 
     },
     "Oldest First" : {
+
+    },
+    "Programming Stuffs" : {
 
     },
     "Recent" : {

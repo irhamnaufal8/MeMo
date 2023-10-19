@@ -23,6 +23,7 @@ extension KeyboardReadable {
                 .publisher(for: UIResponder.keyboardWillHideNotification)
                 .map { _ in false }
         )
+        .debounce(for: .seconds(0.2), scheduler: RunLoop.main)
         .eraseToAnyPublisher()
     }
     
