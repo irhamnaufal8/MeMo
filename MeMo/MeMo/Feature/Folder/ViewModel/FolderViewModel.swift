@@ -24,16 +24,23 @@ enum DataState {
     case notFound
 }
 
+enum SearchState {
+    case initiate
+    case search
+    case select
+    case edit
+}
+
 final class FolderViewModel: ObservableObject {
     
     @Published var searchText = ""
     @Published var data: Folder
+    @Published var isMainFolder: Bool
     
     @Published var sortBy: SortBy = .edited
     @Published var orderBy: OrderBy = .ascending
     
-    @Published var isSelecting = false
-    @Published var isEditing = false
+    @Published var searchState: SearchState = .initiate
     
     @Published var notesForDelete: [NoteFile] = []
     
@@ -136,8 +143,10 @@ final class FolderViewModel: ObservableObject {
         }
     }
     
-    init(data: Folder) {
+    init(data: Folder, isMainFolder: Bool, state: SearchState = .initiate) {
         self.data = data
+        self.isMainFolder = isMainFolder
+        self.searchState = state
     }
     
     func description(from notes: [any Note]) -> String {
@@ -210,7 +219,7 @@ final class FolderViewModel: ObservableObject {
     }
     
     func toggleSelection(_ note: NoteFile) {
-        if isSelecting {
+        if searchState == .select {
             isForDelete(note) ?
             notesForDelete.removeAll(where: { $0.id == note.id }) :
             notesForDelete.append(note)
@@ -224,6 +233,8 @@ final class FolderViewModel: ObservableObject {
                     return notesForDelete.contains { $0.id == item.id }
                 }
             }
+            
+            notesForDelete = []
         }
     }
     
@@ -241,7 +252,7 @@ final class FolderViewModel: ObservableObject {
     func editFolderWhenFirstCreated() {
         if data.title.isEmpty {
             withAnimation {
-                isEditing = true
+                searchState = .edit
             }
         }
     }

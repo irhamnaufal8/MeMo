@@ -10,6 +10,7 @@ import SwiftUI
 struct EmojiPicker: View {
     
     @Binding var value: String
+    let close: () -> Void
     
     private let emojis: [String] = [
         "💌", "📚", "💡", "💅🏻", "🎓", "💼", "💍", "🕶️", "🍀", "🌸", "⭐️", "🌙", "🔥", "🌈", "❄️", "🍓", "🍽️", "⚽️", "🏆", "🎨", "🎬", "🎹", "🎮", "🎁",
@@ -24,10 +25,21 @@ struct EmojiPicker: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12, content: {
-            Text("Select your emoji")
-                .font(.robotoHeadline)
-                .foregroundColor(.black2)
-                .padding([.horizontal, .top])
+            HStack {
+                Text("Select your emoji")
+                    .font(.robotoHeadline)
+                    .foregroundColor(.black2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button {
+                    close()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.gray1)
+                }
+            }
+            .padding([.horizontal, .top])
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 12, content: {
@@ -47,7 +59,7 @@ struct EmojiPicker: View {
 }
 
 fileprivate struct EmojiPickerPreview: View {
-    @State var show = false
+    @State var show = true
     @State var text = ""
     var body: some View {
         VStack {
@@ -57,8 +69,10 @@ fileprivate struct EmojiPickerPreview: View {
                 show = true
             }
             .popover(isPresented: $show, content: {
-                EmojiPicker(value: $text)
-                    .presentationDetents([.height(280)])
+                EmojiPicker(value: $text) {
+                    show = false
+                }
+                .presentationDetents([.height(280)])
             })
         }
     }
