@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct NoteView: View, KeyboardReadable {
     
@@ -246,6 +247,16 @@ struct NoteView: View, KeyboardReadable {
             TagsSheet()
                 .presentationDetents([.fraction(0.99)])
         }
+        .photosPicker(
+            isPresented: $viewModel.isShowPhotoPicker,
+            selection: $viewModel.selectedImage,
+            matching: .images
+        )
+        .onChange(of: viewModel.selectedImage) { photo in
+            Task {
+                await viewModel.addNoteImage(with: photo)
+            }
+        }
     }
 }
 
@@ -397,7 +408,10 @@ extension NoteView {
     func BottomBar() -> some View {
         HStack {
             Button {
-                viewModel.addNoteImage()
+                hideKeyboard()
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+                    self.viewModel.isShowPhotoPicker = true
+                }
             } label: {
                 Image(systemName: "photo")
             }
