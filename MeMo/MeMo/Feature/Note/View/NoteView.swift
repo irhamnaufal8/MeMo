@@ -130,9 +130,10 @@ struct NoteView: View, KeyboardReadable {
                                     .overlay(alignment: .topTrailing) {
                                         Menu {
                                             Button {
-                                                
+                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: image)
+                                                viewModel.isShowPhotoPicker = true
                                             } label: {
-                                                Text("Change Photo")
+                                                Label("Change Photo", systemImage: "photo")
                                             }
                                             
                                             Button(role: .destructive) {
@@ -143,19 +144,22 @@ struct NoteView: View, KeyboardReadable {
                                             }
                                         } label: {
                                             Image(systemName: "ellipsis.circle.fill")
-                                                .foregroundColor(.white)
+                                                .font(.title2)
+                                                .foregroundColor(.gray2)
                                                 .shadow(color: .black.opacity(0.5), radius: 10)
                                         }
                                         .padding(6)
                                     }
-                            } else if var check = note as? NoteListContent {
-                                HStack {
+                            } else if let _ = note as? NoteListContent {
+                                HStack(alignment: .top) {
                                     Button {
-                                        check.isChecked.toggle()
+                                        note.isChecked.toggle()
                                     } label: {
-                                        Image(systemName: check.isChecked ? "checkmark.circle.fill" : "circle")
+                                        Image(systemName: note.isChecked ? "checkmark.circle.fill" : "circle")
                                             .foregroundColor(viewModel.accentColor)
+                                            .font(.title3)
                                     }
+                                    .offset(y: -1)
                                     
                                     MultilineTextField(
                                         "Your text here..",
@@ -166,7 +170,7 @@ struct NoteView: View, KeyboardReadable {
                                             focusField(to: .next)
                                         },
                                         onEdit: {
-                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: check)
+                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: note)
                                             withAnimation {
                                                 viewModel.isShowBottomBar = true
                                             }
@@ -178,7 +182,10 @@ struct NoteView: View, KeyboardReadable {
                                             }
                                         }
                                     )
+                                    .opacity(note.isChecked ? 0.5 : 1)
                                 }
+                                .padding(.top, viewModel.prevIsNotCheckList(note) ? 12 : 0)
+                                .padding(.bottom, viewModel.nextIsNotCheckList(note) ? 12 : 0)
                             } else if let bullet = note as? NoteBulletListContent {
                                 HStack(alignment: .top) {
                                     Circle()
@@ -419,6 +426,7 @@ extension NoteView {
             
             Button {
                 viewModel.addNoteList()
+                focusField(to: .current)
             } label: {
                 Image(systemName: "checklist")
             }

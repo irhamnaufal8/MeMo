@@ -186,10 +186,9 @@ final class NoteViewModel: ObservableObject {
     }
     
     func addNoteList() {
-        let noteList = NoteListContent(text: "")
+        let noteList = NoteListContent(text: data.notes[currentIndex].text)
         withAnimation {
-            data.notes[currentIndex].text = ""
-            data.notes.insert(noteList, at: currentIndex)
+            data.notes[currentIndex] = noteList
         }
     }
     
@@ -234,5 +233,17 @@ final class NoteViewModel: ObservableObject {
         if data.notes[currentIndex].text.hasPrefix("- ") {
             data.notes[currentIndex] = NoteBulletListContent(text: String(data.notes[currentIndex].text.dropFirst(2)))
         }
+    }
+    
+    func prevIsNotCheckList(_ note: any Note) -> Bool {
+        let current = getCurrentIndex(of: note)
+        guard current < data.notes.count - 1 else { return false }
+        return !(data.notes[current - 1] is NoteListContent)
+    }
+    
+    func nextIsNotCheckList(_ note: any Note) -> Bool {
+        let current = getCurrentIndex(of: note)
+        guard current < data.notes.count - 1 else { return false }
+        return !(data.notes[current + 1] is NoteListContent)
     }
 }
