@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 final class NoteViewModel: ObservableObject {
     @Published var data: NoteFile
@@ -19,6 +20,9 @@ final class NoteViewModel: ObservableObject {
     @Published var isShowColorPicker = false
     @Published var isShowBottomBar = false
     @Published var isEditTitle = false
+    
+    @Published var isShowPhotoPicker = false
+    @Published var selectedImage: PhotosPickerItem? = nil
     
     @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
     var currentTheme: String {
@@ -165,10 +169,19 @@ final class NoteViewModel: ObservableObject {
         }
     }
     
-    func addNoteImage() {
-        let noteImage = NoteImageContent(text: "", image: .dummy1)
-        withAnimation {
-            data.notes[currentIndex] = noteImage
+    func addNoteImage(with photo: PhotosPickerItem?) async {
+        if let data = try? await photo?.loadTransferable(type: Data.self) {
+            if let uiImage = UIImage(data: data) {
+                let noteImage = NoteImageContent(text: "", image: Image(uiImage: uiImage))
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    withAnimation {
+                        self.data.notes[self.currentIndex] = noteImage
+                    }
+                    self.selectedImage = nil
+                }
+                return
+            }
         }
     }
     
