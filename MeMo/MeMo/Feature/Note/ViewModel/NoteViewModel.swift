@@ -150,18 +150,25 @@ final class NoteViewModel: ObservableObject {
         return data.notes.firstIndex(where: { $0.id == note.id }) ?? currentIndex
     }
     
-    func addNoteText(after note: NoteTextContent) {
+    func addNoteText(after note: any Note) {
         let noteText = NoteTextContent(text: "")
         withAnimation {
             data.notes.insert(noteText, at: currentIndex + 1)
         }
     }
     
+    func addNoteTextOnLast() {
+        guard data.notes.last is NoteImageContent else { return }
+        let noteText = NoteTextContent(text: "")
+        withAnimation {
+            data.notes.append(noteText)
+        }
+    }
+    
     func addNoteImage() {
         let noteImage = NoteImageContent(text: "", image: .dummy1)
         withAnimation {
-            data.notes[currentIndex].text = ""
-            data.notes.insert(noteImage, at: currentIndex)
+            data.notes[currentIndex] = noteImage
         }
     }
     
@@ -180,14 +187,20 @@ final class NoteViewModel: ObservableObject {
         }
     }
     
-    func addNextBulletList() {
+    func addNextBulletList(after note: NoteBulletListContent) {
         let bulletList = NoteBulletListContent(text: "")
         withAnimation {
-            data.notes.insert(bulletList, at: currentIndex+1)
+            if data.notes[currentIndex].text.isEmpty {
+                turnIntoText(if: true)
+                addNoteText(after: note)
+            } else {
+                data.notes.insert(bulletList, at: currentIndex+1)
+            }
         }
     }
     
     func deleteCurrentLine(if isEmpty: Bool) {
+        guard currentIndex > 0 else { return }
         if isEmpty {
             data.notes.remove(at: currentIndex)
         }
