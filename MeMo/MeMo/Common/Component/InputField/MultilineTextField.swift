@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 private struct UITextViewWrapper: UIViewRepresentable {
-    typealias UIViewType = UITextView
+    typealias UIViewType = CustomTextView
     
     @Binding var text: String
     @Binding var calculatedHeight: CGFloat
@@ -17,31 +17,35 @@ private struct UITextViewWrapper: UIViewRepresentable {
     var onDone: (() -> Void)?
     var onStartEditing: (() -> Void)?
     var onEndEditing: (() -> Void)?
+    var onBackspace: ((Bool) -> Void)?
     
-    func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> UITextView {
-        let textField = UITextView()
+    func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> CustomTextView {
+        let textField = CustomTextView()
         textField.delegate = context.coordinator
         
         textField.isEditable = true
         textField.font = self.font
         textField.isSelectable = true
         textField.isUserInteractionEnabled = true
-        textField.isScrollEnabled = true
+        textField.isScrollEnabled = false
         textField.backgroundColor = UIColor.clear
         if onDone != nil {
             textField.returnKeyType = .done
         }
-        
+        textField.textContainer.lineFragmentPadding = 0
+        textField.textContainerInset.top = 0
+        textField.textContainerInset.bottom = 0
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return textField
     }
     
-    func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<UITextViewWrapper>) {
+    func updateUIView(_ uiView: CustomTextView, context: UIViewRepresentableContext<UITextViewWrapper>) {
         if uiView.text != self.text {
             uiView.text = self.text
         }
         
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
+        uiView.onBackspace = self.onBackspace
     }
     
     fileprivate static func recalculateHeight(view: UIView, result: Binding<CGFloat>) {
@@ -116,6 +120,24 @@ private struct UITextViewWrapper: UIViewRepresentable {
             onEndEditing()
         }
     }
+    
+    final class CustomTextView: UITextView {
+        var onBackspace: ((Bool) -> Void)?
+        
+        override init(frame: CGRect, textContainer: NSTextContainer?) {
+            self.onBackspace = nil
+            super.init(frame: frame, textContainer: textContainer)
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func deleteBackward() {
+            onBackspace?(text?.isEmpty == true)
+            super.deleteBackward()
+        }
+    }
 }
 
 struct MultilineTextField: View {
@@ -126,6 +148,7 @@ struct MultilineTextField: View {
     private var onCommit: (() -> Void)?
     private var onEdit: (() -> Void)?
     private var onDoneEdit: (() -> Void)?
+    var onBackspace: ((Bool) -> Void)?
 
     private var internalText: Binding<String> {
         Binding<String>(get: { self.text }) { self.text = $0 }
@@ -140,7 +163,8 @@ struct MultilineTextField: View {
         font: UIFont? = .robotoBody,
         onCommit: (() -> Void)? = nil,
         onEdit: (() -> Void)? = nil,
-        onDoneEdit: (() -> Void)? = nil
+        onDoneEdit: (() -> Void)? = nil,
+        onBackspace: ((Bool) -> Void)? = nil
     ) {
         self.placeholder = placeholder
         self.onCommit = onCommit
@@ -148,6 +172,7 @@ struct MultilineTextField: View {
         self.font = font
         self.onEdit = onEdit
         self.onDoneEdit = onDoneEdit
+        self.onBackspace = onBackspace
     }
     
     var body: some View {
@@ -156,8 +181,7 @@ struct MultilineTextField: View {
                 Text(placeholder)
                     .font(placeholderFont(from: self.font))
                     .foregroundColor(.black3)
-                    .padding(5)
-                    .padding(.top, 2)
+                    .padding(.top, 0.05)
             }
             
             UITextViewWrapper(
@@ -166,16 +190,16 @@ struct MultilineTextField: View {
                 font: self.font,
                 onDone: onCommit,
                 onStartEditing: {
-                    (onEdit ?? {})()
+                    onEdit?()
                     isShowingPlaceholder = false
                 },
                 onEndEditing: {
-                    (onDoneEdit ?? {})()
+                    onDoneEdit?()
                     isShowingPlaceholder = internalText.wrappedValue.isEmpty
-                }
+                },
+                onBackspace: onBackspace
             )
             .frame(minHeight: abs(dynamicHeight) >= 200 ? abs(200) : abs(dynamicHeight), maxHeight: abs(dynamicHeight) >= 200 ? abs(200) : abs(dynamicHeight))
-            .font(.robotoBody)
             .contentShape(Rectangle())
             .disableAutocorrection(true)
         }

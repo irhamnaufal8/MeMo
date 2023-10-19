@@ -107,13 +107,39 @@ struct NoteView: View, KeyboardReadable {
                                             withAnimation {
                                                 viewModel.isShowBottomBar = true
                                             }
+                                        },
+                                        onBackspace: { isEmpty in
+                                            viewModel.deleteCurrentLine(if: isEmpty)
                                         }
                                     )
+                                    .onChange(of: note.text) { _ in
+                                        viewModel.turnIntoBulletList()
+                                    }
                                 } else if let image = note as? NoteImageContent {
                                     image.image
                                         .resizable()
                                         .scaledToFit()
                                         .cornerRadius(4)
+                                        .overlay(alignment: .topTrailing) {
+                                            Menu {
+                                                Button {
+                                                    
+                                                } label: {
+                                                    Text("Change Photo")
+                                                }
+                                                
+                                                Button(role: .destructive) {
+                                                    viewModel.deleteNoteImage(image)
+                                                } label: {
+                                                    Label("Delete Photo", systemImage: "trash")
+                                                }
+                                            } label: {
+                                                Image(systemName: "ellipsis.circle.fill")
+                                                    .foregroundColor(.white)
+                                                    .shadow(color: .black.opacity(0.5), radius: 10)
+                                            }
+                                            .padding(6)
+                                        }
                                 } else if var check = note as? NoteListContent {
                                     HStack {
                                         Button {
@@ -135,6 +161,34 @@ struct NoteView: View, KeyboardReadable {
                                                 withAnimation {
                                                     viewModel.isShowBottomBar = true
                                                 }
+                                            },
+                                            onBackspace: { isEmpty in
+                                                viewModel.turnIntoText(if: isEmpty)
+                                            }
+                                        )
+                                    }
+                                } else if let bullet = note as? NoteBulletListContent {
+                                    HStack(alignment: .top) {
+                                        Circle()
+                                            .foregroundColor(.black2)
+                                            .frame(width: 6, height: 6)
+                                            .padding(.top, 5)
+                                        
+                                        MultilineTextField(
+                                            "Your text here..",
+                                            text: $note.text,
+                                            font: .robotoBody,
+                                            onCommit: {
+                                                viewModel.addNextBulletList()
+                                            },
+                                            onEdit: {
+                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: bullet)
+                                                withAnimation {
+                                                    viewModel.isShowBottomBar = true
+                                                }
+                                            },
+                                            onBackspace: { isEmpty in
+                                                viewModel.turnIntoText(if: isEmpty)
                                             }
                                         )
                                     }
@@ -155,6 +209,7 @@ struct NoteView: View, KeyboardReadable {
             BottomBar()
                 .isHidden(!viewModel.isShowBottomBar, remove: !viewModel.isShowBottomBar)
         }
+        .tint(viewModel.accentColor)
         .overlay(alignment: .topTrailing) {
             NoteColorPicker()
         }
@@ -197,6 +252,24 @@ extension NoteView {
             }
             .padding([.top, .horizontal])
             
+            HStack {
+                Image(systemName: "plus.circle.fill")
+                    .foregroundColor(.black3)
+                
+                TextField("Create new tag", text: $viewModel.newTag)
+                    .font(.robotoBody)
+                    .foregroundColor(.black2)
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .foregroundColor(viewModel.bgColor)
+            )
+            .padding([.top, .horizontal])
+            .onSubmit {
+                viewModel.addNewTag()
+            }
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 6) {
@@ -230,23 +303,6 @@ extension NoteView {
                                 .font(.robotoBody)
                                 .foregroundColor(.black2)
                         }
-                    }
-                    
-                    HStack {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.black3)
-                        
-                        TextField("Create new tag", text: $viewModel.newTag)
-                            .font(.robotoBody)
-                            .foregroundColor(.black2)
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundColor(viewModel.bgColor)
-                    )
-                    .onSubmit {
-                        viewModel.addNewTag()
                     }
                 }
                 .padding()

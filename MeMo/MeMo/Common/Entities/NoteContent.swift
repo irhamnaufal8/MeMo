@@ -11,6 +11,7 @@ enum NoteContentType {
     case text
     case image
     case list
+    case bulletList
 }
 
 protocol Note: Identifiable {
@@ -37,4 +38,10 @@ struct NoteListContent: Note {
     let type: NoteContentType = .list
     var text: String
     var isChecked: Bool = false
+}
+
+struct NoteBulletListContent: Note {
+    var id: UUID = .init()
+    let type: NoteContentType = .bulletList
+    var text: String
 }
