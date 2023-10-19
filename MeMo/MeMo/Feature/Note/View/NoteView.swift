@@ -12,6 +12,8 @@ struct NoteView: View, KeyboardReadable {
     @ObservedObject var viewModel: NoteViewModel
     @ObservedObject var navigator: AppNavigator
     
+    @FocusState private var focusedField: Int?
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -29,181 +31,196 @@ struct NoteView: View, KeyboardReadable {
             }
             .padding()
             
-            ScrollViewReader { scrollView in
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        MultilineTextField(
-                            "Your Title",
-                            text: $viewModel.data.title,
-                            font: .robotoTitle1,
-                            onCommit: {
-                                withAnimation {
-                                    viewModel.isEditTitle = false
-                                    viewModel.isShowBottomBar = false
-                                }
-                            },
-                            onEdit:  {
-                                withAnimation {
-                                    viewModel.isEditTitle = true
-                                    viewModel.isShowBottomBar = false
-                                }
-                            },
-                            onDoneEdit: {
-                                withAnimation {
-                                    viewModel.isEditTitle = true
-                                    viewModel.isShowBottomBar = false
-                                }
+            ScrollView {
+                VStack(alignment: .leading) {
+                    MultilineTextField(
+                        "Your Title",
+                        text: $viewModel.data.title,
+                        font: .robotoTitle1,
+                        onCommit: {
+                            withAnimation {
+                                viewModel.isEditTitle = false
+                                viewModel.isShowBottomBar = false
                             }
-                        )
-                        
-                        HStack {
-                            Image(systemName: "tag.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20)
-                                .foregroundColor(viewModel.accentColor)
-                            
-                            Rectangle()
-                                .frame(width: 1)
-                                .foregroundColor(.black3)
-                            
-                            Button {
-                                viewModel.isShowTagSheet = true
-                            } label: {
-                                Text(viewModel.tagsText)
-                                    .font((viewModel.data.tags ?? []).isEmpty ? .robotoBody : .robotoHeadline)
-                                    .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .black2 : .white)
-                                    .lineLimit(1)
-                                    .padding(6)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 4)
-                                            .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .clear : viewModel.accentColor)
-                                    )
+                        },
+                        onEdit:  {
+                            withAnimation {
+                                viewModel.isEditTitle = true
+                                viewModel.isShowBottomBar = false
+                            }
+                        },
+                        onDoneEdit: {
+                            withAnimation {
+                                viewModel.isEditTitle = true
+                                viewModel.isShowBottomBar = false
                             }
                         }
+                    )
+                    
+                    HStack {
+                        Image(systemName: "tag.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20)
+                            .foregroundColor(viewModel.accentColor)
+                        
+                        Rectangle()
+                            .frame(width: 1)
+                            .foregroundColor(.black3)
                         
                         Button {
-                            viewModel.isShowModified.toggle()
+                            viewModel.isShowTagSheet = true
                         } label: {
-                            Text(viewModel.timeStampText)
-                                .font(.robotoCaption)
-                                .foregroundColor(.black3)
+                            Text(viewModel.tagsText)
+                                .font((viewModel.data.tags ?? []).isEmpty ? .robotoBody : .robotoHeadline)
+                                .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .black2 : .white)
+                                .lineLimit(1)
+                                .padding(6)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .foregroundColor((viewModel.data.tags ?? []).isEmpty ? .clear : viewModel.accentColor)
+                                )
                         }
-                        
-                        Divider()
-                        
-                        ForEach($viewModel.data.notes, id: \.id) { $note in
-                            Group {
-                                if let noteText = note as? NoteTextContent {
+                    }
+                    
+                    Button {
+                        viewModel.isShowModified.toggle()
+                    } label: {
+                        Text(viewModel.timeStampText)
+                            .font(.robotoCaption)
+                            .foregroundColor(.black3)
+                    }
+                    
+                    Divider()
+                    
+                    ForEach($viewModel.data.notes, id: \.id) { $note in
+                        Group {
+                            if let noteText = note as? NoteTextContent {
+                                MultilineTextField(
+                                    "Your text here..",
+                                    text: $note.text,
+                                    font: .robotoBody,
+                                    onCommit: {
+                                        viewModel.addNoteText(after: noteText)
+                                        focusField(to: .next)
+                                    },
+                                    onEdit: {
+                                        viewModel.currentIndex = viewModel.getCurrentIndex(of: noteText)
+                                        withAnimation {
+                                            viewModel.isShowBottomBar = true
+                                        }
+                                    },
+                                    onBackspace: { isEmpty in
+                                        viewModel.deleteCurrentLine(if: isEmpty)
+                                        if isEmpty {
+                                            focusField(to: .previous)
+                                        }
+                                    }
+                                )
+                                .onChange(of: note.text) { _ in
+                                    viewModel.turnIntoBulletList()
+                                    focusField(to: .current)
+                                }
+                            } else if let image = note as? NoteImageContent {
+                                image.image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .cornerRadius(4)
+                                    .overlay(alignment: .topTrailing) {
+                                        Menu {
+                                            Button {
+                                                
+                                            } label: {
+                                                Text("Change Photo")
+                                            }
+                                            
+                                            Button(role: .destructive) {
+                                                viewModel.deleteNoteImage(image)
+                                                focusField(to: .current)
+                                            } label: {
+                                                Label("Delete Photo", systemImage: "trash")
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis.circle.fill")
+                                                .foregroundColor(.white)
+                                                .shadow(color: .black.opacity(0.5), radius: 10)
+                                        }
+                                        .padding(6)
+                                    }
+                            } else if var check = note as? NoteListContent {
+                                HStack {
+                                    Button {
+                                        check.isChecked.toggle()
+                                    } label: {
+                                        Image(systemName: check.isChecked ? "checkmark.circle.fill" : "circle")
+                                            .foregroundColor(viewModel.accentColor)
+                                    }
+                                    
                                     MultilineTextField(
                                         "Your text here..",
                                         text: $note.text,
                                         font: .robotoBody,
                                         onCommit: {
-                                            viewModel.addNoteText(after: noteText)
+                                            viewModel.addNextNoteList()
+                                            focusField(to: .next)
                                         },
                                         onEdit: {
-                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: noteText)
+                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: check)
                                             withAnimation {
                                                 viewModel.isShowBottomBar = true
                                             }
                                         },
                                         onBackspace: { isEmpty in
-                                            viewModel.deleteCurrentLine(if: isEmpty)
+                                            viewModel.turnIntoText(if: isEmpty)
+                                            if isEmpty {
+                                                focusField(to: .current)
+                                            }
                                         }
                                     )
-                                    .onChange(of: note.text) { _ in
-                                        viewModel.turnIntoBulletList()
-                                    }
-                                } else if let image = note as? NoteImageContent {
-                                    image.image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .cornerRadius(4)
-                                        .overlay(alignment: .topTrailing) {
-                                            Menu {
-                                                Button {
-                                                    
-                                                } label: {
-                                                    Text("Change Photo")
-                                                }
-                                                
-                                                Button(role: .destructive) {
-                                                    viewModel.deleteNoteImage(image)
-                                                } label: {
-                                                    Label("Delete Photo", systemImage: "trash")
-                                                }
-                                            } label: {
-                                                Image(systemName: "ellipsis.circle.fill")
-                                                    .foregroundColor(.white)
-                                                    .shadow(color: .black.opacity(0.5), radius: 10)
+                                }
+                            } else if let bullet = note as? NoteBulletListContent {
+                                HStack(alignment: .top) {
+                                    Circle()
+                                        .foregroundColor(.black2)
+                                        .frame(width: 6, height: 6)
+                                        .padding(.top, 5)
+                                    
+                                    MultilineTextField(
+                                        "Your text here..",
+                                        text: $note.text,
+                                        font: .robotoBody,
+                                        onCommit: {
+                                            viewModel.addNextBulletList(after: bullet)
+                                            focusField(to: .next)
+                                        },
+                                        onEdit: {
+                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: bullet)
+                                            withAnimation {
+                                                viewModel.isShowBottomBar = true
                                             }
-                                            .padding(6)
+                                        },
+                                        onBackspace: { isEmpty in
+                                            viewModel.turnIntoText(if: isEmpty)
+                                            if isEmpty {
+                                                focusField(to: .current)
+                                            }
                                         }
-                                } else if var check = note as? NoteListContent {
-                                    HStack {
-                                        Button {
-                                            check.isChecked.toggle()
-                                        } label: {
-                                            Image(systemName: check.isChecked ? "checkmark.circle.fill" : "circle")
-                                                .foregroundColor(viewModel.accentColor)
-                                        }
-                                        
-                                        MultilineTextField(
-                                            "Your text here..",
-                                            text: $note.text,
-                                            font: .robotoBody,
-                                            onCommit: {
-                                                viewModel.addNextNoteList()
-                                            },
-                                            onEdit: {
-                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: check)
-                                                withAnimation {
-                                                    viewModel.isShowBottomBar = true
-                                                }
-                                            },
-                                            onBackspace: { isEmpty in
-                                                viewModel.turnIntoText(if: isEmpty)
-                                            }
-                                        )
-                                    }
-                                } else if let bullet = note as? NoteBulletListContent {
-                                    HStack(alignment: .top) {
-                                        Circle()
-                                            .foregroundColor(.black2)
-                                            .frame(width: 6, height: 6)
-                                            .padding(.top, 5)
-                                        
-                                        MultilineTextField(
-                                            "Your text here..",
-                                            text: $note.text,
-                                            font: .robotoBody,
-                                            onCommit: {
-                                                viewModel.addNextBulletList()
-                                            },
-                                            onEdit: {
-                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: bullet)
-                                                withAnimation {
-                                                    viewModel.isShowBottomBar = true
-                                                }
-                                            },
-                                            onBackspace: { isEmpty in
-                                                viewModel.turnIntoText(if: isEmpty)
-                                            }
-                                        )
-                                    }
+                                    )
                                 }
                             }
-                            .id(viewModel.getCurrentIndex(of: note))
                         }
+                        .id(viewModel.getCurrentIndex(of: note))
+                        .focused($focusedField, equals: viewModel.getCurrentIndex(of: note))
                     }
-                    .padding(.horizontal)
+                    viewModel.bgColor
+                        .frame(height: 360)
+                        .onTapGesture(perform: {
+                            viewModel.addNoteTextOnLast()
+                            focusField(to: .last)
+                        })
+                        .padding(.top, 36)
                 }
-                .onChange(of: viewModel.currentIndex) { newValue in
-                    withAnimation {
-                        scrollView.scrollTo(newValue, anchor: .bottom)
-                    }
-                }
+                .padding(.horizontal)
             }
             
             BottomBar()
@@ -409,6 +426,32 @@ extension NoteView {
         .frame(maxWidth: .infinity, maxHeight: 50)
         .background(viewModel.secondaryColor)
         .transition(.move(edge: .bottom).animation(.spring(response: 0.5, dampingFraction: 0.6)))
+    }
+}
+
+extension NoteView {
+    
+    private enum FocusTarget {
+        case current
+        case next
+        case previous
+        case last
+    }
+    
+    private func focusField(to target: FocusTarget) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+            switch target {
+            case .current:
+                self.focusedField = viewModel.currentIndex
+            case .next:
+                self.focusedField = viewModel.currentIndex + 1
+            case .previous:
+                guard viewModel.currentIndex > 0 else { return }
+                self.focusedField = viewModel.currentIndex - 1
+            case .last:
+                self.focusedField = viewModel.data.notes.count-1
+            }
+        }
     }
 }
 

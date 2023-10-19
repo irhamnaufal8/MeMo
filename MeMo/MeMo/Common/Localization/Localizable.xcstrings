@@ -20,6 +20,9 @@
     "Ascending" : {
 
     },
+    "Change Photo" : {
+
+    },
     "Change Theme Color" : {
 
     },
@@ -39,6 +42,9 @@
 
     },
     "Delete Note" : {
+
+    },
+    "Delete Photo" : {
 
     },
     "Descending" : {
