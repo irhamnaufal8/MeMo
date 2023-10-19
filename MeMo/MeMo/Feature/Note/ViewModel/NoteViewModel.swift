@@ -162,7 +162,7 @@ final class NoteViewModel: ObservableObject {
     }
     
     func addNoteTextOnLast() {
-        guard data.notes.last is NoteImageContent else { return }
+        guard data.notes.last is NoteImageContent || data.notes.isEmpty else { return }
         let noteText = NoteTextContent(text: "")
         withAnimation {
             data.notes.append(noteText)
@@ -212,7 +212,7 @@ final class NoteViewModel: ObservableObject {
     }
     
     func deleteCurrentLine(if isEmpty: Bool) {
-        guard currentIndex > 0 else { return }
+        guard data.notes.count > 1 else { return }
         if isEmpty {
             data.notes.remove(at: currentIndex)
         }
@@ -237,13 +237,19 @@ final class NoteViewModel: ObservableObject {
     
     func prevIsNotCheckList(_ note: any Note) -> Bool {
         let current = getCurrentIndex(of: note)
-        guard current < data.notes.count - 1 else { return false }
-        return !(data.notes[current - 1] is NoteListContent)
+        guard current > 0 else { return false }
+        
+        let previousNote = data.notes[current - 1]
+        
+        return !(previousNote is NoteListContent)
     }
     
     func nextIsNotCheckList(_ note: any Note) -> Bool {
         let current = getCurrentIndex(of: note)
         guard current < data.notes.count - 1 else { return false }
-        return !(data.notes[current + 1] is NoteListContent)
+        
+        let previousNote = data.notes[current + 1]
+        
+        return !(previousNote is NoteListContent)
     }
 }

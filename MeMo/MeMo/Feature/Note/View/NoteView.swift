@@ -191,7 +191,7 @@ struct NoteView: View, KeyboardReadable {
                                     Circle()
                                         .foregroundColor(.black2)
                                         .frame(width: 6, height: 6)
-                                        .padding(.top, 5)
+                                        .padding(.top, 7)
                                     
                                     MultilineTextField(
                                         "Your text here..",
