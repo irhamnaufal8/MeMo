@@ -8,6 +8,7 @@
 import SwiftUI
 
 final class HomeViewModel: ObservableObject {
+    
     @Published var searchText = ""
     
     @Published var recentNotes: [NoteFileResponse] = []
@@ -19,13 +20,13 @@ final class HomeViewModel: ObservableObject {
     @Published var isShowSheet = false
     
     func countNotes(from folder: FolderResponse) -> Int {
-        folder.notes.count
+        (folder.notes?.count).orZero()
     }
     
     func description(from notes: [NoteResponse]) -> String {
         var description = ""
         description = notes.compactMap({ note in
-            if note.type.isContent(of: .text) {
+            if (note.type.orEmpty()).isContent(of: .text) {
                 note.text
             } else {
                 ""
@@ -151,5 +152,9 @@ final class HomeViewModel: ObservableObject {
         )
         
         return .init(data: folder, isMainFolder: true, state: state)
+    }
+    
+    func getAllNotes() async {
+        
     }
 }

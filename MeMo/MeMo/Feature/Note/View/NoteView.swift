@@ -36,7 +36,7 @@ struct NoteView: View, KeyboardReadable {
                 VStack(alignment: .leading) {
                     MultilineTextField(
                         "Your Title",
-                        text: $viewModel.data.title,
+                        text: $viewModel.title,
                         font: .robotoTitle1,
                         onCommit: {
                             withAnimation {
@@ -98,10 +98,7 @@ struct NoteView: View, KeyboardReadable {
                         Group {
                             switch note.type {
                             case .init(content: .image):
-                                (note.image ?? .dummy1)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .cornerRadius(4)
+                                ImageLoader(url: note.imageURL.orEmpty())
                                     .overlay(alignment: .topTrailing) {
                                         Menu {
                                             Button {
@@ -128,9 +125,9 @@ struct NoteView: View, KeyboardReadable {
                             case .init(content: .list):
                                 HStack(alignment: .top) {
                                     Button {
-                                        note.isChecked.toggle()
+                                        note.isChecked = !(note.isChecked.orFalse())
                                     } label: {
-                                        Image(systemName: note.isChecked ? "checkmark.circle.fill" : "circle")
+                                        Image(systemName: note.isChecked.orFalse() ? "checkmark.circle.fill" : "circle")
                                             .foregroundColor(viewModel.accentColor)
                                             .font(.title3)
                                     }
@@ -157,7 +154,7 @@ struct NoteView: View, KeyboardReadable {
                                             }
                                         }
                                     )
-                                    .opacity(note.isChecked ? 0.5 : 1)
+                                    .opacity(note.isChecked.orFalse() ? 0.5 : 1)
                                 }
                                 .padding(.top, viewModel.prevIsNotCheckList(note) ? 12 : 0)
                                 .padding(.bottom, viewModel.nextIsNotCheckList(note) ? 12 : 0)
@@ -319,14 +316,14 @@ extension NoteView {
                             .foregroundColor(.black2)
                         
                         if let tags = viewModel.data.tags {
-                            ForEach(tags, id: \.self) { tag in
+                            ForEach(tags, id: \.id) { tag in
                                 HStack {
-                                    Text(tag)
+                                    Text(tag.text.orEmpty())
                                         .font(.robotoHeadline)
                                         .foregroundColor(.white)
                                     
                                     Button {
-                                        viewModel.deleteTag(tag)
+                                        viewModel.deleteTag(tag.text.orEmpty())
                                     } label: {
                                         Image(systemName: "xmark")
                                             .foregroundColor(.gray2)

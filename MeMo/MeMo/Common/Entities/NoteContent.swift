@@ -14,12 +14,12 @@ enum NoteContentType: String {
     case bulletList = "BULLET_LIST"
 }
 
-struct NoteResponse: Identifiable, Hashable {
-    var id: UUID  = .init()
-    var type: String
+struct NoteResponse: Identifiable, Hashable, Codable {
+    var id: String? = UUID().uuidString
+    var type: String?
     var text: String
-    var isChecked: Bool = false
-    var image: Image?
+    var isChecked: Bool? = false
+    var imageURL: String?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

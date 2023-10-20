@@ -6,15 +6,50 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct NoteFileResponse: Identifiable {
-    var id: UUID = .init()
-    var title: String
-    var tags: [String]?
+@Model
+class NoteFileResponse: Identifiable {
+    var id: String? = UUID().uuidString
+    var title: String?
+    var tags: [TagResponse]?
     var notes: [NoteResponse]
-    var theme: String
+    var theme: String?
     var createdAt: Date?
     var modifiedAt: Date?
+    
+    init(
+        id: String? = nil,
+        title: String? = nil,
+        tags: [TagResponse]? = nil,
+        notes: [NoteResponse],
+        theme: String? = nil,
+        createdAt: Date? = nil,
+        modifiedAt: Date? = nil
+    ) {
+        self.id = id
+        self.title = title
+        self.tags = tags
+        self.notes = notes
+        self.theme = theme
+        self.createdAt = createdAt
+        self.modifiedAt = modifiedAt
+    }
+}
+
+struct NoteFileModelResponse: Identifiable {
+    var id: String? = UUID().uuidString
+    var title: String?
+    var tags: [String]?
+    var notes: [String]?
+    var theme: String?
+    var createdAt: Date?
+    var modifiedAt: Date?
+}
+
+struct TagResponse: Identifiable, Codable {
+    var id: String? = UUID().uuidString
+    var text: String?
 }
 
 extension NoteFileResponse {
@@ -50,10 +85,13 @@ extension NoteFileResponse {
     
     static var dummy4: NoteFileResponse = .init(
         title: "Say You Won't Let Go",
-        tags: ["Inspiration", "Music", "Notes", "Draft", "Piano", "In Progress", "Guitar"],
+        tags: [
+            .init(text: "Productivity"),
+            .init(text: "Work-Life Balance")
+        ],
         notes: [
 //            NoteResponse(type: .init(content: .text), text: "First sentence here..")
-            
+            .init(type: .init(content: .image), text: "", imageURL: "https://cdn1-production-images-kly.akamaized.net/70a0pk8-1pLXm2bXsSoSWgU7c3Y=/0x0:2012x1134/800x450/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/2762230/original/086593900_1553668873-LISA_BLACKPINK_1.jpg")
         ],
         theme: ThemeColor.blue.rawValue,
         createdAt: .now - 90000,

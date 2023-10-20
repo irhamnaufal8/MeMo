@@ -81,9 +81,9 @@ struct HomeView: View {
                             HStack(spacing: 8) {
                                 ForEach(viewModel.recentNotes, id: \.id) { note in
                                     RecentNoteCard(
-                                        title: note.title,
-                                        description: viewModel.description(from: note.notes),
-                                        color: viewModel.bgColor(from: note.theme)
+                                        title: note.title.orEmpty(),
+                                        description: viewModel.description(from: note.notes ?? []),
+                                        color: viewModel.bgColor(from: note.theme.orEmpty())
                                     ) {
                                         navigator.navigateTo(.note(navigator, .init(data: note)))
                                     }
@@ -112,9 +112,9 @@ struct HomeView: View {
                         
                         ForEach(viewModel.folders, id: \.id) { folder in
                             FolderCard(
-                                image: folder.icon,
+                                image: folder.icon.orEmpty(),
                                 notes: viewModel.countNotes(from: folder),
-                                title: folder.title,
+                                title: folder.title.orEmpty(),
                                 color: viewModel.bgColor(from: folder.theme.orEmpty())
                             ) {
                                 navigator.navigateTo(.folder(navigator, .init(data: folder, isMainFolder: false)))
@@ -138,6 +138,11 @@ struct HomeView: View {
                 .scaledButtonStyle()
             })
             .background(viewModel.secondaryColor(from: viewModel.currentTheme).opacity(0.1))
+        }
+        .onAppear {
+            Task {
+                await viewModel.getAllNotes()
+            }
         }
         .tint(viewModel.accentColor(from: viewModel.currentTheme))
         .navigationTitle("")

@@ -37,6 +37,9 @@ final class FolderViewModel: ObservableObject {
     @Published var data: FolderResponse
     @Published var isMainFolder: Bool
     
+    @Published var title = ""
+    @Published var icon = "💌"
+    
     @Published var sortBy: SortBy = .edited
     @Published var orderBy: OrderBy = .ascending
     
@@ -50,7 +53,7 @@ final class FolderViewModel: ObservableObject {
     
     var searchedNotes: [NoteFileResponse] {
         guard !searchText.isEmpty else {
-            return data.notes.sorted(by: {
+            return (data.notes ?? []).sorted(by: {
                 switch sortBy {
                 case .edited:
                     orderBy == .ascending ?
@@ -62,16 +65,16 @@ final class FolderViewModel: ObservableObject {
                     $0.createdAt.orCurrentDate() < $1.createdAt.orCurrentDate()
                 case .title:
                     orderBy == .ascending ?
-                    $0.title < $1.title :
-                    $0.title > $1.title
+                    $0.title.orEmpty() < $1.title.orEmpty() :
+                    $0.title.orEmpty() > $1.title.orEmpty()
                 }
             })
         }
         
-        return data.notes.filter { note in
-            note.title.lowercased().contains(searchText.lowercased())
-            || note.notes.contains(where: { desc in
-                if desc.type.isContent(of: .text) {
+        return (data.notes ?? []).filter { note in
+            note.title.orEmpty().lowercased().contains(searchText.lowercased())
+            || (note.notes ?? []).contains(where: { desc in
+                if (desc.type).orEmpty().isContent(of: .text) {
                     return desc.text.lowercased().contains(searchText.lowercased())
                 } else {
                     return false
@@ -89,8 +92,8 @@ final class FolderViewModel: ObservableObject {
                 $0.createdAt.orCurrentDate() < $1.createdAt.orCurrentDate()
             case .title:
                 orderBy == .ascending ?
-                $0.title < $1.title :
-                $0.title > $1.title
+                $0.title.orEmpty() < $1.title.orEmpty() :
+                $0.title.orEmpty() > $1.title.orEmpty()
             }
         })
     }
@@ -147,12 +150,14 @@ final class FolderViewModel: ObservableObject {
         self.data = data
         self.isMainFolder = isMainFolder
         self.searchState = state
+        self.icon = data.icon.orEmpty()
+        self.title = data.title.orEmpty()
     }
     
     func description(from notes: [NoteResponse]) -> String {
         var description = ""
         description = notes.compactMap({ note in
-            if note.type.isContent(of: .text) {
+            if note.type.orEmpty().isContent(of: .text) {
                 note.text
             } else {
                 ""
@@ -229,7 +234,7 @@ final class FolderViewModel: ObservableObject {
     func deleteNotes() {
         if !notesForDelete.isEmpty {
             withAnimation {
-                data.notes.removeAll { item in
+                data.notes?.removeAll { item in
                     return notesForDelete.contains { $0.id == item.id }
                 }
             }
@@ -250,7 +255,7 @@ final class FolderViewModel: ObservableObject {
     }
     
     func editFolderWhenFirstCreated() {
-        if data.title.isEmpty {
+        if data.title.orEmpty().isEmpty {
             withAnimation {
                 searchState = .edit
             }
@@ -258,6 +263,6 @@ final class FolderViewModel: ObservableObject {
     }
     
     func disableDoneButton() -> Bool {
-        data.title.isEmpty || data.title.isWhitespace || data.icon.isEmpty || data.icon.isWhitespace
+        title.isEmpty || title.isWhitespace || icon.isEmpty || icon.isWhitespace
     }
 }

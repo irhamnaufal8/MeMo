@@ -20,9 +20,9 @@ final class DefaultNoteLocalDataSource: NoteLocalDataSource {
         let request = NoteFile.fetchRequest()
         return try container.viewContext.fetch(request).compactMap { note in
             return .init(
-                id: note.id ?? .init(),
+                id: (note.id?.uuidString).orEmpty(),
                 title: note.title.orEmpty(),
-                tags: (note.tags?.allObjects as? [String] ?? []),
+                tags: [],
                 notes: (note.notes?.allObjects as? [NoteResponse] ?? []),
                 theme: note.theme.orEmpty(),
                 createdAt: note.createdAt.orCurrentDate(),
@@ -34,9 +34,9 @@ final class DefaultNoteLocalDataSource: NoteLocalDataSource {
     func getNoteById(_ id: UUID) async throws -> NoteFileResponse? {
         guard let note = try getEntityById(id) else { return .init(title: "", notes: [], theme: "") }
         return NoteFileResponse(
-            id: note.id ?? .init(),
+            id: (note.id?.uuidString).orEmpty(),
             title: note.title.orEmpty(),
-            tags: (note.tags?.allObjects as? [String] ?? []),
+            tags: [],
             notes: note.notes?.allObjects as? [NoteResponse] ?? [],
             theme: note.theme.orEmpty(),
             createdAt: note.createdAt.orCurrentDate(),
@@ -59,7 +59,6 @@ final class DefaultNoteLocalDataSource: NoteLocalDataSource {
     
     func create(note: NoteFileResponse) async throws {
         let data = NoteFile(context: container.viewContext)
-        data.id = note.id
         data.title = note.title
 //        data.tags = NSSet(array: note.tags ?? [])
         data.theme = note.theme
@@ -71,7 +70,7 @@ final class DefaultNoteLocalDataSource: NoteLocalDataSource {
     }
     
     func update(note: NoteFileResponse) async throws {
-        guard let data = try getEntityById(note.id) else { return }
+        guard let data = try getEntityById(UUID(uuidString: note.id.orEmpty()) ?? .init()) else { return }
         data.title = note.title
 //        data.tags = NSSet(array: note.tags ?? [])
         data.theme = note.theme
@@ -111,7 +110,7 @@ final class DefaultNoteLocalDataSource: NoteLocalDataSource {
             newNotes.setValue(content.id, forKey: "id")
             newNotes.setValue(content.text, forKey: "text")
             newNotes.setValue(content.isChecked, forKey: "isChecked")
-            newNotes.setValue(content.image, forKey: "image")
+            newNotes.setValue(content.imageURL, forKey: "image")
             newNotes.setValue(content.type, forKey: "type")
         }
     }
