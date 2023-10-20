@@ -11,6 +11,8 @@ import PhotosUI
 final class NoteViewModel: ObservableObject {
     @Published var data: NoteFileResponse
     
+    @Published var title = ""
+    
     @Published var isNewNote: Bool
     
     @Published var currentIndex = 0
@@ -28,7 +30,7 @@ final class NoteViewModel: ObservableObject {
     
     @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
     var currentTheme: String {
-        get { data.theme }
+        get { data.theme.orEmpty() }
         set { data.theme = newValue }
     }
     
@@ -91,7 +93,9 @@ final class NoteViewModel: ObservableObject {
     
     var tagsText: String {
         if let tags = data.tags, !tags.isEmpty {
-            return tags.joined(separator: ", ")
+            return tags.compactMap({
+                $0.text
+            }) .joined(separator: ", ")
         } else {
             return "Empty"
         }
@@ -115,22 +119,24 @@ final class NoteViewModel: ObservableObject {
     ) {
         self.data = data
         self.isNewNote = isNewNote
+        self.title = data.title.orEmpty()
     }
     
     func deleteTag(_ tag: String) {
         withAnimation {
-            data.tags?.removeAll(where: { $0 == tag })
+            data.tags?.removeAll(where: { $0.text == tag })
         }
     }
     
     func addNewTag() {
         if !newTag.isEmpty {
+            let tag = TagResponse(text: newTag)
             withAnimation {
                 if let _ = data.tags {
-                    data.tags?.append(newTag)
+                    data.tags?.append(tag)
                 } else {
                     data.tags = []
-                    data.tags?.append(newTag)
+                    data.tags?.append(tag)
                 }
                 newTag = ""
             }
@@ -175,17 +181,18 @@ final class NoteViewModel: ObservableObject {
     
     func addNoteTextOnLast() {
         guard let note = data.notes.last,
-              note.type.isContent(of: .image) || data.notes.isEmpty else { return }
+              (note.type.orEmpty()).isContent(of: .image) || data.notes.isEmpty else { return }
         let noteText = NoteResponse(type: .init(content: .text), text: "")
         withAnimation {
             data.notes.append(noteText)
         }
     }
     
+    // FIXME: CHANGE LOGIC TO UPLOAD IMAGE
     func addNoteImage(with photo: PhotosPickerItem?) async {
         if let data = try? await photo?.loadTransferable(type: Data.self) {
             if let uiImage = UIImage(data: data) {
-                let noteImage = NoteResponse(type: .init(content: .image), text: "", image: Image(uiImage: uiImage))
+                let noteImage = NoteResponse(type: .init(content: .image), text: "")
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     withAnimation {
@@ -254,7 +261,7 @@ final class NoteViewModel: ObservableObject {
         
         let previousNote = data.notes[current - 1]
         
-        return !(previousNote.type.isContent(of: .list))
+        return !((previousNote.type).orEmpty().isContent(of: .list))
     }
     
     func nextIsNotCheckList(_ note: NoteResponse) -> Bool {
@@ -263,6 +270,6 @@ final class NoteViewModel: ObservableObject {
         
         let previousNote = data.notes[current + 1]
         
-        return !(previousNote.type.isContent(of: .list))
+        return !(previousNote.type.orEmpty().isContent(of: .list))
     }
 }

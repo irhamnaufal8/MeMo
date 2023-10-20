@@ -53,6 +53,8 @@
 		4BD4E0EB2AE259CE00D636C5 /* NoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4E0EA2AE259CE00D636C5 /* NoteRepository.swift */; };
 		4BD4E0ED2AE25AB200D636C5 /* DefaultNoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4E0EC2AE25AB200D636C5 /* DefaultNoteRepository.swift */; };
 		4BE337A52AE28E1800E55318 /* String+content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE337A42AE28E1800E55318 /* String+content.swift */; };
+		4BE337A72AE292D400E55318 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BE337A62AE292D400E55318 /* GoogleService-Info.plist */; };
+		4BE337BB2AE2A0D000E55318 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE337BA2AE2A0D000E55318 /* ImageLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,8 @@
 		4BD4E0EA2AE259CE00D636C5 /* NoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRepository.swift; sourceTree = "<group>"; };
 		4BD4E0EC2AE25AB200D636C5 /* DefaultNoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNoteRepository.swift; sourceTree = "<group>"; };
 		4BE337A42AE28E1800E55318 /* String+content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+content.swift"; sourceTree = "<group>"; };
+		4BE337A62AE292D400E55318 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4BE337BA2AE2A0D000E55318 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +212,7 @@
 			children = (
 				4BBA10832AD65D36001D09F0 /* RecentNoteCard.swift */,
 				4BBA10882AD66641001D09F0 /* FolderCard.swift */,
+				4BE337BA2AE2A0D000E55318 /* ImageLoader.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -271,6 +276,7 @@
 				4BD12A822AD2BFC40086910F /* MeMoTests */,
 				4BD12A8C2AD2BFC40086910F /* MeMoUITests */,
 				4BD12A692AD2BFC30086910F /* Products */,
+				4BE337BC2AE2AD2F00E55318 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -291,6 +297,7 @@
 				4BD12A9C2AD2C0830086910F /* Common */,
 				4BD12A792AD2BFC40086910F /* MeMo.entitlements */,
 				4BD12A7A2AD2BFC40086910F /* Info.plist */,
+				4BE337A62AE292D400E55318 /* GoogleService-Info.plist */,
 				4BD12A712AD2BFC40086910F /* Preview Content */,
 			);
 			path = MeMo;
@@ -528,6 +535,13 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		4BE337BC2AE2AD2F00E55318 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -544,6 +558,8 @@
 			dependencies = (
 			);
 			name = MeMo;
+			packageProductDependencies = (
+			);
 			productName = MeMo;
 			productReference = 4BD12A682AD2BFC30086910F /* MeMo.app */;
 			productType = "com.apple.product-type.application";
@@ -617,6 +633,8 @@
 				id,
 			);
 			mainGroup = 4BD12A5F2AD2BFC30086910F;
+			packageReferences = (
+			);
 			productRefGroup = 4BD12A692AD2BFC30086910F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -634,6 +652,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BD12AB72AD2D1BF0086910F /* Roboto-Medium.ttf in Resources */,
+				4BE337A72AE292D400E55318 /* GoogleService-Info.plist in Resources */,
 				4BD12A732AD2BFC40086910F /* Preview Assets.xcassets in Resources */,
 				4BD12AB92AD2D1BF0086910F /* Roboto-Bold.ttf in Resources */,
 				4BD12AB82AD2D1BF0086910F /* Roboto-Regular.ttf in Resources */,
@@ -684,6 +703,7 @@
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
 				4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */,
 				4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */,
+				4BE337BB2AE2A0D000E55318 /* ImageLoader.swift in Sources */,
 				4B3913C52ADE154000ADE9BC /* FolderViewModel.swift in Sources */,
 				4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */,
 				4BD12A782AD2BFC40086910F /* MeMo.xcdatamodeld in Sources */,
@@ -879,7 +899,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -917,7 +937,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

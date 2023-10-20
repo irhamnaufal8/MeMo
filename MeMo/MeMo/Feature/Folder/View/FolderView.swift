@@ -27,7 +27,7 @@ struct FolderView: View, KeyboardReadable {
                     }
                     .isHidden(viewModel.searchState == .select, remove: true)
                     
-                    Text("\(viewModel.data.icon) \(viewModel.data.title)")
+                    Text("\(viewModel.icon) \(viewModel.title)")
                         .font(.robotoTitle2)
                         .foregroundColor(.black1)
                         .lineLimit(1)
@@ -116,7 +116,7 @@ struct FolderView: View, KeyboardReadable {
             EditFolderView()
         }
         .sheet(isPresented: $viewModel.isShowEmojiPicker, content: {
-            EmojiPicker(value: $viewModel.data.icon) {
+            EmojiPicker(value: $viewModel.icon) {
                 viewModel.isShowEmojiPicker = false
             }
             .presentationDetents([.height(280)])
@@ -147,7 +147,7 @@ extension FolderView {
             } label: {
                 Label("Select Notes", systemImage: "checkmark.circle")
             }
-            .isHidden(viewModel.data.notes.isEmpty, remove: viewModel.data.notes.isEmpty)
+            .isHidden((viewModel.data.notes ?? []).isEmpty, remove: true)
             
             Menu {
                 Picker("", selection: $viewModel.sortBy) {
@@ -225,10 +225,10 @@ extension FolderView {
                         .isHidden(viewModel.searchState != .select, remove: true)
                     
                     RecentNoteCard(
-                        title: note.title,
-                        description: viewModel.description(from: note.notes),
+                        title: note.title.orEmpty(),
+                        description: viewModel.description(from: note.notes ?? []),
                         date: note.modifiedAt,
-                        color: viewModel.bgColor(from: note.theme)) {
+                        color: viewModel.bgColor(from: note.theme.orEmpty())) {
                             navigator.navigateTo(.note(navigator, .init(data: note)))
                         }
                         .disabled(viewModel.searchState == .select)
@@ -269,7 +269,7 @@ extension FolderView {
                         .font(.robotoHeadline)
                         .foregroundColor(.black2)
                     
-                    TextField("Programming Stuffs", text: $viewModel.data.title)
+                    TextField("Programming Stuffs", text: $viewModel.title)
                         .font(.robotoBody)
                         .foregroundColor(.black1)
                         .padding()
@@ -328,7 +328,7 @@ extension FolderView {
                 Button {
                     viewModel.isShowEmojiPicker = true
                 } label: {
-                    Text(viewModel.data.icon)
+                    Text(viewModel.icon)
                         .font(.robotoRegular(size: 42))
                         .padding()
                         .frame(maxWidth: 80, maxHeight: 80)

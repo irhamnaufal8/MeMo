@@ -8,13 +8,13 @@
 import Foundation
 
 struct FolderResponse: Identifiable {
-    var id: UUID = .init()
-    var title: String
-    var icon: String
+    var id: String? = UUID().uuidString
+    var title: String?
+    var icon: String?
     var theme: String?
-    var notes: [NoteFileResponse]
-    var createdAt: Date
-    var modifiedAt: Date
+    var notes: [NoteFileResponse]?
+    var createdAt: Date?
+    var modifiedAt: Date?
 }
 
 extension FolderResponse {

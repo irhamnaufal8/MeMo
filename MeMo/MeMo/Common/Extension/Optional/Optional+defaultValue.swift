@@ -30,3 +30,9 @@ extension Optional where Wrapped == Date {
         return self ?? Date()
     }
 }
+
+public extension Optional where Wrapped == Bool {
+    func orFalse() -> Bool {
+        return self ?? false
+    }
+}
