@@ -96,48 +96,23 @@ struct NoteView: View, KeyboardReadable {
                     
                     ForEach($viewModel.data.notes, id: \.id) { $note in
                         Group {
-                            if let noteText = note as? NoteTextContent {
-                                MultilineTextField(
-                                    "Your text here..",
-                                    text: $note.text,
-                                    font: .robotoBody,
-                                    onCommit: {
-                                        viewModel.addNoteText(after: noteText)
-                                        focusField(to: .next)
-                                    },
-                                    onEdit: {
-                                        viewModel.currentIndex = viewModel.getCurrentIndex(of: noteText)
-                                        withAnimation {
-                                            viewModel.isShowBottomBar = true
-                                        }
-                                    },
-                                    onBackspace: { isEmpty in
-                                        viewModel.deleteCurrentLine(if: isEmpty)
-                                        if isEmpty {
-                                            focusField(to: .previous)
-                                        }
-                                    }
-                                )
-                                .onChange(of: note.text) { _ in
-                                    viewModel.turnIntoBulletList()
-                                    focusField(to: .current)
-                                }
-                            } else if let image = note as? NoteImageContent {
-                                image.image
+                            switch note.type {
+                            case .init(content: .image):
+                                (note.image ?? .dummy1)
                                     .resizable()
                                     .scaledToFit()
                                     .cornerRadius(4)
                                     .overlay(alignment: .topTrailing) {
                                         Menu {
                                             Button {
-                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: image)
+                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: note)
                                                 viewModel.isShowPhotoPicker = true
                                             } label: {
                                                 Label("Change Photo", systemImage: "photo")
                                             }
                                             
                                             Button(role: .destructive) {
-                                                viewModel.deleteNoteImage(image)
+                                                viewModel.deleteNoteImage(note)
                                                 focusField(to: .current)
                                             } label: {
                                                 Label("Delete Photo", systemImage: "trash")
@@ -150,7 +125,7 @@ struct NoteView: View, KeyboardReadable {
                                         }
                                         .padding(6)
                                     }
-                            } else if let _ = note as? NoteListContent {
+                            case .init(content: .list):
                                 HStack(alignment: .top) {
                                     Button {
                                         note.isChecked.toggle()
@@ -186,7 +161,8 @@ struct NoteView: View, KeyboardReadable {
                                 }
                                 .padding(.top, viewModel.prevIsNotCheckList(note) ? 12 : 0)
                                 .padding(.bottom, viewModel.nextIsNotCheckList(note) ? 12 : 0)
-                            } else if let bullet = note as? NoteBulletListContent {
+                                
+                            case .init(content: .bulletList):
                                 HStack(alignment: .top) {
                                     Circle()
                                         .foregroundColor(.black2)
@@ -198,11 +174,11 @@ struct NoteView: View, KeyboardReadable {
                                         text: $note.text,
                                         font: .robotoBody,
                                         onCommit: {
-                                            viewModel.addNextBulletList(after: bullet)
+                                            viewModel.addNextBulletList(after: note)
                                             focusField(to: .next)
                                         },
                                         onEdit: {
-                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: bullet)
+                                            viewModel.currentIndex = viewModel.getCurrentIndex(of: note)
                                             withAnimation {
                                                 viewModel.isShowBottomBar = true
                                             }
@@ -214,6 +190,33 @@ struct NoteView: View, KeyboardReadable {
                                             }
                                         }
                                     )
+                                }
+                                
+                            default:
+                                MultilineTextField(
+                                    "Your text here..",
+                                    text: $note.text,
+                                    font: .robotoBody,
+                                    onCommit: {
+                                        viewModel.addNoteText(after: note)
+                                        focusField(to: .next)
+                                    },
+                                    onEdit: {
+                                        viewModel.currentIndex = viewModel.getCurrentIndex(of: note)
+                                        withAnimation {
+                                            viewModel.isShowBottomBar = true
+                                        }
+                                    },
+                                    onBackspace: { isEmpty in
+                                        viewModel.deleteCurrentLine(if: isEmpty)
+                                        if isEmpty {
+                                            focusField(to: .previous)
+                                        }
+                                    }
+                                )
+                                .onChange(of: note.text) { _ in
+                                    viewModel.turnIntoBulletList()
+                                    focusField(to: .current)
                                 }
                             }
                         }
@@ -233,6 +236,9 @@ struct NoteView: View, KeyboardReadable {
             
             BottomBar()
                 .isHidden(!viewModel.isShowBottomBar, remove: !viewModel.isShowBottomBar)
+        }
+        .onAppear {
+            viewModel.addFirstText()
         }
         .tint(viewModel.accentColor)
         .overlay(alignment: .topTrailing) {
