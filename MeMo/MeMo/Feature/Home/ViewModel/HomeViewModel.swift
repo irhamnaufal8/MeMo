@@ -10,22 +10,22 @@ import SwiftUI
 final class HomeViewModel: ObservableObject {
     @Published var searchText = ""
     
-    @Published var recentNotes: [NoteFile] = [.dummy, .dummy2, .dummy3, .dummy4]
-    @Published var folders: [Folder] = [.dummy, .dummy2, .dummy3, .dummy4, .dummy5, .dummy6]
+    @Published var recentNotes: [NoteFileResponse] = []
+    @Published var folders: [FolderResponse] = []
     
     @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
     @AppStorage("current_theme") var currentTheme: String = ThemeColor.purple.rawValue
     
     @Published var isShowSheet = false
     
-    func countNotes(from folder: Folder) -> Int {
+    func countNotes(from folder: FolderResponse) -> Int {
         folder.notes.count
     }
     
-    func description(from notes: [any Note]) -> String {
+    func description(from notes: [NoteResponse]) -> String {
         var description = ""
         description = notes.compactMap({ note in
-            if let note = note as? NoteTextContent {
+            if note.type.isContent(of: .text) {
                 note.text
             } else {
                 ""
@@ -117,18 +117,18 @@ final class HomeViewModel: ObservableObject {
     }
     
     func createNewNote() -> NoteViewModel {
-        let note: NoteFile = .init(
+        let note: NoteFileResponse = .init(
             title: "",
-            notes: [NoteTextContent(text: "")],
+            notes: [NoteResponse(type: .init(content: .text), text: "")],
             theme: self.currentTheme,
             createdAt: .now,
             modifiedAt: .now
         )
-        return .init(data: note)
+        return .init(data: note, isNewNote: true)
     }
     
     func createNewFolder() -> FolderViewModel {
-        let folder: Folder = .init(
+        let folder: FolderResponse = .init(
             title: "",
             icon: "🎁",
             theme: currentTheme,
@@ -141,11 +141,11 @@ final class HomeViewModel: ObservableObject {
     }
     
     func navigateToMainFolder(state: SearchState) -> FolderViewModel {
-        let folder: Folder = .init(
+        let folder: FolderResponse = .init(
             title: "All Your Notes",
             icon: "",
             theme: currentTheme,
-            notes: [.dummy, .dummy2, .dummy3, .dummy4, .dummy5, .dummy6],
+            notes: [],
             createdAt: .now,
             modifiedAt: .now
         )

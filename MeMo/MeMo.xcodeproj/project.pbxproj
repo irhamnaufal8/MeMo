@@ -10,7 +10,7 @@
 		4B3913BA2ADE007D00ADE9BC /* UIFont+Roboto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */; };
 		4B3913BC2ADE0E4A00ADE9BC /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BB2ADE0E4A00ADE9BC /* ThemeColor.swift */; };
 		4B3913BE2ADE0EA100ADE9BC /* NoteContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BD2ADE0EA100ADE9BC /* NoteContent.swift */; };
-		4B3913C02ADE127C00ADE9BC /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BF2ADE127C00ADE9BC /* Folder.swift */; };
+		4B3913C02ADE127C00ADE9BC /* FolderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913BF2ADE127C00ADE9BC /* FolderResponse.swift */; };
 		4B3913C52ADE154000ADE9BC /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C42ADE154000ADE9BC /* FolderViewModel.swift */; };
 		4B3913C72ADE155C00ADE9BC /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C62ADE155C00ADE9BC /* FolderView.swift */; };
 		4B3913CC2ADEA17600ADE9BC /* View+isHidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */; };
@@ -21,7 +21,7 @@
 		4BBA10872AD65EED001D09F0 /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */; };
 		4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10882AD66641001D09F0 /* FolderCard.swift */; };
 		4BBA108C2AD66887001D09F0 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */; };
-		4BBA108F2AD679C6001D09F0 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA108E2AD679C6001D09F0 /* Note.swift */; };
+		4BBA108F2AD679C6001D09F0 /* NoteResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA108E2AD679C6001D09F0 /* NoteResponse.swift */; };
 		4BBA10912AD67D62001D09F0 /* Image+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10902AD67D62001D09F0 /* Image+Default.swift */; };
 		4BBA10962AD67FBB001D09F0 /* NoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10952AD67FBB001D09F0 /* NoteViewModel.swift */; };
 		4BBA10982AD68003001D09F0 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA10972AD68003001D09F0 /* NoteView.swift */; };
@@ -48,6 +48,11 @@
 		4BD12AC02AD2D8690086910F /* Color+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12ABF2AD2D8690086910F /* Color+Default.swift */; };
 		4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AC42AD2DD0C0086910F /* HomeView.swift */; };
 		4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD12AC62AD2DD310086910F /* HomeViewModel.swift */; };
+		4BD4E0E52AE208D400D636C5 /* NoteLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4E0E42AE208D400D636C5 /* NoteLocalDataSource.swift */; };
+		4BD4E0E72AE20B3800D636C5 /* DefaultNoteLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4E0E62AE20B3800D636C5 /* DefaultNoteLocalDataSource.swift */; };
+		4BD4E0EB2AE259CE00D636C5 /* NoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4E0EA2AE259CE00D636C5 /* NoteRepository.swift */; };
+		4BD4E0ED2AE25AB200D636C5 /* DefaultNoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4E0EC2AE25AB200D636C5 /* DefaultNoteRepository.swift */; };
+		4BE337A52AE28E1800E55318 /* String+content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE337A42AE28E1800E55318 /* String+content.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +76,7 @@
 		4B3913B92ADE007D00ADE9BC /* UIFont+Roboto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Roboto.swift"; sourceTree = "<group>"; };
 		4B3913BB2ADE0E4A00ADE9BC /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		4B3913BD2ADE0EA100ADE9BC /* NoteContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteContent.swift; sourceTree = "<group>"; };
-		4B3913BF2ADE127C00ADE9BC /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		4B3913BF2ADE127C00ADE9BC /* FolderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderResponse.swift; sourceTree = "<group>"; };
 		4B3913C42ADE154000ADE9BC /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		4B3913C62ADE155C00ADE9BC /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+isHidden.swift"; sourceTree = "<group>"; };
@@ -82,7 +87,7 @@
 		4BBA10862AD65EED001D09F0 /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
 		4BBA10882AD66641001D09F0 /* FolderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCard.swift; sourceTree = "<group>"; };
 		4BBA108B2AD66887001D09F0 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
-		4BBA108E2AD679C6001D09F0 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		4BBA108E2AD679C6001D09F0 /* NoteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteResponse.swift; sourceTree = "<group>"; };
 		4BBA10902AD67D62001D09F0 /* Image+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Default.swift"; sourceTree = "<group>"; };
 		4BBA10952AD67FBB001D09F0 /* NoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewModel.swift; sourceTree = "<group>"; };
 		4BBA10972AD68003001D09F0 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
@@ -114,6 +119,11 @@
 		4BD12ABF2AD2D8690086910F /* Color+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Default.swift"; sourceTree = "<group>"; };
 		4BD12AC42AD2DD0C0086910F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4BD12AC62AD2DD310086910F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		4BD4E0E42AE208D400D636C5 /* NoteLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteLocalDataSource.swift; sourceTree = "<group>"; };
+		4BD4E0E62AE20B3800D636C5 /* DefaultNoteLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNoteLocalDataSource.swift; sourceTree = "<group>"; };
+		4BD4E0EA2AE259CE00D636C5 /* NoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRepository.swift; sourceTree = "<group>"; };
+		4BD4E0EC2AE25AB200D636C5 /* DefaultNoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNoteRepository.swift; sourceTree = "<group>"; };
+		4BE337A42AE28E1800E55318 /* String+content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+content.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				4B8B0C0C2AE1106300E1A9EE /* String+isWhitespace.swift */,
+				4BE337A42AE28E1800E55318 /* String+content.swift */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -220,10 +231,10 @@
 		4BBA108D2AD67909001D09F0 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				4BBA108E2AD679C6001D09F0 /* Note.swift */,
+				4BBA108E2AD679C6001D09F0 /* NoteResponse.swift */,
 				4B3913BB2ADE0E4A00ADE9BC /* ThemeColor.swift */,
 				4B3913BD2ADE0EA100ADE9BC /* NoteContent.swift */,
-				4B3913BF2ADE127C00ADE9BC /* Folder.swift */,
+				4B3913BF2ADE127C00ADE9BC /* FolderResponse.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -313,12 +324,13 @@
 		4BD12A9C2AD2C0830086910F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4BD12AA02AD2C0D00086910F /* Data */,
+				4BD4E0E82AE2596D00D636C5 /* Domain */,
 				4BBA108D2AD67909001D09F0 /* Entities */,
+				4BD12AA12AD2C17D0086910F /* LocalDB */,
 				4BD12AC82AD2DFD40086910F /* Component */,
 				4BD12AA52AD2C6880086910F /* Extension */,
 				4BD12AA22AD2C1AB0086910F /* Navigator */,
-				4BD12AA12AD2C17D0086910F /* LocalDB */,
-				4BD12AA02AD2C0D00086910F /* Data */,
 				4BD12AAD2AD2C8CB0086910F /* Localization */,
 				4BD12A9F2AD2C0B10086910F /* Resources */,
 			);
@@ -358,6 +370,7 @@
 		4BD12AA02AD2C0D00086910F /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				4BD4E0E22AE208AA00D636C5 /* Note */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -479,6 +492,40 @@
 				4BBA107F2AD65BD1001D09F0 /* InputField */,
 			);
 			path = Component;
+			sourceTree = "<group>";
+		};
+		4BD4E0E22AE208AA00D636C5 /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				4BD4E0E32AE208C400D636C5 /* Local */,
+				4BD4E0EC2AE25AB200D636C5 /* DefaultNoteRepository.swift */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
+		4BD4E0E32AE208C400D636C5 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				4BD4E0E42AE208D400D636C5 /* NoteLocalDataSource.swift */,
+				4BD4E0E62AE20B3800D636C5 /* DefaultNoteLocalDataSource.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		4BD4E0E82AE2596D00D636C5 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				4BD4E0E92AE2599F00D636C5 /* Repository */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		4BD4E0E92AE2599F00D636C5 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				4BD4E0EA2AE259CE00D636C5 /* NoteRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -617,18 +664,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BD4E0E52AE208D400D636C5 /* NoteLocalDataSource.swift in Sources */,
+				4BD4E0EB2AE259CE00D636C5 /* NoteRepository.swift in Sources */,
 				4BBA10962AD67FBB001D09F0 /* NoteViewModel.swift in Sources */,
 				4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */,
 				4B3913CF2ADF6F5700ADE9BC /* KeyboardReadable.swift in Sources */,
 				4BBA10892AD66641001D09F0 /* FolderCard.swift in Sources */,
 				4B3913BE2ADE0EA100ADE9BC /* NoteContent.swift in Sources */,
 				4BD12ABB2AD2D2820086910F /* Font+Roboto.swift in Sources */,
-				4B3913C02ADE127C00ADE9BC /* Folder.swift in Sources */,
+				4B3913C02ADE127C00ADE9BC /* FolderResponse.swift in Sources */,
 				4BD12A752AD2BFC40086910F /* Persistence.swift in Sources */,
+				4BD4E0E72AE20B3800D636C5 /* DefaultNoteLocalDataSource.swift in Sources */,
 				4B3913BC2ADE0E4A00ADE9BC /* ThemeColor.swift in Sources */,
 				4BBA10982AD68003001D09F0 /* NoteView.swift in Sources */,
 				4BD12A6E2AD2BFC30086910F /* ContentView.swift in Sources */,
-				4BBA108F2AD679C6001D09F0 /* Note.swift in Sources */,
+				4BBA108F2AD679C6001D09F0 /* NoteResponse.swift in Sources */,
+				4BD4E0ED2AE25AB200D636C5 /* DefaultNoteRepository.swift in Sources */,
 				4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */,
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
 				4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */,
@@ -645,6 +696,7 @@
 				4BD12AAB2AD2C7370086910F /* Encodable+toJSON.swift in Sources */,
 				4B8B0C0D2AE1106300E1A9EE /* String+isWhitespace.swift in Sources */,
 				4BBA10812AD65BE3001D09F0 /* SearchTextField.swift in Sources */,
+				4BE337A52AE28E1800E55318 /* String+content.swift in Sources */,
 				4BBA108C2AD66887001D09F0 /* EmojiPicker.swift in Sources */,
 				4BBA109A2AD6A4DE001D09F0 /* MultilineTextField.swift in Sources */,
 				4B3913BA2ADE007D00ADE9BC /* UIFont+Roboto.swift in Sources */,

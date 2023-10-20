@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct Folder: Identifiable {
+struct FolderResponse: Identifiable {
     var id: UUID = .init()
     var title: String
     var icon: String
     var theme: String?
-    var notes: [NoteFile]
+    var notes: [NoteFileResponse]
     var createdAt: Date
     var modifiedAt: Date
 }
 
-extension Folder {
-    static let dummy: Folder = .init(
+extension FolderResponse {
+    static let dummy: FolderResponse = .init(
         title: "Code Tutorial",
         icon: "🏆",
         theme: ThemeColor.purple.rawValue,
@@ -27,7 +27,7 @@ extension Folder {
         modifiedAt: .now - 50000
     )
     
-    static let dummy2: Folder = .init(
+    static let dummy2: FolderResponse = .init(
         title: "Our Love Story",
         icon: "💌",
         theme: ThemeColor.red.rawValue,
@@ -36,7 +36,7 @@ extension Folder {
         modifiedAt: .now - 60000
     )
     
-    static let dummy3: Folder = .init(
+    static let dummy3: FolderResponse = .init(
         title: "Study Study Study!",
         icon: "📚",
         theme: ThemeColor.orange.rawValue,
@@ -45,7 +45,7 @@ extension Folder {
         modifiedAt: .now - 70000
     )
     
-    static let dummy4: Folder = .init(
+    static let dummy4: FolderResponse = .init(
         title: "Game Sess",
         icon: "🎮",
         theme: ThemeColor.blue.rawValue,
@@ -54,7 +54,7 @@ extension Folder {
         modifiedAt: .now - 100000
     )
     
-    static let dummy5: Folder = .init(
+    static let dummy5: FolderResponse = .init(
         title: "Friday Movie",
         icon: "🎬",
         theme: ThemeColor.pink.rawValue,
@@ -63,7 +63,7 @@ extension Folder {
         modifiedAt: .now - 80000
     )
     
-    static let dummy6: Folder = .init(
+    static let dummy6: FolderResponse = .init(
         title: "Relaxing Music",
         icon: "🎹",
         theme: ThemeColor.blue.rawValue,

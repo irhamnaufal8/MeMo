@@ -9,7 +9,9 @@ import SwiftUI
 import PhotosUI
 
 final class NoteViewModel: ObservableObject {
-    @Published var data: NoteFile
+    @Published var data: NoteFileResponse
+    
+    @Published var isNewNote: Bool
     
     @Published var currentIndex = 0
     
@@ -107,8 +109,12 @@ final class NoteViewModel: ObservableObject {
         return isShowModified ? "Last Modified at \(modifiedDate)" : "Created at \(createdDate)"
     }
     
-    init(data: NoteFile) {
+    init(
+        data: NoteFileResponse,
+        isNewNote: Bool = false
+    ) {
         self.data = data
+        self.isNewNote = isNewNote
     }
     
     func deleteTag(_ tag: String) {
@@ -150,20 +156,27 @@ final class NoteViewModel: ObservableObject {
         }
     }
     
-    func getCurrentIndex(of note: any Note) -> Int {
+    func getCurrentIndex(of note: NoteResponse) -> Int {
         return data.notes.firstIndex(where: { $0.id == note.id }) ?? currentIndex
     }
     
-    func addNoteText(after note: any Note) {
-        let noteText = NoteTextContent(text: "")
+    func addNoteText(after note: NoteResponse) {
+        let noteText = NoteResponse(type: .init(content: .text), text: "")
         withAnimation {
             data.notes.insert(noteText, at: currentIndex + 1)
         }
     }
     
+    func addFirstText() {
+        guard data.notes.isEmpty else { return }
+        let noteText = NoteResponse(type: .init(content: .text), text: "")
+        data.notes.append(noteText)
+    }
+    
     func addNoteTextOnLast() {
-        guard data.notes.last is NoteImageContent || data.notes.isEmpty else { return }
-        let noteText = NoteTextContent(text: "")
+        guard let note = data.notes.last,
+              note.type.isContent(of: .image) || data.notes.isEmpty else { return }
+        let noteText = NoteResponse(type: .init(content: .text), text: "")
         withAnimation {
             data.notes.append(noteText)
         }
@@ -172,7 +185,7 @@ final class NoteViewModel: ObservableObject {
     func addNoteImage(with photo: PhotosPickerItem?) async {
         if let data = try? await photo?.loadTransferable(type: Data.self) {
             if let uiImage = UIImage(data: data) {
-                let noteImage = NoteImageContent(text: "", image: Image(uiImage: uiImage))
+                let noteImage = NoteResponse(type: .init(content: .image), text: "", image: Image(uiImage: uiImage))
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     withAnimation {
@@ -186,21 +199,21 @@ final class NoteViewModel: ObservableObject {
     }
     
     func addNoteList() {
-        let noteList = NoteListContent(text: data.notes[currentIndex].text)
+        let noteList = NoteResponse(type: .init(content: .list), text: data.notes[currentIndex].text)
         withAnimation {
             data.notes[currentIndex] = noteList
         }
     }
     
     func addNextNoteList() {
-        let noteList = NoteListContent(text: "")
+        let noteList = NoteResponse(type: .init(content: .list), text: "")
         withAnimation {
             data.notes.insert(noteList, at: currentIndex+1)
         }
     }
     
-    func addNextBulletList(after note: NoteBulletListContent) {
-        let bulletList = NoteBulletListContent(text: "")
+    func addNextBulletList(after note: NoteResponse) {
+        let bulletList = NoteResponse(type: .init(content: .bulletList), text: "")
         withAnimation {
             if data.notes[currentIndex].text.isEmpty {
                 turnIntoText(if: true)
@@ -218,38 +231,38 @@ final class NoteViewModel: ObservableObject {
         }
     }
     
-    func deleteNoteImage(_ image: NoteImageContent) {
+    func deleteNoteImage(_ image: NoteResponse) {
         currentIndex = getCurrentIndex(of: image)
         turnIntoText(if: true)
     }
     
     func turnIntoText(if isEmpty: Bool) {
         if isEmpty {
-            data.notes[currentIndex] = NoteTextContent(text: "")
+            data.notes[currentIndex] = NoteResponse(type: .init(content: .text), text: "")
         }
     }
     
     func turnIntoBulletList() {
         if data.notes[currentIndex].text.hasPrefix("- ") {
-            data.notes[currentIndex] = NoteBulletListContent(text: String(data.notes[currentIndex].text.dropFirst(2)))
+            data.notes[currentIndex] = NoteResponse(type: .init(content: .bulletList), text: String(data.notes[currentIndex].text.dropFirst(2)))
         }
     }
     
-    func prevIsNotCheckList(_ note: any Note) -> Bool {
+    func prevIsNotCheckList(_ note: NoteResponse) -> Bool {
         let current = getCurrentIndex(of: note)
         guard current > 0 else { return false }
         
         let previousNote = data.notes[current - 1]
         
-        return !(previousNote is NoteListContent)
+        return !(previousNote.type.isContent(of: .list))
     }
     
-    func nextIsNotCheckList(_ note: any Note) -> Bool {
+    func nextIsNotCheckList(_ note: NoteResponse) -> Bool {
         let current = getCurrentIndex(of: note)
         guard current < data.notes.count - 1 else { return false }
         
         let previousNote = data.notes[current + 1]
         
-        return !(previousNote is NoteListContent)
+        return !(previousNote.type.isContent(of: .list))
     }
 }

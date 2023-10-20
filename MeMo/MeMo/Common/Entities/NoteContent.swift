@@ -7,45 +7,21 @@
 
 import SwiftUI
 
-enum NoteContentType {
-    case text
-    case image
-    case list
-    case bulletList
+enum NoteContentType: String {
+    case text = "TEXT"
+    case image = "IMAGE"
+    case list = "LIST"
+    case bulletList = "BULLET_LIST"
 }
 
-protocol Note: Identifiable {
-    var id: UUID { get set }
-    var type: NoteContentType { get }
-    var text: String { get set }
-    var isChecked: Bool { get set }
-}
-
-struct NoteTextContent: Note {
-    var id: UUID = .init()
-    let type: NoteContentType = .text
+struct NoteResponse: Identifiable, Hashable {
+    var id: UUID  = .init()
+    var type: String
     var text: String
     var isChecked: Bool = false
-}
-
-struct NoteImageContent: Note {
-    var id: UUID = .init()
-    let type: NoteContentType = .image
-    var text: String
-    var image: Image
-    var isChecked: Bool = false
-}
-
-struct NoteListContent: Note {
-    var id: UUID = .init()
-    let type: NoteContentType = .list
-    var text: String
-    var isChecked: Bool = false
-}
-
-struct NoteBulletListContent: Note {
-    var id: UUID = .init()
-    let type: NoteContentType = .bulletList
-    var text: String
-    var isChecked: Bool = false
+    var image: Image?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

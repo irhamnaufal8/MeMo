@@ -34,7 +34,7 @@ enum SearchState {
 final class FolderViewModel: ObservableObject {
     
     @Published var searchText = ""
-    @Published var data: Folder
+    @Published var data: FolderResponse
     @Published var isMainFolder: Bool
     
     @Published var sortBy: SortBy = .edited
@@ -42,13 +42,13 @@ final class FolderViewModel: ObservableObject {
     
     @Published var searchState: SearchState = .initiate
     
-    @Published var notesForDelete: [NoteFile] = []
+    @Published var notesForDelete: [NoteFileResponse] = []
     
     @Published var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
     
     @Published var isShowEmojiPicker = false
     
-    var searchedNotes: [NoteFile] {
+    var searchedNotes: [NoteFileResponse] {
         guard !searchText.isEmpty else {
             return data.notes.sorted(by: {
                 switch sortBy {
@@ -71,7 +71,7 @@ final class FolderViewModel: ObservableObject {
         return data.notes.filter { note in
             note.title.lowercased().contains(searchText.lowercased())
             || note.notes.contains(where: { desc in
-                if let desc = desc as? NoteTextContent {
+                if desc.type.isContent(of: .text) {
                     return desc.text.lowercased().contains(searchText.lowercased())
                 } else {
                     return false
@@ -143,16 +143,16 @@ final class FolderViewModel: ObservableObject {
         }
     }
     
-    init(data: Folder, isMainFolder: Bool, state: SearchState = .initiate) {
+    init(data: FolderResponse, isMainFolder: Bool, state: SearchState = .initiate) {
         self.data = data
         self.isMainFolder = isMainFolder
         self.searchState = state
     }
     
-    func description(from notes: [any Note]) -> String {
+    func description(from notes: [NoteResponse]) -> String {
         var description = ""
         description = notes.compactMap({ note in
-            if let note = note as? NoteTextContent {
+            if note.type.isContent(of: .text) {
                 note.text
             } else {
                 ""
@@ -200,7 +200,7 @@ final class FolderViewModel: ObservableObject {
         }
     }
     
-    func isForDelete(_ note: NoteFile) -> Bool {
+    func isForDelete(_ note: NoteFileResponse) -> Bool {
         notesForDelete.contains(where: { $0.id == note.id })
     }
     
@@ -218,7 +218,7 @@ final class FolderViewModel: ObservableObject {
         }
     }
     
-    func toggleSelection(_ note: NoteFile) {
+    func toggleSelection(_ note: NoteFileResponse) {
         if searchState == .select {
             isForDelete(note) ?
             notesForDelete.removeAll(where: { $0.id == note.id }) :
@@ -239,14 +239,14 @@ final class FolderViewModel: ObservableObject {
     }
     
     func createNewNote() -> NoteViewModel {
-        let note: NoteFile = .init(
+        let note: NoteFileResponse = .init(
             title: "",
-            notes: [NoteTextContent(text: "")],
+            notes: [],
             theme: data.theme ?? "PURPLE",
             createdAt: .now,
             modifiedAt: .now
         )
-        return .init(data: note)
+        return .init(data: note, isNewNote: true)
     }
     
     func editFolderWhenFirstCreated() {
