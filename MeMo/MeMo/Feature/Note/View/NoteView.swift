@@ -195,7 +195,7 @@ struct NoteView: View, KeyboardReadable {
                                         }
                                     }
                                 )
-                                .onChange(of: note.text) { _ in
+                                .onChange(of: note.text) { _, _ in
                                     viewModel.turnIntoBulletList()
                                     focusField(to: .current)
                                 }

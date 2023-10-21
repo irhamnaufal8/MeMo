@@ -15,6 +15,12 @@ struct FolderView: View, KeyboardReadable {
     
     @FocusState var focused
     
+    @Environment(\.horizontalSizeClass) private var horizontalClass
+    
+    private var isRegularWidth: Bool {
+        return horizontalClass == .regular
+    }
+    
     init(viewModel: FolderViewModel, navigator: AppNavigator) {
         _viewModel = State(initialValue: viewModel)
         self.navigator = navigator
@@ -123,12 +129,6 @@ struct FolderView: View, KeyboardReadable {
         .overlay {
             EditFolderView()
         }
-        .sheet(isPresented: $viewModel.isShowEmojiPicker, content: {
-            EmojiPicker(value: $viewModel.icon) {
-                viewModel.isShowEmojiPicker = false
-            }
-            .presentationDetents([.height(280)])
-        })
         .tint(viewModel.accentColor)
         .navigationTitle("")
         .navigationBarBackButtonHidden()
@@ -154,7 +154,7 @@ extension FolderView {
             } label: {
                 Label("Select Notes", systemImage: "checkmark.circle")
             }
-            .isHidden((viewModel.data.notes ?? []).isEmpty, remove: true)
+            .isHidden(viewModel.data.notes.isEmpty, remove: true)
             
             Menu {
                 Picker("", selection: $viewModel.sortBy) {
@@ -227,26 +227,65 @@ extension FolderView {
     
     @ViewBuilder
     func NoteListView() -> some View {
+        let columns = [
+            GridItem(.flexible(minimum: 180, maximum: 900)),
+            GridItem(.flexible(minimum: 180, maximum: 900)),
+            GridItem(.flexible(minimum: 180, maximum: 900)),
+        ]
+        
         VStack(alignment: .leading, spacing: 8) {
-            ForEach(viewModel.searchedNotes, id: \.id) { note in
-                HStack(spacing: 12) {
-                    Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
-                        .foregroundColor(viewModel.accentColor)
-                        .isHidden(viewModel.searchState != .select, remove: true)
-                    
-                    RecentNoteCard(
-                        title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title.orEmpty(),
-                        description: viewModel.description(from: note.notes),
-                        date: note.modifiedAt,
-                        color: viewModel.bgColor(from: note.theme.orEmpty())) {
-                            navigator.navigateTo(.note(navigator, viewModel.openNote(note)))
+            if isRegularWidth {
+                LazyVGrid(columns: columns, spacing: 8, content: {
+                    ForEach(viewModel.searchedNotes, id: \.id) { note in
+                        ZStack {
+                            RecentNoteCard(
+                                title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title ?? "New MeMo",
+                                description: viewModel.description(from: note.notes),
+                                date: note.modifiedAt,
+                                color: viewModel.bgColor(from: note.theme.orEmpty())) {
+                                    navigator.navigateTo(.note(navigator, viewModel.openNote(note)))
+                                }
+                                .disabled(viewModel.searchState == .select)
+                            
+                            RoundedRectangle(cornerRadius: 12)
+                                .foregroundColor(.black.opacity(0.3))
+                                .isHidden(!viewModel.isForDelete(note))
+                                .overlay {
+                                    Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 60, height: 60)
+                                        .foregroundColor(viewModel.accentColor)
+                                }
+                                .isHidden(viewModel.searchState != .select, remove: true)
                         }
-                        .disabled(viewModel.searchState == .select)
+                        .onTapGesture {
+                            viewModel.toggleSelection(note)
+                        }
+                        .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchState)
+                    }
+                })
+            } else {
+                ForEach(viewModel.searchedNotes, id: \.id) { note in
+                    HStack(spacing: 12) {
+                        Image(systemName: viewModel.isForDelete(note) ? "checkmark.circle.fill" : "circle")
+                            .foregroundColor(viewModel.accentColor)
+                            .isHidden(viewModel.searchState != .select, remove: true)
+                        
+                        RecentNoteCard(
+                            title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title.orEmpty(),
+                            description: viewModel.description(from: note.notes),
+                            date: note.modifiedAt,
+                            color: viewModel.bgColor(from: note.theme.orEmpty())) {
+                                navigator.navigateTo(.note(navigator, viewModel.openNote(note)))
+                            }
+                            .disabled(viewModel.searchState == .select)
+                    }
+                    .onTapGesture {
+                        viewModel.toggleSelection(note)
+                    }
+                    .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchState)
                 }
-                .onTapGesture {
-                    viewModel.toggleSelection(note)
-                }
-                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: viewModel.searchState)
             }
         }
         .padding()
@@ -357,6 +396,12 @@ extension FolderView {
                 }
                 .scaledButtonStyle()
                 .offset(y: -20)
+                .popover(isPresented: $viewModel.isShowEmojiPicker, arrowEdge: .bottom, content: {
+                    EmojiPicker(value: $viewModel.icon) {
+                        viewModel.isShowEmojiPicker = false
+                    }
+                    .presentationDetents([.height(280)])
+                })
             }
             .padding()
             .transition(.scale.animation(.spring(response: 0.5, dampingFraction: 0.6)))
