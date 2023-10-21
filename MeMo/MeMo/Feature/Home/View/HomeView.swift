@@ -13,6 +13,12 @@ struct HomeView: View {
     @State var viewModel: HomeViewModel
     @ObservedObject var navigator: AppNavigator
     
+    @Environment(\.horizontalSizeClass) private var horizontalClass
+    
+    private var isRegularWidth: Bool {
+        return horizontalClass == .regular
+    }
+    
     init(modelContext: ModelContext, navigator: AppNavigator) {
         let viewModel = HomeViewModel(modelContext: modelContext)
         _viewModel = State(initialValue: viewModel)
@@ -142,16 +148,7 @@ struct HomeView: View {
                                 )
                                 .frame(maxWidth: .infinity)
                             } else {
-                                ForEach(viewModel.folders, id: \.id) { folder in
-                                    FolderCard(
-                                        image: folder.icon.orEmpty(),
-                                        notes: viewModel.countNotes(from: folder),
-                                        title: folder.title.orEmpty(),
-                                        color: viewModel.bgColor(from: folder.theme.orEmpty())
-                                    ) {
-                                        navigator.navigateTo(.folder(navigator, viewModel.openFolder(folder)))
-                                    }
-                                }
+                                FoldersView()
                             }
                         }
                         .padding([.horizontal, .bottom])
@@ -181,6 +178,41 @@ struct HomeView: View {
 }
 
 extension HomeView {
+    
+    @ViewBuilder
+    func FoldersView() -> some View {
+        let columns = [
+            GridItem(.flexible(minimum: 180, maximum: 900)),
+            GridItem(.flexible(minimum: 180, maximum: 900)),
+            GridItem(.flexible(minimum: 180, maximum: 900)),
+        ]
+        
+        if isRegularWidth {
+            LazyVGrid(columns: columns, spacing: 8, content: {
+                ForEach(viewModel.folders, id: \.id) { folder in
+                    FolderCard(
+                        image: folder.icon.orEmpty(),
+                        notes: viewModel.countNotes(from: folder),
+                        title: folder.title.orEmpty(),
+                        color: viewModel.bgColor(from: folder.theme.orEmpty())
+                    ) {
+                        navigator.navigateTo(.folder(navigator, viewModel.openFolder(folder)))
+                    }
+                }
+            })
+        } else {
+            ForEach(viewModel.folders, id: \.id) { folder in
+                FolderCard(
+                    image: folder.icon.orEmpty(),
+                    notes: viewModel.countNotes(from: folder),
+                    title: folder.title.orEmpty(),
+                    color: viewModel.bgColor(from: folder.theme.orEmpty())
+                ) {
+                    navigator.navigateTo(.folder(navigator, viewModel.openFolder(folder)))
+                }
+            }
+        }
+    }
     
     @ViewBuilder
     func FloatingButton() -> some View {
