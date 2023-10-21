@@ -199,20 +199,17 @@ extension NoteView {
             }
         }
         
-        // FIXME: CHANGE LOGIC TO UPLOAD IMAGE
         func addNoteImage(with photo: PhotosPickerItem?) async {
             if let data = try? await photo?.loadTransferable(type: Data.self) {
-                if let uiImage = UIImage(data: data) {
-                    let noteImage = NoteResponse(type: .init(content: .image), text: "")
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        withAnimation {
-                            self.data.notes[self.currentIndex] = noteImage
-                        }
-                        self.selectedImage = nil
+                let noteImage = NoteResponse(type: .init(content: .image), text: "", image: data)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    withAnimation {
+                        self.data.notes[self.currentIndex] = noteImage
                     }
-                    return
+                    self.selectedImage = nil
                 }
+                return
             }
         }
         
