@@ -66,83 +66,101 @@ struct HomeView: View {
             )
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("Recent")
-                                .foregroundColor(.black1)
-                                .font(.robotoMedium(size: 24))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Button {
-                                navigator.navigateTo(.global(navigator, viewModel.navigateToGlobal(state: .initiate)))
-                            } label: {
-                                Text("See all")
-                                    .foregroundColor(.black2)
-                                    .font(.robotoHeadline)
-                            }
-                        }
-                        .padding(.horizontal)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                ForEach(viewModel.recentNotes, id: \.id) { note in
-                                    RecentNoteCard(
-                                        title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title.orEmpty(),
-                                        description: viewModel.description(from: note.notes),
-                                        color: viewModel.bgColor(from: note.theme.orEmpty())
-                                    ) {
-                                        navigator.navigateTo(.note(navigator, viewModel.openRecentNote(note)))
-                                    }
-                                    .frame(width: 200)
+                if viewModel.folders.isEmpty && viewModel.recentNotes.isEmpty {
+                    EmptyStateView(
+                        title: "Let's take a memo",
+                        desc: "Sshh.. You can customize the theme color 🤫"
+                    )
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 24)
+                } else {
+                    VStack(alignment: .leading, spacing: 24) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("Recent")
+                                    .foregroundColor(.black1)
+                                    .font(.robotoMedium(size: 24))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Button {
+                                    navigator.navigateTo(.global(navigator, viewModel.navigateToGlobal(state: .initiate)))
+                                } label: {
+                                    Text("See all")
+                                        .foregroundColor(.black2)
+                                        .font(.robotoHeadline)
                                 }
+                                .isHidden(viewModel.allNotes.isEmpty, remove: true)
                             }
                             .padding(.horizontal)
-                        }
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("Folder")
-                                .foregroundColor(.black1)
-                                .font(.robotoMedium(size: 24))
-                                .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Button {
-                                navigator.navigateTo(.folder(navigator, viewModel.createNewFolder()))
-                            } label: {
-                                Image(systemName: "plus.app")
-                                    .foregroundColor(.black2)
-                                    .font(.system(size: 20))
+                            if viewModel.recentNotes.isEmpty {
+                                EmptyStateView(
+                                    title: "You don't have any memo",
+                                    desc: "Let's create your first memo 🤩"
+                                )
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal)
+                            } else {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 8) {
+                                        ForEach(viewModel.recentNotes, id: \.id) { note in
+                                            RecentNoteCard(
+                                                title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title.orEmpty(),
+                                                description: viewModel.description(from: note.notes),
+                                                color: viewModel.bgColor(from: note.theme.orEmpty())
+                                            ) {
+                                                navigator.navigateTo(.note(navigator, viewModel.openRecentNote(note)))
+                                            }
+                                            .frame(width: 200)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
                             }
                         }
                         
-                        ForEach(viewModel.folders, id: \.id) { folder in
-                            FolderCard(
-                                image: folder.icon.orEmpty(),
-                                notes: viewModel.countNotes(from: folder),
-                                title: folder.title.orEmpty(),
-                                color: viewModel.bgColor(from: folder.theme.orEmpty())
-                            ) {
-                                navigator.navigateTo(.folder(navigator, viewModel.openFolder(folder)))
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("Folder")
+                                    .foregroundColor(.black1)
+                                    .font(.robotoMedium(size: 24))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Button {
+                                    navigator.navigateTo(.folder(navigator, viewModel.createNewFolder()))
+                                } label: {
+                                    Image(systemName: "plus.app")
+                                        .foregroundColor(.black2)
+                                        .font(.system(size: 20))
+                                }
+                            }
+                            
+                            if viewModel.folders.isEmpty {
+                                EmptyStateView(
+                                    title: "You don't have any folder",
+                                    desc: "Let's create your first folder 🎨"
+                                )
+                                .frame(maxWidth: .infinity)
+                            } else {
+                                ForEach(viewModel.folders, id: \.id) { folder in
+                                    FolderCard(
+                                        image: folder.icon.orEmpty(),
+                                        notes: viewModel.countNotes(from: folder),
+                                        title: folder.title.orEmpty(),
+                                        color: viewModel.bgColor(from: folder.theme.orEmpty())
+                                    ) {
+                                        navigator.navigateTo(.folder(navigator, viewModel.openFolder(folder)))
+                                    }
+                                }
                             }
                         }
+                        .padding([.horizontal, .bottom])
                     }
-                    .padding([.horizontal, .bottom])
+                    .padding(.top)
                 }
-                .padding(.top)
             }
             .overlay(alignment: .bottomTrailing, content: {
-                Button {
-                    navigator.navigateTo(.note(navigator, viewModel.createNewNote()))
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 48))
-                        .foregroundColor(viewModel.accentColor(from: viewModel.currentTheme))
-                        .padding()
-                        .shadow(color: .black3.opacity(0.2), radius: 15)
-                }
-                .scaledButtonStyle()
+                FloatingButton()
             })
             .background(viewModel.secondaryColor(from: viewModel.currentTheme).opacity(0.1))
         }
@@ -163,6 +181,44 @@ struct HomeView: View {
 }
 
 extension HomeView {
+    
+    @ViewBuilder
+    func FloatingButton() -> some View {
+        if viewModel.recentNotes.isEmpty && viewModel.folders.isEmpty {
+            Menu {
+                Button {
+                    navigator.navigateTo(.note(navigator, viewModel.createNewNote()))
+                } label: {
+                    Label("Memo", systemImage: "doc.text")
+                }
+                
+                Button {
+                    navigator.navigateTo(.folder(navigator, viewModel.createNewFolder()))
+                } label: {
+                    Label("Folder", systemImage: "folder")
+                }
+            } label: {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 48))
+                    .foregroundColor(viewModel.accentColor(from: viewModel.currentTheme))
+                    .padding()
+                    .shadow(color: .black3.opacity(0.2), radius: 15)
+            }
+
+        } else {
+            Button {
+                navigator.navigateTo(.note(navigator, viewModel.createNewNote()))
+            } label: {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 48))
+                    .foregroundColor(viewModel.accentColor(from: viewModel.currentTheme))
+                    .padding()
+                    .shadow(color: .black3.opacity(0.2), radius: 15)
+            }
+            .scaledButtonStyle()
+        }
+    }
+    
     @ViewBuilder
     func ThemeSheet() -> some View {
         VStack(alignment: .trailing, spacing: 12) {
@@ -234,6 +290,21 @@ extension HomeView {
                 .padding()
             }
         }
+    }
+    
+    @ViewBuilder
+    func EmptyStateView(title: String, desc: String) -> some View {
+        VStack {
+            Text(title)
+                .font(.robotoTitle1)
+                .foregroundColor(.black2)
+            
+            Text(desc)
+                .font(.robotoBody)
+                .foregroundColor(.black3)
+        }
+        .multilineTextAlignment(.center)
+        .padding(32)
     }
 }
 

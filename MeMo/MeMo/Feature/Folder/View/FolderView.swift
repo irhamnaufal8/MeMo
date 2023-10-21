@@ -78,12 +78,12 @@ struct FolderView: View, KeyboardReadable {
                 case .empty:
                     EmptyStateView(
                         title: "It's still empty.. 😔",
-                        desc: "Let's make a note for today!!"
+                        desc: "Let's make a memo for today!!"
                     )
                 case .notFound:
                     EmptyStateView(
                         title: "Hmm.. 🤔",
-                        desc: "It looks like the note you are looking for doesn't exist"
+                        desc: "It looks like the memo you are looking for doesn't exist"
                     )
                 }
             }
@@ -118,6 +118,7 @@ struct FolderView: View, KeyboardReadable {
         .onDisappear {
             viewModel.searchState = .initiate
             viewModel.saveChanges()
+            viewModel.updateModifiedDate()
         }
         .overlay {
             EditFolderView()
@@ -313,7 +314,6 @@ extension FolderView {
                 Button {
                     withAnimation {
                         viewModel.searchState = .initiate
-                        viewModel.updateModifiedDate()
                         if viewModel.data.notes.isEmpty {
                             DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
                                 navigator.navigateTo(.note(navigator, viewModel.createFirstNote()))

@@ -113,7 +113,7 @@ extension NoteView {
             formatter.locale = .current
             
             let createdDate = formatter.string(from: data.createdAt.orCurrentDate())
-            let modifiedDate = formatter.string(from: data.createdAt.orCurrentDate())
+            let modifiedDate = formatter.string(from: data.modifiedAt.orCurrentDate())
             
             return isShowModified ? "Last Modified at \(modifiedDate)" : "Created at \(createdDate)"
         }
@@ -289,7 +289,9 @@ extension NoteView {
         }
         
         func updateModifiedDate() {
-            data.modifiedAt = .now
+            if modelContext.hasChanges {
+                data.modifiedAt = .now
+            }
         }
         
         func saveChanges() {
