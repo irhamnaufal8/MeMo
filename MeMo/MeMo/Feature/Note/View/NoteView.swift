@@ -104,30 +104,8 @@ struct NoteView: View, KeyboardReadable {
                         Group {
                             switch note.type {
                             case .init(content: .image):
-                                ImageLoader(url: note.imageURL.orEmpty())
-                                    .overlay(alignment: .topTrailing) {
-                                        Menu {
-                                            Button {
-                                                viewModel.currentIndex = viewModel.getCurrentIndex(of: note)
-                                                viewModel.isShowPhotoPicker = true
-                                            } label: {
-                                                Label("Change Photo", systemImage: "photo")
-                                            }
-                                            
-                                            Button(role: .destructive) {
-                                                viewModel.deleteNoteImage(note)
-                                                focusField(to: .current)
-                                            } label: {
-                                                Label("Delete Photo", systemImage: "trash")
-                                            }
-                                        } label: {
-                                            Image(systemName: "ellipsis.circle.fill")
-                                                .font(.title2)
-                                                .foregroundColor(.gray2)
-                                                .shadow(color: .black.opacity(0.5), radius: 10)
-                                        }
-                                        .padding(6)
-                                    }
+                                ImageContentView(note)
+                                    
                             case .init(content: .list):
                                 HStack(alignment: .top) {
                                     Button {
@@ -288,6 +266,64 @@ struct NoteView: View, KeyboardReadable {
 }
 
 extension NoteView {
+    @ViewBuilder
+    func ImageContentView(_ note: NoteResponse) -> some View {
+        if let data = note.image,
+           let uiImage = UIImage(data: data) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFit()
+                .cornerRadius(4)
+                .overlay(alignment: .topTrailing) {
+                    Menu {
+                        Button {
+                            viewModel.currentIndex = viewModel.getCurrentIndex(of: note)
+                            viewModel.isShowPhotoPicker = true
+                        } label: {
+                            Label("Change Photo", systemImage: "photo")
+                        }
+                        
+                        Button(role: .destructive) {
+                            viewModel.deleteNoteImage(note)
+                            focusField(to: .current)
+                        } label: {
+                            Label("Delete Photo", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.gray2)
+                            .shadow(color: .black.opacity(0.5), radius: 10)
+                    }
+                    .padding(6)
+                }
+        } else {
+            Color.gray1.opacity(0.3)
+                .overlay {
+                    VStack(spacing: 18) {
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(viewModel.accentColor.opacity(0.5))
+                            .frame(maxHeight: 90)
+                            .overlay(alignment: .topTrailing) {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 28, weight: .black))
+                                    .foregroundColor(.red)
+                                    .offset(x: 6, y: -6)
+                            }
+                        
+                        Text("Oops.. something went wrong :(")
+                            .font(.robotoBody)
+                            .foregroundColor(.black1)
+                    }
+                    .padding()
+                }
+                .frame(maxHeight: 250)
+                .cornerRadius(4)
+        }
+    }
+    
     @ViewBuilder
     func TagsSheet() -> some View {
         VStack(alignment: .leading, spacing: 12) {
