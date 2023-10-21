@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 final class AppNavigator: ObservableObject {
     @Published var routes: [Route] = .init()
@@ -24,8 +25,9 @@ final class AppNavigator: ObservableObject {
 }
 
 enum Route {
-    case folder(AppNavigator, FolderViewModel)
-    case note(AppNavigator, NoteViewModel)
+    case folder(AppNavigator, FolderView.FolderViewModel)
+    case note(AppNavigator, NoteView.NoteViewModel)
+    case global(AppNavigator, GlobalView.GlobalViewModel)
 }
 
 extension Route: Hashable {
@@ -43,10 +45,14 @@ extension Route: View {
         switch self {
         case .folder(let navigator, let viewModel):
             FolderView(viewModel: viewModel, navigator: navigator)
+                .environment(viewModel)
 
         case .note(let navigator, let viewModel):
             NoteView(viewModel: viewModel, navigator: navigator)
+                .environment(viewModel)
             
+        case .global(let navigator, let viewModel):
+            GlobalView(viewModel: viewModel, navigator: navigator)
         }
     }
 }

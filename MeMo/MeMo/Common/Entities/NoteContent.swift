@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 enum NoteContentType: String {
     case text = "TEXT"
@@ -14,14 +15,28 @@ enum NoteContentType: String {
     case bulletList = "BULLET_LIST"
 }
 
-struct NoteResponse: Identifiable, Hashable, Codable {
-    var id: String? = UUID().uuidString
+@Model
+class NoteResponse: Identifiable {
+    @Attribute(.unique)
+    var id: String = UUID().uuidString
     var type: String?
     var text: String
     var isChecked: Bool? = false
     var imageURL: String?
+    var image: Data?
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+    @Relationship(deleteRule: .cascade, inverse: \NoteFileResponse.notes)
+    var noteFile: NoteFileResponse?
+    var createdAt: Date
+    
+    init(id: String = UUID().uuidString, type: String? = nil, text: String, isChecked: Bool? = false, imageURL: String? = nil, image: Data? = nil, noteFile: NoteFileResponse? = nil, createdAt: Date = .now) {
+        self.id = id
+        self.type = type
+        self.text = text
+        self.isChecked = isChecked
+        self.imageURL = imageURL
+        self.image = image
+        self.noteFile = noteFile
+        self.createdAt = createdAt
     }
 }

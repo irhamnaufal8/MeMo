@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
     @ObservedObject var navigator: AppNavigator = .init()
+    let container: ModelContainer
 
     var body: some View {
         NavigationStack(path: $navigator.routes) {
-            HomeView(viewModel: .init(), navigator: navigator)
+            HomeView(modelContext: container.mainContext, navigator: navigator)
                 .navigationDestination(for: Route.self) { $0 }
         }
+        .environment(HomeView.HomeViewModel(modelContext: container.mainContext))
     }
 }
-
-#Preview {
-    ContentView()
-}
+//
+//#Preview {
+//    ContentView()
+//}
