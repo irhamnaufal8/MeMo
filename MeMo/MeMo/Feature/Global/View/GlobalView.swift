@@ -78,12 +78,12 @@ struct GlobalView: View, KeyboardReadable {
                 case .empty:
                     EmptyStateView(
                         title: "It's still empty.. 😔",
-                        desc: "Let's make a note for today!!"
+                        desc: "Let's make a memo for today!!"
                     )
                 case .notFound:
                     EmptyStateView(
                         title: "Hmm.. 🤔",
-                        desc: "It looks like the note you are looking for doesn't exist"
+                        desc: "It looks like the memo you are looking for doesn't exist"
                     )
                 }
             }
@@ -206,7 +206,7 @@ extension GlobalView {
                         .isHidden(viewModel.searchState != .select, remove: true)
                     
                     RecentNoteCard(
-                        title: note.title.orEmpty(),
+                        title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title ?? "New MeMo",
                         description: viewModel.description(from: note.notes),
                         date: note.modifiedAt,
                         color: viewModel.bgColor(from: note.theme.orEmpty())) {

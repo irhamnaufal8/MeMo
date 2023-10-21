@@ -267,7 +267,9 @@ extension FolderView {
         }
         
         func updateModifiedDate() {
-            data.modifiedAt = .now
+            if modelContext.hasChanges {
+                data.modifiedAt = .now
+            }
         }
         
         func deleteFolder() {
