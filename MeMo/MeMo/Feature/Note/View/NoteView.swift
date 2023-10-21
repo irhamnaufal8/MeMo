@@ -7,13 +7,19 @@
 
 import SwiftUI
 import PhotosUI
+import SwiftData
 
 struct NoteView: View, KeyboardReadable {
     
-    @ObservedObject var viewModel: NoteViewModel
+    @State var viewModel: NoteViewModel
     @ObservedObject var navigator: AppNavigator
     
     @FocusState private var focusedField: Int?
+    
+    init(viewModel: NoteViewModel, navigator: AppNavigator) {
+        _viewModel = State(initialValue: viewModel)
+        self.navigator = navigator
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -236,6 +242,11 @@ struct NoteView: View, KeyboardReadable {
         }
         .onAppear {
             viewModel.addFirstText()
+            viewModel.modelContext.autosaveEnabled = false
+        }
+        .onDisappear {
+            viewModel.updateModifiedDate()
+            viewModel.saveChanges()
         }
         .tint(viewModel.accentColor)
         .overlay(alignment: .topTrailing) {
@@ -262,10 +273,16 @@ struct NoteView: View, KeyboardReadable {
             selection: $viewModel.selectedImage,
             matching: .images
         )
-        .onChange(of: viewModel.selectedImage) { photo in
+        .onChange(of: viewModel.selectedImage) { _, photo in
             Task {
                 await viewModel.addNoteImage(with: photo)
             }
+        }
+        .onChange(of: viewModel.title) { _, title in
+            viewModel.updateTitle(title)
+        }
+        .onChange(of: viewModel.data.notes) { _, _ in
+            viewModel.sortContent()
         }
     }
 }
@@ -419,6 +436,7 @@ extension NoteView {
         HStack {
             Button {
                 hideKeyboard()
+                viewModel.isShowBottomBar = false
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
                     self.viewModel.isShowPhotoPicker = true
                 }
@@ -441,6 +459,7 @@ extension NoteView {
             
             Button {
                 hideKeyboard()
+                viewModel.isShowBottomBar = false
             } label: {
                 Image(systemName: "keyboard.chevron.compact.down")
             }
@@ -480,6 +499,6 @@ extension NoteView {
     }
 }
 
-#Preview {
-    NoteView(viewModel: .init(data: .dummy4), navigator: .init())
-}
+//#Preview {
+//    NoteView(viewModel: .init(data: .dummy4), navigator: .init())
+//}

@@ -70,7 +70,7 @@ final class DefaultNoteLocalDataSource: NoteLocalDataSource {
     }
     
     func update(note: NoteFileResponse) async throws {
-        guard let data = try getEntityById(UUID(uuidString: note.id.orEmpty()) ?? .init()) else { return }
+        guard let data = try getEntityById(UUID(uuidString: note.id) ?? .init()) else { return }
         data.title = note.title
 //        data.tags = NSSet(array: note.tags ?? [])
         data.theme = note.theme

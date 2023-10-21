@@ -6,11 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     
-    @ObservedObject var viewModel: HomeViewModel
+    @State var viewModel: HomeViewModel
     @ObservedObject var navigator: AppNavigator
+    
+    init(modelContext: ModelContext, navigator: AppNavigator) {
+        let viewModel = HomeViewModel(modelContext: modelContext)
+        _viewModel = State(initialValue: viewModel)
+        self.navigator = navigator
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -31,7 +38,7 @@ struct HomeView: View {
                 }
                 
                 Button {
-                    navigator.navigateTo(.folder(navigator, viewModel.navigateToMainFolder(state: .search)))
+                    navigator.navigateTo(.global(navigator, viewModel.navigateToGlobal(state: .search)))
                 } label: {
                     HStack(spacing: 8) {
                         Image(systemName: "magnifyingglass")
@@ -68,7 +75,7 @@ struct HomeView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Button {
-                                navigator.navigateTo(.folder(navigator, viewModel.navigateToMainFolder(state: .initiate)))
+                                navigator.navigateTo(.global(navigator, viewModel.navigateToGlobal(state: .initiate)))
                             } label: {
                                 Text("See all")
                                     .foregroundColor(.black2)
@@ -81,11 +88,11 @@ struct HomeView: View {
                             HStack(spacing: 8) {
                                 ForEach(viewModel.recentNotes, id: \.id) { note in
                                     RecentNoteCard(
-                                        title: note.title.orEmpty(),
-                                        description: viewModel.description(from: note.notes ?? []),
+                                        title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title.orEmpty(),
+                                        description: viewModel.description(from: note.notes),
                                         color: viewModel.bgColor(from: note.theme.orEmpty())
                                     ) {
-                                        navigator.navigateTo(.note(navigator, .init(data: note)))
+                                        navigator.navigateTo(.note(navigator, viewModel.openRecentNote(note)))
                                     }
                                     .frame(width: 200)
                                 }
@@ -117,7 +124,7 @@ struct HomeView: View {
                                 title: folder.title.orEmpty(),
                                 color: viewModel.bgColor(from: folder.theme.orEmpty())
                             ) {
-                                navigator.navigateTo(.folder(navigator, .init(data: folder, isMainFolder: false)))
+                                navigator.navigateTo(.folder(navigator, viewModel.openFolder(folder)))
                             }
                         }
                     }
@@ -140,9 +147,10 @@ struct HomeView: View {
             .background(viewModel.secondaryColor(from: viewModel.currentTheme).opacity(0.1))
         }
         .onAppear {
-            Task {
-                await viewModel.getAllNotes()
-            }
+            viewModel.getAllNotes()
+        }
+        .onDisappear {
+            viewModel.saveChanges()
         }
         .tint(viewModel.accentColor(from: viewModel.currentTheme))
         .navigationTitle("")
@@ -229,6 +237,7 @@ extension HomeView {
     }
 }
 
-#Preview {
-    HomeView(viewModel: .init(), navigator: .init())
-}
+//#Preview {
+//    HomeView(
+//        modelContext: .init(), navigator: .init())
+//}

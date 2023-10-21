@@ -1,21 +1,21 @@
 //
-//  FolderView.swift
+//  GlobalView.swift
 //  MeMo
 //
-//  Created by Irham Naufal on 17/10/23.
+//  Created by Irham Naufal on 21/10/23.
 //
 
 import SwiftUI
 import SwiftData
 
-struct FolderView: View, KeyboardReadable {
+struct GlobalView: View, KeyboardReadable {
     
-    @State var viewModel: FolderViewModel
+    @State var viewModel: GlobalViewModel
     @ObservedObject var navigator: AppNavigator
     
     @FocusState var focused
     
-    init(viewModel: FolderViewModel, navigator: AppNavigator) {
+    init(viewModel: GlobalViewModel, navigator: AppNavigator) {
         _viewModel = State(initialValue: viewModel)
         self.navigator = navigator
     }
@@ -33,7 +33,7 @@ struct FolderView: View, KeyboardReadable {
                     }
                     .isHidden(viewModel.searchState == .select, remove: true)
                     
-                    Text("\(viewModel.icon) \(viewModel.title)")
+                    Text("All Your Notes")
                         .font(.robotoTitle2)
                         .foregroundColor(.black1)
                         .lineLimit(1)
@@ -66,7 +66,7 @@ struct FolderView: View, KeyboardReadable {
             }
             .padding()
             .background(
-                viewModel.bgColor(from: viewModel.data.theme ?? "BLUE")
+                viewModel.bgColor(from: viewModel.theme)
                     .ignoresSafeArea()
                     .shadow(color: .black3.opacity(0.1), radius: 15, y: 5)
             )
@@ -112,40 +112,22 @@ struct FolderView: View, KeyboardReadable {
                 .isHidden(viewModel.searchState != .select, remove: true)
         }
         .onAppear {
-            viewModel.editFolderWhenFirstCreated()
             focused = viewModel.searchState == .search
         }
         .onDisappear {
             viewModel.searchState = .initiate
             viewModel.saveChanges()
         }
-        .overlay {
-            EditFolderView()
-        }
-        .sheet(isPresented: $viewModel.isShowEmojiPicker, content: {
-            EmojiPicker(value: $viewModel.icon) {
-                viewModel.isShowEmojiPicker = false
-            }
-            .presentationDetents([.height(280)])
-        })
         .tint(viewModel.accentColor)
         .navigationTitle("")
         .navigationBarBackButtonHidden()
     }
 }
 
-extension FolderView {
+extension GlobalView {
     @ViewBuilder
     func MenuView() -> some View {
         Menu {
-            Button {
-                withAnimation {
-                    viewModel.searchState = .edit
-                }
-            } label: {
-                Label("Edit", systemImage: "slider.horizontal.3")
-            }
-            
             Button {
                 withAnimation {
                     viewModel.searchState = .select
@@ -153,7 +135,6 @@ extension FolderView {
             } label: {
                 Label("Select Notes", systemImage: "checkmark.circle")
             }
-            .isHidden((viewModel.data.notes ?? []).isEmpty, remove: true)
             
             Menu {
                 Picker("", selection: $viewModel.sortBy) {
@@ -177,22 +158,13 @@ extension FolderView {
             } label: {
                 Label("Sort By", systemImage: "arrow.up.arrow.down")
             }
-            
-            Button(role: .destructive) {
-                viewModel.isFolderDeleted = true
-                viewModel.deleteFolder()
-                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-                    navigator.back()
-                }
-            } label: {
-                Label("Delete Folder", systemImage: "delete.left")
-            }
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 20, weight: .bold))
                 .foregroundColor(.black1)
                 .padding(4)
         }
+        .isHidden(viewModel.data.isEmpty, remove: true)
     }
     
     @ViewBuilder
@@ -234,7 +206,7 @@ extension FolderView {
                         .isHidden(viewModel.searchState != .select, remove: true)
                     
                     RecentNoteCard(
-                        title: note.title.orEmpty().isEmpty ? "New MeMo" : note.title.orEmpty(),
+                        title: note.title.orEmpty(),
                         description: viewModel.description(from: note.notes),
                         date: note.modifiedAt,
                         color: viewModel.bgColor(from: note.theme.orEmpty())) {
@@ -265,112 +237,9 @@ extension FolderView {
         .multilineTextAlignment(.center)
         .padding(32)
     }
-    
-    @ViewBuilder
-    func EditFolderView() -> some View {
-        ZStack {
-            Color.black.opacity(0.2).ignoresSafeArea()
-                .isHidden(viewModel.searchState != .edit, remove: true)
-            
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Folder Title")
-                        .font(.robotoHeadline)
-                        .foregroundColor(.black2)
-                    
-                    TextField("Programming Stuffs", text: $viewModel.title)
-                        .font(.robotoBody)
-                        .foregroundColor(.black1)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .foregroundColor(viewModel.secondaryColor)
-                        )
-                }
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Folder Color")
-                        .font(.robotoHeadline)
-                        .foregroundColor(.black2)
-                    
-                    HStack(spacing: 8) {
-                        ForEach(viewModel.themes, id: \.self) { theme in
-                            Button {
-                                withAnimation {
-                                    viewModel.data.theme = theme.rawValue
-                                }
-                            } label: {
-                                Image(systemName: viewModel.data.theme == theme.rawValue ? "checkmark.circle.fill" : "circle.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxWidth: 40, maxHeight: 40)
-                                    .foregroundColor(viewModel.accentColor(from: theme.rawValue))
-                            }
-                        }
-                    }
-                }
-                
-                Button {
-                    withAnimation {
-                        viewModel.searchState = .initiate
-                        viewModel.updateModifiedDate()
-                        if viewModel.data.notes.isEmpty {
-                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                                navigator.navigateTo(.note(navigator, viewModel.createFirstNote()))
-                            }
-                        }
-                    }
-                } label: {
-                    Text("Done")
-                        .foregroundColor(.white)
-                        .font(.robotoHeadline)
-                        .padding(14)
-                        .frame(maxWidth: .infinity)
-                        .background(viewModel.disableDoneButton() ? Color.gray1 : viewModel.accentColor)
-                        .cornerRadius(8)
-                }
-                .scaledButtonStyle()
-                .disabled(viewModel.disableDoneButton())
-            }
-            .padding()
-            .padding(.vertical)
-            .padding(.top)
-            .frame(maxWidth: 512)
-            .background(Color.white)
-            .cornerRadius(16)
-            .offset(y: 20)
-            .overlay(alignment: .top) {
-                Button {
-                    viewModel.isShowEmojiPicker = true
-                } label: {
-                    Text(viewModel.icon)
-                        .font(.robotoRegular(size: 42))
-                        .padding()
-                        .frame(maxWidth: 80, maxHeight: 80)
-                        .background(
-                            Circle()
-                                .strokeBorder(lineWidth: 4)
-                                .foregroundColor(viewModel.accentColor)
-                        )
-                        .background(Color.white)
-                        .clipShape(.circle)
-                }
-                .scaledButtonStyle()
-                .offset(y: -20)
-            }
-            .padding()
-            .transition(.scale.animation(.spring(response: 0.5, dampingFraction: 0.6)))
-            .isHidden(viewModel.searchState != .edit, remove: true)
-        }
-        .onChange(of: viewModel.title) { _, newValue in
-            viewModel.updateTitle(newValue)
-        }
-        .onChange(of: viewModel.icon) { _, newValue in
-            viewModel.updateIcon(newValue)
-        }
-    }
 }
-//
+
+
 //#Preview {
-//    FolderView(viewModel: .init(data: .dummy), navigator: .init())
+//    GlobalView(viewModel: .init(modelContext: , theme: "PURPLE"), navigator: .init())
 //}

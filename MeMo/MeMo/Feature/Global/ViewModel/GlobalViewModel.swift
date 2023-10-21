@@ -1,49 +1,21 @@
 //
-//  FolderViewModel.swift
+//  GlobalViewModel.swift
 //  MeMo
 //
-//  Created by Irham Naufal on 17/10/23.
+//  Created by Irham Naufal on 21/10/23.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
-enum SortBy: String {
-    case edited = "Date Edited"
-    case created  = "Date Created"
-    case title  = "Title"
-}
-
-enum OrderBy {
-    case ascending
-    case descending
-}
-
-enum DataState {
-    case initiate
-    case empty
-    case notFound
-}
-
-enum SearchState {
-    case initiate
-    case search
-    case select
-    case edit
-}
-
-extension FolderView {
+extension GlobalView {
     @Observable
-    final class FolderViewModel {
+    final class GlobalViewModel {
         
         var modelContext: ModelContext
         
         var searchText = ""
-        var data: FolderResponse
-        
-        var title = ""
-        var icon = "💌"
-        var folderId = ""
+        var data: [NoteFileResponse]
         
         var sortBy: SortBy = .edited
         var orderBy: OrderBy = .ascending
@@ -52,11 +24,7 @@ extension FolderView {
         
         var notesForDelete: [NoteFileResponse] = []
         
-        var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
-        
-        var isShowEmojiPicker = false
-        
-        var isFolderDeleted = false
+        var theme: String
         
         var searchedNotes: [NoteFileResponse] {
             sortedNotesOrder()
@@ -73,7 +41,7 @@ extension FolderView {
         }
         
         var accentColor: Color {
-            switch data.theme {
+            switch theme {
             case ThemeColor.blue.rawValue:
                 return .blue1
             case ThemeColor.green.rawValue:
@@ -92,7 +60,7 @@ extension FolderView {
         }
         
         var secondaryColor: Color {
-            switch data.theme {
+            switch theme {
             case ThemeColor.blue.rawValue:
                 return .blue2
             case ThemeColor.green.rawValue:
@@ -110,14 +78,12 @@ extension FolderView {
             }
         }
         
-        init(modelContext: ModelContext, data: FolderResponse, state: SearchState = .initiate) {
+        init(modelContext: ModelContext, data: [NoteFileResponse], state: SearchState = .initiate, theme: String) {
             self.modelContext = modelContext
             self.data = data
             self.searchState = state
-            self.icon = data.icon.orEmpty()
-            self.title = data.title.orEmpty()
+            self.theme = theme
             self.modelContext.autosaveEnabled = true
-            self.folderId = data.id
         }
         
         func description(from notes: [NoteResponse]) -> String {
@@ -169,7 +135,7 @@ extension FolderView {
         }
         
         func isAllSelected() -> Bool {
-            data.notes.allSatisfy({
+            data.allSatisfy({
                 isForDelete($0)
             })
         }
@@ -178,7 +144,7 @@ extension FolderView {
             if isAllSelected() {
                 notesForDelete = []
             } else {
-                notesForDelete = data.notes
+                notesForDelete = data
             }
         }
         
@@ -194,7 +160,7 @@ extension FolderView {
             var noteIdForDelete = ""
             if !notesForDelete.isEmpty {
                 withAnimation {
-                    data.notes.removeAll { item in
+                    data.removeAll { item in
                         return notesForDelete.contains { $0.id == item.id }
                     }
                     
@@ -214,28 +180,13 @@ extension FolderView {
             }
         }
         
-        func createFirstNote() -> NoteView.NoteViewModel {
-            let note: NoteFileResponse = .init(
-                title: "\(data.title.orEmpty())'s First Note",
-                notes: [.init(type: NoteContentType.text.rawValue, text: "Write your first sentence in \(data.title.orEmpty())'s note", createdAt: .now)],
-                theme: data.theme ?? "PURPLE",
-                createdAt: .now,
-                modifiedAt: .now,
-                folder: data
-            )
-            
-            data.notes.append(note)
-            return .init(modelContext: modelContext, data: note, isNewNote: true)
-        }
-        
         func createNewNote() -> NoteView.NoteViewModel {
             let note: NoteFileResponse = .init(
                 title: "",
                 notes: [],
-                theme: data.theme ?? "PURPLE",
+                theme: theme,
                 createdAt: .now,
-                modifiedAt: .now,
-                folder: data
+                modifiedAt: .now
             )
             
             modelContext.insert(note)
@@ -244,36 +195,6 @@ extension FolderView {
         
         func openNote(_ note: NoteFileResponse) -> NoteView.NoteViewModel {
             return .init(modelContext: modelContext, data: note)
-        }
-        
-        func editFolderWhenFirstCreated() {
-            if data.title.orEmpty().isEmpty {
-                withAnimation {
-                    searchState = .edit
-                }
-            }
-        }
-        
-        func disableDoneButton() -> Bool {
-            title.isEmpty || title.isWhitespace || icon.isEmpty || icon.isWhitespace
-        }
-        
-        func updateTitle(_ title: String) {
-            data.title = title
-        }
-        
-        func updateIcon(_ icon: String) {
-            data.icon = icon
-        }
-        
-        func updateModifiedDate() {
-            data.modifiedAt = .now
-        }
-        
-        func deleteFolder() {
-            if isFolderDeleted {
-                modelContext.delete(data)
-            }
         }
         
         func saveChanges() {
@@ -286,7 +207,7 @@ extension FolderView {
         
         private func sortedNotesOrder() -> [NoteFileResponse] {
             guard !searchText.isEmpty else {
-                return data.notes.sorted(by: {
+                return data.sorted(by: {
                     switch sortBy {
                     case .edited:
                         orderBy == .ascending ?
@@ -304,7 +225,7 @@ extension FolderView {
                 })
             }
             
-            return data.notes.filter { note in
+            return data.filter { note in
                 note.title.orEmpty().lowercased().contains(searchText.lowercased())
                 || note.notes.contains(where: { desc in
                     if (desc.type).orEmpty().isContent(of: .text) {

@@ -6,15 +6,28 @@
 //
 
 import Foundation
+import SwiftData
 
-struct FolderResponse: Identifiable {
-    var id: String? = UUID().uuidString
+@Model
+class FolderResponse: Identifiable {
+    @Attribute(.unique)
+    var id: String = UUID().uuidString
     var title: String?
     var icon: String?
     var theme: String?
-    var notes: [NoteFileResponse]?
+    var notes: [NoteFileResponse]
     var createdAt: Date?
     var modifiedAt: Date?
+    
+    init(id: String = UUID().uuidString, title: String? = nil, icon: String? = nil, theme: String? = nil, notes: [NoteFileResponse] = [], createdAt: Date? = nil, modifiedAt: Date? = nil) {
+        self.id = id
+        self.title = title
+        self.icon = icon
+        self.theme = theme
+        self.notes = notes
+        self.createdAt = createdAt
+        self.modifiedAt = modifiedAt
+    }
 }
 
 extension FolderResponse {

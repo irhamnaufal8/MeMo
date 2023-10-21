@@ -10,7 +10,9 @@ import SwiftData
 
 @Model
 class NoteFileResponse: Identifiable {
-    var id: String? = UUID().uuidString
+    
+    @Attribute(.unique)
+    var id: String = UUID().uuidString
     var title: String?
     var tags: [TagResponse]?
     var notes: [NoteResponse]
@@ -18,15 +20,10 @@ class NoteFileResponse: Identifiable {
     var createdAt: Date?
     var modifiedAt: Date?
     
-    init(
-        id: String? = nil,
-        title: String? = nil,
-        tags: [TagResponse]? = nil,
-        notes: [NoteResponse],
-        theme: String? = nil,
-        createdAt: Date? = nil,
-        modifiedAt: Date? = nil
-    ) {
+    @Relationship(deleteRule: .noAction, inverse: \FolderResponse.notes)
+    var folder: FolderResponse?
+    
+    init(id: String = UUID().uuidString, title: String? = nil, tags: [TagResponse]? = [], notes: [NoteResponse], theme: String? = nil, createdAt: Date? = nil, modifiedAt: Date? = nil, folder: FolderResponse? = nil) {
         self.id = id
         self.title = title
         self.tags = tags
@@ -34,22 +31,24 @@ class NoteFileResponse: Identifiable {
         self.theme = theme
         self.createdAt = createdAt
         self.modifiedAt = modifiedAt
+        self.folder = folder
     }
 }
 
-struct NoteFileModelResponse: Identifiable {
-    var id: String? = UUID().uuidString
-    var title: String?
-    var tags: [String]?
-    var notes: [String]?
-    var theme: String?
-    var createdAt: Date?
-    var modifiedAt: Date?
-}
-
-struct TagResponse: Identifiable, Codable {
-    var id: String? = UUID().uuidString
+@Model
+class TagResponse: Identifiable {
+    @Attribute(.unique)
+    var id: String = UUID().uuidString
     var text: String?
+    
+    @Relationship(deleteRule: .noAction, inverse: \NoteFileResponse.tags)
+    var note: NoteFileResponse?
+    
+    init(id: String = UUID().uuidString, text: String? = nil, note: NoteFileResponse? = nil) {
+        self.id = id
+        self.text = text
+        self.note = note
+    }
 }
 
 extension NoteFileResponse {
