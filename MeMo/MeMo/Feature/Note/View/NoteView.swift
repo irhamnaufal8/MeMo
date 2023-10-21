@@ -412,11 +412,11 @@ extension NoteView {
                 Label("Change Theme Color", systemImage: "paintpalette")
             }
             
-            Button(role: .destructive) {
-                
-            } label: {
-                Label("Delete Note", systemImage: "delete.left")
-            }
+//            Button(role: .destructive) {
+//                
+//            } label: {
+//                Label("Delete Note", systemImage: "delete.left")
+//            }
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 20, weight: .bold))

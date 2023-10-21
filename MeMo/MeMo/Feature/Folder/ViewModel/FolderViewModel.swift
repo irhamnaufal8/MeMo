@@ -56,6 +56,8 @@ extension FolderView {
         
         var isShowEmojiPicker = false
         
+        var alert: MeMoAlertProperty = .init()
+        var isShowAlert = false
         var isFolderDeleted = false
         
         var searchedNotes: [NoteFileResponse] {
@@ -331,6 +333,50 @@ extension FolderView {
                     $0.title.orEmpty() > $1.title.orEmpty()
                 }
             })
+        }
+        
+        func showDeleteFolderAlert(completion: @escaping () -> Void) {
+            alert.title = "Delete This Folder?"
+            alert.primaryButton = .init(
+                text: "Sure",
+                bgColor: accentColor,
+                action: {
+                    self.isShowAlert = false
+                    self.isFolderDeleted = true
+                    self.deleteFolder()
+                    completion()
+                }
+            )
+            alert.secondaryButton = .init(
+                text: "Cancel",
+                bgColor: .gray1,
+                action: {
+                    self.isShowAlert = false
+                }
+            )
+            
+            isShowAlert = true
+        }
+        
+        func showDeleteNotesAlert() {
+            alert.title = "Delete This Memo?"
+            alert.primaryButton = .init(
+                text: "Sure",
+                bgColor: accentColor,
+                action: {
+                    self.isShowAlert = false
+                    self.deleteNotes()
+                }
+            )
+            alert.secondaryButton = .init(
+                text: "Cancel",
+                bgColor: .gray1,
+                action: {
+                    self.isShowAlert = false
+                }
+            )
+            
+            isShowAlert = true
         }
     }
 }
