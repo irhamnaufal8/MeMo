@@ -129,6 +129,7 @@ struct FolderView: View, KeyboardReadable {
         .overlay {
             EditFolderView()
         }
+        .memoAlert(isPresent: $viewModel.isShowAlert, property: viewModel.alert)
         .tint(viewModel.accentColor)
         .navigationTitle("")
         .navigationBarBackButtonHidden()
@@ -180,10 +181,10 @@ extension FolderView {
             }
             
             Button(role: .destructive) {
-                viewModel.isFolderDeleted = true
-                viewModel.deleteFolder()
-                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-                    navigator.back()
+                viewModel.showDeleteFolderAlert {
+                    DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                        navigator.back()
+                    }
                 }
             } label: {
                 Label("Delete Folder", systemImage: "delete.left")
@@ -212,7 +213,7 @@ extension FolderView {
             Spacer()
             
             Button {
-                viewModel.deleteNotes()
+                viewModel.showDeleteNotesAlert()
             } label: {
                 Text("Delete")
                     .font(.robotoHeadline)
@@ -350,7 +351,10 @@ extension FolderView {
                     }
                 }
                 
-                Button {
+                MeMoButton(
+                    text: "Done",
+                    bgColor: viewModel.disableDoneButton() ? Color.gray1 : viewModel.accentColor
+                ) {
                     withAnimation {
                         viewModel.searchState = .initiate
                         if viewModel.data.notes.isEmpty {
@@ -359,16 +363,7 @@ extension FolderView {
                             }
                         }
                     }
-                } label: {
-                    Text("Done")
-                        .foregroundColor(.white)
-                        .font(.robotoHeadline)
-                        .padding(14)
-                        .frame(maxWidth: .infinity)
-                        .background(viewModel.disableDoneButton() ? Color.gray1 : viewModel.accentColor)
-                        .cornerRadius(8)
                 }
-                .scaledButtonStyle()
                 .disabled(viewModel.disableDoneButton())
             }
             .padding()

@@ -26,6 +26,9 @@ extension GlobalView {
         
         var theme: String
         
+        var alert: MeMoAlertProperty = .init()
+        var isShowAlert = false
+        
         var searchedNotes: [NoteFileResponse] {
             sortedNotesOrder()
         }
@@ -250,6 +253,27 @@ extension GlobalView {
                     $0.title.orEmpty() > $1.title.orEmpty()
                 }
             })
+        }
+        
+        func showDeleteNotesAlert() {
+            alert.title = "Delete This Memo?"
+            alert.primaryButton = .init(
+                text: "Sure",
+                bgColor: accentColor,
+                action: {
+                    self.isShowAlert = false
+                    self.deleteNotes()
+                }
+            )
+            alert.secondaryButton = .init(
+                text: "Cancel",
+                bgColor: .gray1,
+                action: {
+                    self.isShowAlert = false
+                }
+            )
+            
+            isShowAlert = true
         }
     }
 }

@@ -117,6 +117,7 @@ struct GlobalView: View, KeyboardReadable {
             FooterView()
                 .isHidden(viewModel.searchState != .select, remove: true)
         }
+        .memoAlert(isPresent: $viewModel.isShowAlert, property: viewModel.alert)
         .onAppear {
             focused = viewModel.searchState == .search
         }
@@ -189,7 +190,7 @@ extension GlobalView {
             Spacer()
             
             Button {
-                viewModel.deleteNotes()
+                viewModel.showDeleteNotesAlert()
             } label: {
                 Text("Delete")
                     .font(.robotoHeadline)
