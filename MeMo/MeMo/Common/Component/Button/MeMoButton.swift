@@ -7,22 +7,32 @@
 
 import SwiftUI
 
+/// An enum that represents the different types of buttons.
 enum ButtonType {
+    /// A button that adapts its size to the content.
     case adaptive
+    /// A button that wraps its content to the next line if necessary.
     case wrapped
+    /// A button with a fixed width.
     case fixed(CGFloat)
 }
 
+/// A custom button view.
 struct MeMoButton: View {
     
-    var role: ButtonType = .adaptive
+    /// The type of button.
+    var type: ButtonType = .adaptive
+    /// The text of the button.
     var text: String
+    /// The background color of the button.
     var bgColor: Color
+    /// The action to be executed when the button is tapped.
     var action: () -> Void
-    
+
     var body: some View {
-        switch role {
+        switch type {
         case .adaptive:
+            /// An adaptive button.
             Button {
                 action()
             } label: {
@@ -36,8 +46,9 @@ struct MeMoButton: View {
                     .cornerRadius(8)
             }
             .scaledButtonStyle()
-            
+
         case .wrapped:
+            /// A wrapped button.
             Button {
                 action()
             } label: {
@@ -50,8 +61,9 @@ struct MeMoButton: View {
                     .cornerRadius(8)
             }
             .scaledButtonStyle()
-            
+
         case .fixed(let width):
+            /// A fixed-width button.
             Button {
                 action()
             } label: {
@@ -69,6 +81,7 @@ struct MeMoButton: View {
     }
 }
 
+
 fileprivate struct MeMoButtonPreview: View {
     @State var disable = false
     @State var disable2 = false
@@ -77,19 +90,19 @@ fileprivate struct MeMoButtonPreview: View {
     var body: some View {
         VStack {
             MeMoButton(
-                role: .adaptive,
+                type: .adaptive,
                 text: "Adaptive",
                 bgColor: disable ? .gray1 : .red1
             ) {
                 disable.toggle()
             }
             
-            MeMoButton(role: .wrapped, text: "Wrapped", bgColor: disable2 ? .gray1 : .purple1) {
+            MeMoButton(type: .wrapped, text: "Wrapped", bgColor: disable2 ? .gray1 : .purple1) {
                 disable2.toggle()
             }
             
             MeMoButton(
-                role: .fixed(120),
+                type: .fixed(120),
                 text: "Fixed",
                 bgColor: disable3 ? .gray1 : .pink1
             ) {
