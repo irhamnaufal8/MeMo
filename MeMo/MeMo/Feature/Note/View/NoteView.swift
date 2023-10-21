@@ -509,8 +509,9 @@ extension NoteView {
     }
 }
 
+/// Extension for the `NoteView` class that provides methods for focusing on different notes in the note list.
 extension NoteView {
-    
+    /// An enum representing the different focus targets for the note list.
     private enum FocusTarget {
         case current
         case next
@@ -518,18 +519,27 @@ extension NoteView {
         case last
     }
     
+    /// Focuses the note at the specified focus target.
+    ///
+    /// - Parameter target: The focus target.
     private func focusField(to target: FocusTarget) {
+        // Dispatch the focus to the main thread after 0.1 seconds.
         DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
             switch target {
             case .current:
+                // Focus the current note.
                 self.focusedField = viewModel.currentIndex
             case .next:
+                // Focus the next note, if it exists.
+                guard viewModel.currentIndex + 1 < viewModel.data.notes.count else { return }
                 self.focusedField = viewModel.currentIndex + 1
             case .previous:
+                // Focus the previous note, if it exists.
                 guard viewModel.currentIndex > 0 else { return }
                 self.focusedField = viewModel.currentIndex - 1
             case .last:
-                self.focusedField = viewModel.data.notes.count-1
+                // Focus the last note.
+                self.focusedField = viewModel.data.notes.count - 1
             }
         }
     }
