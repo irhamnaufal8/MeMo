@@ -7,14 +7,24 @@
 
 import SwiftUI
 
+/// Custom card for displaying a recent note card.
 struct RecentNoteCard: View {
     
+    /// The title of the note.
     var title: String
+
+    /// The description of the note.
     var description: String
+
+    /// The date of the note (optional).
     var date: Date?
+
+    /// The color of the note card.
     var color: Color = .orange3
+
+    /// The callback to be executed when the user taps on the note card.
     var action: () -> Void
-    
+
     var body: some View {
         Button {
             action()
@@ -49,7 +59,7 @@ struct RecentNoteCard: View {
         }
         .scaledButtonStyle()
     }
-    
+
     private func relativeTime(from date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
@@ -57,6 +67,7 @@ struct RecentNoteCard: View {
         return formatter.localizedString(for: date, relativeTo: .now)
     }
 }
+
 
 #Preview {
     RecentNoteCard(

@@ -7,14 +7,24 @@
 
 import SwiftUI
 
+/// A custom view for displaying a folder card.
 struct FolderCard: View {
     
+    /// The image of the folder.
     var image: String
+
+    /// The number of notes in the folder.
     var notes: Int
+
+    /// The title of the folder.
     var title: String
+
+    /// The color of the folder card.
     var color: Color = .gray2
+
+    /// The callback to be executed when the user taps on the folder card.
     var action: () -> Void
-    
+
     var body: some View {
         Button {
             action()
@@ -47,6 +57,7 @@ struct FolderCard: View {
         .scaledButtonStyle()
     }
 }
+
 
 #Preview {
     FolderCard(image: "💌", notes: 8, title: "Dummy Title") {}

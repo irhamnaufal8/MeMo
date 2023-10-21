@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 
+/// A custom text view wrapper that provides support for multiline editing and dynamic height.
 private struct UITextViewWrapper: UIViewRepresentable {
     typealias UIViewType = CustomTextView
     
@@ -140,16 +141,29 @@ private struct UITextViewWrapper: UIViewRepresentable {
     }
 }
 
+/// A custom text view that allows for multiline editing.
 struct MultilineTextField: View {
-    
+    /// The placeholder text for the text view.
     private var placeholder: String
+    
+    /// The binding to the text in the text view.
     @Binding private var text: String
+    
+    /// The font for the text view.
     private var font: UIFont?
+    
+    /// The callback to be executed when the user commits to the text view.
     private var onCommit: (() -> Void)?
+    
+    /// The callback to be executed when the user starts editing the text view.
     private var onEdit: (() -> Void)?
+    
+    /// The callback to be executed when the user finishes editing the text view.
     private var onDoneEdit: (() -> Void)?
+    
+    /// The callback to be executed when the user presses the backspace key.
     var onBackspace: ((Bool) -> Void)?
-
+    
     private var internalText: Binding<String> {
         Binding<String>(get: { self.text }) { self.text = $0 }
     }
@@ -157,6 +171,7 @@ struct MultilineTextField: View {
     @State private var dynamicHeight: CGFloat = 60
     @State private var isShowingPlaceholder = true
     
+    /// Initializes a new `MultilineTextField`.
     init(
         _ placeholder: String = "Your text here..",
         text: Binding<String>,
@@ -205,6 +220,7 @@ struct MultilineTextField: View {
         }
     }
     
+    /// Convert UIFont into SwiftUI Font
     private func placeholderFont(from uiFont: UIFont?) -> Font {
         switch uiFont {
         case UIFont.robotoHeadline:
