@@ -21,13 +21,13 @@ extension HomeView {
         var searchText = ""
         
         /// A list of recent notes.
-        var recentNotes: [NoteFileResponse] = []
+        var recentNotes: [NoteFile] = []
         
         /// A list of all notes.
-        var allNotes: [NoteFileResponse] = []
+        var allNotes: [NoteFile] = []
         
         /// A list of folders.
-        var folders: [FolderResponse] = []
+        var folders: [Folder] = []
         
         /// A list of theme colors.
         var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
@@ -45,12 +45,12 @@ extension HomeView {
         }
         
         /// Counts the number of notes in a folder.
-        func countNotes(from folder: FolderResponse) -> Int {
+        func countNotes(from folder: Folder) -> Int {
             folder.notes.count
         }
         
         /// Returns a description of a list of notes.
-        func description(from notes: [NoteResponse]) -> String {
+        func description(from notes: [NoteContent]) -> String {
             return notes.compactMap({ note in
                 note.text
             }).joined(separator: " ")
@@ -148,9 +148,9 @@ extension HomeView {
 
         /// Creates a new note with the specified theme.
         func createNewNote() -> NoteView.NoteViewModel {
-            let note: NoteFileResponse = .init(
+            let note: NoteFile = .init(
                 title: "",
-                notes: [NoteResponse(type: .init(content: .text), text: "")],
+                notes: [NoteContent(type: .init(content: .text), text: "")],
                 theme: self.currentTheme,
                 createdAt: .now,
                 modifiedAt: .now
@@ -165,7 +165,7 @@ extension HomeView {
 
         /// Creates a new folder with the specified theme.
         func createNewFolder() -> FolderView.FolderViewModel {
-            let folder: FolderResponse = .init(
+            let folder: Folder = .init(
                 title: "",
                 icon: "💌",
                 theme: currentTheme,
@@ -187,19 +187,19 @@ extension HomeView {
         }
 
         /// Opens the specified recent note./
-        func openRecentNote(_ note: NoteFileResponse) -> NoteView.NoteViewModel {
+        func openRecentNote(_ note: NoteFile) -> NoteView.NoteViewModel {
             return .init(modelContext: modelContext, data: note)
         }
 
         /// Opens the specified folder./
-        func openFolder(_ folder: FolderResponse) -> FolderView.FolderViewModel {
+        func openFolder(_ folder: Folder) -> FolderView.FolderViewModel {
             return .init(modelContext: modelContext, data: folder)
         }
 
         /// Fetches all notes from the data model and updates the recent notes and folders lists./
         func getAllNotes() {
             do {
-                let descriptor = FetchDescriptor<NoteFileResponse>(
+                let descriptor = FetchDescriptor<NoteFile>(
                     sortBy: [SortDescriptor(\.modifiedAt, order: .reverse)]
                 )
 

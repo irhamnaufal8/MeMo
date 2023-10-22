@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// The navigation system. It maintains a stack of routes and provides functions to navigate to and back from routes.
 final class AppNavigator: ObservableObject {
@@ -45,6 +46,8 @@ enum Route {
 
     /// A route to a global view.
     case global(AppNavigator, GlobalView.GlobalViewModel)
+    
+    case sample(ModelContext)
 }
 
 /// Implement the `Hashable` protocol for the `Route` enum.
@@ -72,6 +75,15 @@ extension Route: View {
 
         case .global(let navigator, let viewModel):
             GlobalView(viewModel: viewModel, navigator: navigator)
+            
+        case .sample(let context):
+            SampleView(viewModel: .init(
+                noteRepository: DefaultNoteRepository(
+                    localDataSource: DefaultNoteLocalDataSource(
+                        provider: context
+                    )
+                )
+            ))
         }
     }
 }

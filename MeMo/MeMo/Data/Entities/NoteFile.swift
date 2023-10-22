@@ -10,7 +10,7 @@ import SwiftData
 
 /// A class that represents a note file response.
 @Model
-class NoteFileResponse: Identifiable {
+class NoteFile: Identifiable {
 
     /// A unique identifier for the note file.
     ///
@@ -22,10 +22,10 @@ class NoteFileResponse: Identifiable {
     var title: String?
 
     /// The tags associated with the note file.
-    var tags: [TagResponse]?
+    var tags: [Tag]?
 
     /// The notes in the note file.
-    var notes: [NoteResponse]
+    var notes: [NoteContent]
 
     /// The theme of the note file.
     var theme: String?
@@ -37,7 +37,7 @@ class NoteFileResponse: Identifiable {
     var modifiedAt: Date?
 
     /// The folder that the note file is in.
-    var folder: FolderResponse?
+    var folder: Folder?
 
     /// Initializes a new `NoteFileResponse` object.
     ///
@@ -50,7 +50,7 @@ class NoteFileResponse: Identifiable {
     ///   - createdAt: The date and time at which the note file was created.
     ///   - modifiedAt: The date and time at which the note file was last modified.
     ///   - folder: The folder that the note file is in.
-    init(id: String = UUID().uuidString, title: String? = nil, tags: [TagResponse]? = [], notes: [NoteResponse], theme: String? = nil, createdAt: Date? = nil, modifiedAt: Date? = nil, folder: FolderResponse? = nil) {
+    init(id: String = UUID().uuidString, title: String? = nil, tags: [Tag]? = [], notes: [NoteContent], theme: String? = nil, createdAt: Date? = nil, modifiedAt: Date? = nil, folder: Folder? = nil) {
         self.id = id
         self.title = title
         self.tags = tags
@@ -64,7 +64,7 @@ class NoteFileResponse: Identifiable {
 
 /// A class that represents a tag response.
 @Model
-class TagResponse: Identifiable {
+class Tag: Identifiable {
 
     /// A unique identifier for the tag.
     ///
@@ -76,7 +76,7 @@ class TagResponse: Identifiable {
     var text: String?
 
     /// The note file that the tag is associated with.
-    var note: NoteFileResponse?
+    var note: NoteFile?
 
     /// Initializes a new `TagResponse` object.
     ///
@@ -84,7 +84,7 @@ class TagResponse: Identifiable {
     ///   - id: The unique identifier for the tag.
     ///   - text: The text of the tag.
     ///   - note: The note file that the tag is associated with.
-    init(id: String = UUID().uuidString, text: String? = nil, note: NoteFileResponse? = nil) {
+    init(id: String = UUID().uuidString, text: String? = nil, note: NoteFile? = nil) {
         self.id = id
         self.text = text
         self.note = note
@@ -92,18 +92,18 @@ class TagResponse: Identifiable {
 }
 
 
-extension NoteFileResponse {
-    static let dummy: NoteFileResponse = .init(
+extension NoteFile {
+    static let dummy: NoteFile = .init(
         title: "This is Dummy Title",
         notes: [
-            NoteResponse(type: .init(content: .text), text: "First sentence here..")
+            NoteContent(type: .init(content: .text), text: "First sentence here..")
         ],
         theme: ThemeColor.red.rawValue,
         createdAt: .now - 100000,
         modifiedAt: .now - 10000
     )
     
-    static let dummy2: NoteFileResponse = .init(
+    static let dummy2: NoteFile = .init(
         title: "Before You Go",
         notes: [
 //            NoteResponse(type: .init(content: .text), text: "First sentence here..")
@@ -113,17 +113,17 @@ extension NoteFileResponse {
         modifiedAt: .now - 20000
     )
     
-    static let dummy3: NoteFileResponse = .init(
+    static let dummy3: NoteFile = .init(
         title: "Art for Life",
         notes: [
-            NoteResponse(type: .init(content: .text), text: "First sentence here..")
+            NoteContent(type: .init(content: .text), text: "First sentence here..")
         ],
         theme: ThemeColor.green.rawValue,
         createdAt: .now - 200000,
         modifiedAt: .now - 30000
     )
     
-    static var dummy4: NoteFileResponse = .init(
+    static var dummy4: NoteFile = .init(
         title: "Say You Won't Let Go",
         tags: [
             .init(text: "Productivity"),
@@ -138,10 +138,10 @@ extension NoteFileResponse {
         modifiedAt: .now - 15000
     )
     
-    static let dummy5: NoteFileResponse = .init(
+    static let dummy5: NoteFile = .init(
         title: "Love is an Open Door",
         notes: [
-            NoteResponse(type: .init(content: .text), text: "First sentence here..")
+            NoteContent(type: .init(content: .text), text: "First sentence here..")
             
         ],
         theme: ThemeColor.pink.rawValue,
@@ -149,7 +149,7 @@ extension NoteFileResponse {
         modifiedAt: .now - 17000
     )
     
-    static let dummy6: NoteFileResponse = .init(
+    static let dummy6: NoteFile = .init(
         title: "Into the Unknown",
         notes: [
 //            NoteResponse(type: .init(content: .text), text: "First sentence here..")

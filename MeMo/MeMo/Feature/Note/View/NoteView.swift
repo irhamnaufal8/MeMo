@@ -267,7 +267,7 @@ struct NoteView: View, KeyboardReadable {
 
 extension NoteView {
     @ViewBuilder
-    func ImageContentView(_ note: NoteResponse) -> some View {
+    func ImageContentView(_ note: NoteContent) -> some View {
         if let data = note.image,
            let uiImage = UIImage(data: data) {
             Image(uiImage: uiImage)

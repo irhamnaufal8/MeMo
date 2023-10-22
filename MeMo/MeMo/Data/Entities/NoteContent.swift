@@ -22,7 +22,7 @@ enum NoteContentType: String {
 
 /// A class that represents a note response.
 @Model
-class NoteResponse: Identifiable {
+class NoteContent: Identifiable {
 
     /// A unique identifier for the note.
     ///
@@ -46,7 +46,7 @@ class NoteResponse: Identifiable {
     var image: Data?
 
     /// The note file that the note is in.
-    var noteFile: NoteFileResponse?
+    var noteFile: NoteFile?
 
     /// The date and time at which the note was created.
     var createdAt: Date
@@ -62,7 +62,7 @@ class NoteResponse: Identifiable {
     ///   - image: The data of the note's image.
     ///   - noteFile: The note file that the note is in.
     ///   - createdAt: The date and time at which the note was created.
-    init(id: String = UUID().uuidString, type: String? = nil, text: String, isChecked: Bool? = false, imageURL: String? = nil, image: Data? = nil, noteFile: NoteFileResponse? = nil, createdAt: Date = .now) {
+    init(id: String = UUID().uuidString, type: String? = nil, text: String, isChecked: Bool? = false, imageURL: String? = nil, image: Data? = nil, noteFile: NoteFile? = nil, createdAt: Date = .now) {
         self.id = id
         self.type = type
         self.text = text

@@ -20,7 +20,7 @@ extension GlobalView {
         var searchText = ""
         
         /// The list of all notes in the app.
-        var data: [NoteFileResponse]
+        var data: [NoteFile]
         
         /// The current sort by option for the notes list.
         var sortBy: SortBy = .edited
@@ -32,7 +32,7 @@ extension GlobalView {
         var searchState: SearchState = .initiate
         
         /// The list of notes selected for deletion.
-        var notesForDelete: [NoteFileResponse] = []
+        var notesForDelete: [NoteFile] = []
         
         /// The current theme of the app.
         var theme: String
@@ -44,7 +44,7 @@ extension GlobalView {
         var isShowAlert = false
         
         /// The list of notes that match the search text and are sorted by the sort by and order by options.
-        var searchedNotes: [NoteFileResponse] {
+        var searchedNotes: [NoteFile] {
             sortedNotesOrder()
         }
         
@@ -106,7 +106,7 @@ extension GlobalView {
         ///     * data: The list of all notes in the app.
         ///     * state: The initial search state of the app.
         ///     * theme: The initial theme of the app.
-        init(modelContext: ModelContext, data: [NoteFileResponse], state: SearchState = .initiate, theme: String) {
+        init(modelContext: ModelContext, data: [NoteFile], state: SearchState = .initiate, theme: String) {
             self.modelContext = modelContext
             self.data = data
             self.searchState = state
@@ -118,7 +118,7 @@ extension GlobalView {
         ///
         /// - Parameter notes: The notes to describe.
         /// - Returns: A description of the specified notes.
-        func description(from notes: [NoteResponse]) -> String {
+        func description(from notes: [NoteContent]) -> String {
             // Return a string consisting of the text of each note joined by a space.
             return notes.compactMap({ note in
                 note.text
@@ -179,7 +179,7 @@ extension GlobalView {
         ///
         /// - Parameter note: The note to check.
         /// - Returns: A boolean value that indicates whether the specified note is selected for deletion.
-        func isForDelete(_ note: NoteFileResponse) -> Bool {
+        func isForDelete(_ note: NoteFile) -> Bool {
             // Check if the note is in the list of notes selected for deletion.
             return notesForDelete.contains(where: { $0.id == note.id })
         }
@@ -208,7 +208,7 @@ extension GlobalView {
         /// Toggles the selection of the specified note.
         ///
         /// - Parameter note: The note to toggle the selection of.
-        func toggleSelection(_ note: NoteFileResponse) {
+        func toggleSelection(_ note: NoteFile) {
             // If the search state is select, toggle the selection of the note.
             if searchState == .select {
                 // If the note is selected, remove it from the selection.
@@ -244,7 +244,7 @@ extension GlobalView {
                             noteIdForDelete = note.id
                             
                             // Delete the note from the database using a predicate to filter for the note by ID.
-                            try modelContext.delete(model: NoteFileResponse.self, where: #Predicate { item in
+                            try modelContext.delete(model: NoteFile.self, where: #Predicate { item in
                                 item.id == noteIdForDelete
                             })
                         }
@@ -264,7 +264,7 @@ extension GlobalView {
         /// - Returns: A new note view model for the new note.
         func createNewNote() -> NoteView.NoteViewModel {
             // Create a new note with an empty title, an empty list of notes, the current theme, and the current date and time for both the created at and modified at properties.
-            let note: NoteFileResponse = .init(
+            let note: NoteFile = .init(
                 title: "",
                 notes: [],
                 theme: theme,
@@ -283,7 +283,7 @@ extension GlobalView {
         ///
         /// - Parameter note: The note to open.
         /// - Returns: A new note view model for the specified note.
-        func openNote(_ note: NoteFileResponse) -> NoteView.NoteViewModel {
+        func openNote(_ note: NoteFile) -> NoteView.NoteViewModel {
             // Create a new note view model for the specified note.
             return .init(modelContext: modelContext, data: note)
         }
@@ -302,7 +302,7 @@ extension GlobalView {
         /// Returns a sorted list of notes in the folder.
         ///
         /// - Returns: A sorted list of notes in the folder.
-        private func sortedNotesOrder() -> [NoteFileResponse] {
+        private func sortedNotesOrder() -> [NoteFile] {
             // If the search text is empty, return the notes sorted by the sort by and order by options.
             guard !searchText.isEmpty else {
                 return data.sorted(by: {

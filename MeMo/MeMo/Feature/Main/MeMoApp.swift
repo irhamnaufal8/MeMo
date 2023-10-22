@@ -14,27 +14,28 @@ import SwiftData
 struct MeMoApp: App {
 
     // A container for managing data models.
-    let container: ModelContainer
+//    let container: ModelContainer
 
     // Initializes the application.
-    init() {
-        do {
+//    init() {
+//        do {
             // Attempts to create a ModelContainer for the NoteFileResponse, NoteResponse, TagResponse, and FolderResponse models.
-            container = try ModelContainer(for: NoteFileResponse.self, NoteResponse.self, TagResponse.self, FolderResponse.self)
-        } catch {
+//            container = try ModelContainer(for: NoteFile.self, NoteContent.self, Tag.self, Folder.self)
+//        } catch {
             // Fatally crashes the application if the ModelContainer could not be created.
-            fatalError("Failed to create ModelContainer.")
-        }
-    }
+//            fatalError("Failed to create ModelContainer.")
+//        }
+//    }
 
     // The body of the application.
     var body: some Scene {
         // Creates a WindowGroup that contains the ContentView.
         WindowGroup {
-            ContentView(container: container)
+//            ContentView(container: container)
+            ContentView(assembler: .init())
         }
         // Sets the ModelContainer for the WindowGroup.
-        .modelContainer(container)
+//        .modelContainer(container)
     }
 }
 

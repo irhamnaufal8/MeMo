@@ -10,7 +10,7 @@ import SwiftData
 
 /// A class that represents a folder response.
 @Model
-class FolderResponse: Identifiable {
+class Folder: Identifiable {
 
     /// A unique identifier for the folder.
     ///
@@ -28,7 +28,7 @@ class FolderResponse: Identifiable {
     var theme: String?
 
     /// The notes in the folder.
-    var notes: [NoteFileResponse]
+    var notes: [NoteFile]
 
     /// The date and time at which the folder was created.
     var createdAt: Date?
@@ -46,7 +46,7 @@ class FolderResponse: Identifiable {
     ///   - notes: The notes in the folder.
     ///   - createdAt: The date and time at which the folder was created.
     ///   - modifiedAt: The date and time at which the folder was last modified.
-    init(id: String = UUID().uuidString, title: String? = nil, icon: String? = nil, theme: String? = nil, notes: [NoteFileResponse] = [], createdAt: Date? = nil, modifiedAt: Date? = nil) {
+    init(id: String = UUID().uuidString, title: String? = nil, icon: String? = nil, theme: String? = nil, notes: [NoteFile] = [], createdAt: Date? = nil, modifiedAt: Date? = nil) {
         self.id = id
         self.title = title
         self.icon = icon
@@ -58,9 +58,9 @@ class FolderResponse: Identifiable {
 }
 
 
-extension FolderResponse {
+extension Folder {
     /// A dummy data of `FolderResponse`
-    static let dummy: FolderResponse = .init(
+    static let dummy: Folder = .init(
         title: "Code Tutorial",
         icon: "🏆",
         theme: ThemeColor.purple.rawValue,
@@ -70,7 +70,7 @@ extension FolderResponse {
     )
     
     /// A dummy data of `FolderResponse`
-    static let dummy2: FolderResponse = .init(
+    static let dummy2: Folder = .init(
         title: "Our Love Story",
         icon: "💌",
         theme: ThemeColor.red.rawValue,
@@ -80,7 +80,7 @@ extension FolderResponse {
     )
     
     /// A dummy data of `FolderResponse`
-    static let dummy3: FolderResponse = .init(
+    static let dummy3: Folder = .init(
         title: "Study Study Study!",
         icon: "📚",
         theme: ThemeColor.orange.rawValue,
@@ -90,7 +90,7 @@ extension FolderResponse {
     )
     
     /// A dummy data of `FolderResponse`
-    static let dummy4: FolderResponse = .init(
+    static let dummy4: Folder = .init(
         title: "Game Sess",
         icon: "🎮",
         theme: ThemeColor.blue.rawValue,
@@ -100,7 +100,7 @@ extension FolderResponse {
     )
     
     /// A dummy data of `FolderResponse`
-    static let dummy5: FolderResponse = .init(
+    static let dummy5: Folder = .init(
         title: "Friday Movie",
         icon: "🎬",
         theme: ThemeColor.pink.rawValue,
@@ -110,7 +110,7 @@ extension FolderResponse {
     )
     
     /// A dummy data of `FolderResponse`
-    static let dummy6: FolderResponse = .init(
+    static let dummy6: Folder = .init(
         title: "Relaxing Music",
         icon: "🎹",
         theme: ThemeColor.blue.rawValue,

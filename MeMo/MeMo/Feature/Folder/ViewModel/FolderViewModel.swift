@@ -47,7 +47,7 @@ extension FolderView {
         var searchText = ""
         
         /// The folder data.
-        var data: FolderResponse
+        var data: Folder
         
         /// The title of the folder.
         var title = ""
@@ -68,7 +68,7 @@ extension FolderView {
         var searchState: SearchState = .initiate
         
         /// The notes to be deleted.
-        var notesForDelete: [NoteFileResponse] = []
+        var notesForDelete: [NoteFile] = []
         
         /// The list of themes.
         var themes: [ThemeColor] = [.red, .orange, .green, .blue, .purple, .pink]
@@ -86,7 +86,7 @@ extension FolderView {
         var isFolderDeleted = false
         
         /// The list of searched notes.
-        var searchedNotes: [NoteFileResponse] {
+        var searchedNotes: [NoteFile] {
             sortedNotesOrder()
         }
         
@@ -147,7 +147,7 @@ extension FolderView {
         ///     * modelContext: The model context for accessing and managing data models.
         ///     * data: The folder data.
         ///     * state: The initial search state.
-        init(modelContext: ModelContext, data: FolderResponse, state: SearchState = .initiate) {
+        init(modelContext: ModelContext, data: Folder, state: SearchState = .initiate) {
             self.modelContext = modelContext
             self.data = data
             self.searchState = state
@@ -161,7 +161,7 @@ extension FolderView {
         ///
         /// - Parameter notes: The notes to describe.
         /// - Returns: A description of the notes.
-        func description(from notes: [NoteResponse]) -> String {
+        func description(from notes: [NoteContent]) -> String {
             return notes.compactMap({ note in
                 note.text
             }).joined(separator: " ")
@@ -217,7 +217,7 @@ extension FolderView {
         ///
         /// - Parameter note: The note to check.
         /// - Returns: A boolean value that indicates whether the note is selected for deletion.
-        func isForDelete(_ note: NoteFileResponse) -> Bool {
+        func isForDelete(_ note: NoteFile) -> Bool {
             notesForDelete.contains(where: { $0.id == note.id })
         }
         
@@ -244,7 +244,7 @@ extension FolderView {
         /// Toggles the selection of the specified note.
         ///
         /// - Parameter note: The note to toggle the selection of.
-        func toggleSelection(_ note: NoteFileResponse) {
+        func toggleSelection(_ note: NoteFile) {
             if searchState == .select {
                 // If the search state is select, toggle the selection of the note.
                 if isForDelete(note) {
@@ -278,7 +278,7 @@ extension FolderView {
                             noteIdForDelete = note.id
                             
                             // Delete the note from the database.
-                            try modelContext.delete(model: NoteFileResponse.self, where: #Predicate { item in
+                            try modelContext.delete(model: NoteFile.self, where: #Predicate { item in
                                 item.id == noteIdForDelete
                             })
                         }
@@ -298,7 +298,7 @@ extension FolderView {
         /// - Returns: A new note view model.
         func createFirstNote() -> NoteView.NoteViewModel {
             // Create a new note with the specified title, content, theme, and creation and modification dates.
-            let note: NoteFileResponse = .init(
+            let note: NoteFile = .init(
                 title: "\(data.title.orEmpty())'s First Note",
                 notes: [.init(type: NoteContentType.text.rawValue, text: "Write your first sentence in \(data.title.orEmpty())'s note", createdAt: .now)],
                 theme: data.theme ?? "PURPLE",
@@ -319,7 +319,7 @@ extension FolderView {
         /// - Returns: A new note view model.
         func createNewNote() -> NoteView.NoteViewModel {
             // Create a new note with the specified theme, creation, and modification dates.
-            let note: NoteFileResponse = .init(
+            let note: NoteFile = .init(
                 title: "",
                 notes: [],
                 theme: data.theme ?? "PURPLE",
@@ -339,7 +339,7 @@ extension FolderView {
         ///
         /// - Parameter note: The note to open.
         /// - Returns: A new note view model.
-        func openNote(_ note: NoteFileResponse) -> NoteView.NoteViewModel {
+        func openNote(_ note: NoteFile) -> NoteView.NoteViewModel {
             // Create a new note view model for the specified note.
             return .init(modelContext: modelContext, data: note)
         }
@@ -409,7 +409,7 @@ extension FolderView {
         /// Returns a sorted list of notes in the folder.
         ///
         /// - Returns: A sorted list of notes in the folder.
-        private func sortedNotesOrder() -> [NoteFileResponse] {
+        private func sortedNotesOrder() -> [NoteFile] {
             // If the search text is empty, return the notes sorted by the sort by and order by options.
             guard !searchText.isEmpty else {
                 return data.notes.sorted(by: {

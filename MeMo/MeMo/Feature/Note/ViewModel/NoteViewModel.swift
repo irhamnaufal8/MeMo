@@ -18,7 +18,7 @@ extension NoteView {
         var modelContext: ModelContext
         
         /// The NoteFileResponse object that represents the note.
-        var data: NoteFileResponse
+        var data: NoteFile
         
         /// The title of the note.
         var title = ""
@@ -154,7 +154,7 @@ extension NoteView {
         ///     * isNewNote: A boolean value that indicates whether or not the note is new.
         init(
             modelContext: ModelContext,
-            data: NoteFileResponse,
+            data: NoteFile,
             isNewNote: Bool = false
         ) {
             /// Stores the `modelContext` object.
@@ -193,7 +193,7 @@ extension NoteView {
         func addNewTag() {
             /// If the new tag is not empty, adds it to the `tags` array.
             if !newTag.isEmpty {
-                let tag = TagResponse(text: newTag)
+                let tag = Tag(text: newTag)
                 withAnimation {
                     if let _ = data.tags {
                         data.tags?.append(tag)
@@ -233,15 +233,15 @@ extension NoteView {
         ///
         /// - Parameter note: The note to find the index of.
         /// - Returns: The index of the note, or the current index if the note is not found.
-        func getCurrentIndex(of note: NoteResponse) -> Int {
+        func getCurrentIndex(of note: NoteContent) -> Int {
             return data.notes.firstIndex(where: { $0.id == note.id }) ?? currentIndex
         }
 
         /// Adds a new text note after the specified note.
         ///
         /// - Parameter note: The note to add the new text note after.
-        func addNoteText(after note: NoteResponse) {
-            let noteText = NoteResponse(type: .init(content: .text), text: "")
+        func addNoteText(after note: NoteContent) {
+            let noteText = NoteContent(type: .init(content: .text), text: "")
             withAnimation {
                 data.notes.insert(noteText, at: currentIndex + 1)
             }
@@ -250,7 +250,7 @@ extension NoteView {
         /// Adds a new text note to the beginning of the note list.
         func addFirstText() {
             guard data.notes.isEmpty else { return }
-            let noteText = NoteResponse(type: .init(content: .text), text: "")
+            let noteText = NoteContent(type: .init(content: .text), text: "")
             data.notes.append(noteText)
         }
 
@@ -258,7 +258,7 @@ extension NoteView {
         func addNoteTextOnLast() {
             guard let note = data.notes.last,
                   (note.type.orEmpty()).isContent(of: .image) || data.notes.isEmpty else { return }
-            let noteText = NoteResponse(type: .init(content: .text), text: "")
+            let noteText = NoteContent(type: .init(content: .text), text: "")
             withAnimation {
                 data.notes.append(noteText)
             }
@@ -269,7 +269,7 @@ extension NoteView {
         /// - Parameter photo: The photo to add to the note list.
         func addNoteImage(with photo: PhotosPickerItem?) async {
             if let data = try? await photo?.loadTransferable(type: Data.self) {
-                let noteImage = NoteResponse(type: .init(content: .image), text: "", image: data)
+                let noteImage = NoteContent(type: .init(content: .image), text: "", image: data)
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     withAnimation {
@@ -283,7 +283,7 @@ extension NoteView {
         
         /// Adds a new list note to the note list at the current index.
         func addNoteList() {
-            let noteList = NoteResponse(type: .init(content: .list), text: data.notes[currentIndex].text)
+            let noteList = NoteContent(type: .init(content: .list), text: data.notes[currentIndex].text)
             withAnimation {
                 data.notes[currentIndex] = noteList
             }
@@ -291,7 +291,7 @@ extension NoteView {
 
         /// Adds a new list note to the end of the note list.
         func addNextNoteList() {
-            let noteList = NoteResponse(type: .init(content: .list), text: "")
+            let noteList = NoteContent(type: .init(content: .list), text: "")
             withAnimation {
                 data.notes.insert(noteList, at: currentIndex+1)
             }
@@ -300,8 +300,8 @@ extension NoteView {
         /// Adds a new bullet list note after the specified note.
         ///
         /// - Parameter note: The note to add the new bullet list note after.
-        func addNextBulletList(after note: NoteResponse) {
-            let bulletList = NoteResponse(type: .init(content: .bulletList), text: "")
+        func addNextBulletList(after note: NoteContent) {
+            let bulletList = NoteContent(type: .init(content: .bulletList), text: "")
             withAnimation {
                 if data.notes[currentIndex].text.isEmpty {
                     // Turn the current note into a text note if it is empty.
@@ -329,7 +329,7 @@ extension NoteView {
         /// Deletes the specified image note from the note list.
         ///
         /// - Parameter image: The image note to delete.
-        func deleteNoteImage(_ image: NoteResponse) {
+        func deleteNoteImage(_ image: NoteContent) {
             // Set the current index to the index of the image note.
             currentIndex = getCurrentIndex(of: image)
             // Turn the current note into a text note.
@@ -342,7 +342,7 @@ extension NoteView {
         func turnIntoText(if isEmpty: Bool) {
             if isEmpty {
                 // Set the current note to a new text note.
-                data.notes[currentIndex] = NoteResponse(type: .init(content: .text), text: "")
+                data.notes[currentIndex] = NoteContent(type: .init(content: .text), text: "")
             }
         }
         
@@ -350,7 +350,7 @@ extension NoteView {
         func turnIntoBulletList() {
             if data.notes[currentIndex].text.hasPrefix("- ") {
                 // Set the current note to a new bullet list note, with the text without the first two characters.
-                data.notes[currentIndex] = NoteResponse(type: .init(content: .bulletList), text: String(data.notes[currentIndex].text.dropFirst(2)))
+                data.notes[currentIndex] = NoteContent(type: .init(content: .bulletList), text: String(data.notes[currentIndex].text.dropFirst(2)))
             }
         }
 
@@ -358,7 +358,7 @@ extension NoteView {
         ///
         /// - Parameter note: The note to check the previous note of.
         /// - Returns: A boolean value that indicates whether the previous note is not a checklist.
-        func prevIsNotCheckList(_ note: NoteResponse) -> Bool {
+        func prevIsNotCheckList(_ note: NoteContent) -> Bool {
             // Get the current index of the note.
             let current = getCurrentIndex(of: note)
 
@@ -376,7 +376,7 @@ extension NoteView {
         ///
         /// - Parameter note: The note to check the next note of.
         /// - Returns: A boolean value that indicates whether the next note is not a checklist.
-        func nextIsNotCheckList(_ note: NoteResponse) -> Bool {
+        func nextIsNotCheckList(_ note: NoteContent) -> Bool {
             // Get the current index of the note.
             let current = getCurrentIndex(of: note)
 
