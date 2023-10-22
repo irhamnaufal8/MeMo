@@ -46,6 +46,7 @@ class NoteResponse: Identifiable {
     var image: Data?
 
     /// The note file that the note is in.
+    @Relationship(deleteRule: .cascade, inverse: \NoteFileResponse.notes)
     var noteFile: NoteFileResponse?
 
     /// The date and time at which the note was created.

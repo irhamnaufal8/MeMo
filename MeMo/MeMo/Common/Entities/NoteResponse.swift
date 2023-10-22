@@ -37,6 +37,7 @@ class NoteFileResponse: Identifiable {
     var modifiedAt: Date?
 
     /// The folder that the note file is in.
+    @Relationship(deleteRule: .noAction, inverse: \FolderResponse.notes)
     var folder: FolderResponse?
 
     /// Initializes a new `NoteFileResponse` object.
@@ -76,6 +77,7 @@ class TagResponse: Identifiable {
     var text: String?
 
     /// The note file that the tag is associated with.
+    @Relationship(deleteRule: .noAction, inverse: \NoteFileResponse.tags)
     var note: NoteFileResponse?
 
     /// Initializes a new `TagResponse` object.
