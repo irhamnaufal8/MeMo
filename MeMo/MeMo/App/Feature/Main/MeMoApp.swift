@@ -32,7 +32,7 @@ struct MeMoApp: App {
         // Creates a WindowGroup that contains the ContentView.
         WindowGroup {
 //            ContentView(container: container)
-            ContentView(assembler: .init())
+            ContentView()
         }
         // Sets the ModelContainer for the WindowGroup.
 //        .modelContainer(container)

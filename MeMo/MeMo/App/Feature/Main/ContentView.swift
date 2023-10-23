@@ -16,24 +16,22 @@ struct ContentView: View {
     // A container for managing data models.
 //    let container: ModelContainer
 
-    @State private var assembler: AppAssembler
+    @ObservedObject private var assembler: AppAssembler = .init()
+    @ObservedObject private var navigator: MeMoNavigator = .init()
     
-    init(assembler: AppAssembler) {
-        self.assembler = assembler
-    }
     // The body of the view.
     var body: some View {
         // A NavigationStack that contains the HomeView and any other views that the application needs to navigate to.
         // The NavigationStack's path property is bound to the navigator.routes property.
-        NavigationStack(path: $assembler.navigator.routes) {
+        NavigationStack(path: $navigator.routes) {
             // The HomeView, which is the application's main view.
             // The HomeView is injected with the ModelContainer and the AppNavigator.
 //            HomeView(modelContext: container.mainContext, navigator: navigator)
             
-            assembler.rootView
+            SampleView(viewModel: assembler.resolve(), navigator: navigator)
                 // A navigation destination for the HomeView.
                 // The navigation destination is specified using the Route enum.
-                .navigationDestination(for: Route.self) { $0 }
+                .navigationDestination(for: MemoRoute.self) { $0 }
         }
         // Sets the HomeViewModel for the environment.
         // The HomeViewModel is injected with the ModelContainer.

@@ -15,6 +15,10 @@
 		4B3913C72ADE155C00ADE9BC /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913C62ADE155C00ADE9BC /* FolderView.swift */; };
 		4B3913CC2ADEA17600ADE9BC /* View+isHidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */; };
 		4B3913CF2ADF6F5700ADE9BC /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3913CE2ADF6F5700ADE9BC /* KeyboardReadable.swift */; };
+		4B572E8F2AE5EBA9003B7568 /* SampleAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B572E8E2AE5EBA9003B7568 /* SampleAssembler.swift */; };
+		4B572E922AE65EBB003B7568 /* DummyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B572E912AE65EBB003B7568 /* DummyViewModel.swift */; };
+		4B572E942AE65EE4003B7568 /* DummyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B572E932AE65EE4003B7568 /* DummyView.swift */; };
+		4B572E962AE6644F003B7568 /* DummyAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B572E952AE6644F003B7568 /* DummyAssembler.swift */; };
 		4B7C625A2AE3B60200E92F29 /* GlobalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C62592AE3B60200E92F29 /* GlobalView.swift */; };
 		4B7C625C2AE3B61100E92F29 /* GlobalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C625B2AE3B61100E92F29 /* GlobalViewModel.swift */; };
 		4B8B0C0D2AE1106300E1A9EE /* String+isWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B0C0C2AE1106300E1A9EE /* String+isWhitespace.swift */; };
@@ -90,6 +94,10 @@
 		4B3913C62ADE155C00ADE9BC /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		4B3913CB2ADEA17600ADE9BC /* View+isHidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+isHidden.swift"; sourceTree = "<group>"; };
 		4B3913CE2ADF6F5700ADE9BC /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
+		4B572E8E2AE5EBA9003B7568 /* SampleAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAssembler.swift; sourceTree = "<group>"; };
+		4B572E912AE65EBB003B7568 /* DummyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyViewModel.swift; sourceTree = "<group>"; };
+		4B572E932AE65EE4003B7568 /* DummyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyView.swift; sourceTree = "<group>"; };
+		4B572E952AE6644F003B7568 /* DummyAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAssembler.swift; sourceTree = "<group>"; };
 		4B7C62592AE3B60200E92F29 /* GlobalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalView.swift; sourceTree = "<group>"; };
 		4B7C625B2AE3B61100E92F29 /* GlobalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalViewModel.swift; sourceTree = "<group>"; };
 		4B8B0C0C2AE1106300E1A9EE /* String+isWhitespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isWhitespace.swift"; sourceTree = "<group>"; };
@@ -201,6 +209,41 @@
 				4B3913CE2ADF6F5700ADE9BC /* KeyboardReadable.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		4B572E882AE5E878003B7568 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4BD12AA22AD2C1AB0086910F /* Dependency */,
+				4BD12A9D2AD2C08A0086910F /* Feature */,
+				4BD12A9C2AD2C0830086910F /* Common */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		4B572E892AE5EB6E003B7568 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BEE0FAD2AE4FD38003121AD /* SampleViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4B572E8A2AE5EB7A003B7568 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4BEE0FB12AE4FF35003121AD /* SampleView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4B572E902AE65EAD003B7568 /* Dummy */ = {
+			isa = PBXGroup;
+			children = (
+				4B572E912AE65EBB003B7568 /* DummyViewModel.swift */,
+				4B572E932AE65EE4003B7568 /* DummyView.swift */,
+			);
+			path = Dummy;
 			sourceTree = "<group>";
 		};
 		4B7C62562AE3B5AD00E92F29 /* Global */ = {
@@ -332,8 +375,7 @@
 		4BD12A6A2AD2BFC30086910F /* MeMo */ = {
 			isa = PBXGroup;
 			children = (
-				4BD12A9D2AD2C08A0086910F /* Feature */,
-				4BD12A9C2AD2C0830086910F /* Common */,
+				4B572E882AE5E878003B7568 /* App */,
 				4BEE0F962AE4F09A003121AD /* Domain */,
 				4BEE0F952AE4F095003121AD /* Data */,
 				4BD12A792AD2BFC40086910F /* MeMo.entitlements */,
@@ -382,6 +424,7 @@
 		4BD12A9D2AD2C08A0086910F /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				4B572E902AE65EAD003B7568 /* Dummy */,
 				4BEE0FAC2AE4FD21003121AD /* Sample */,
 				4B7C62562AE3B5AD00E92F29 /* Global */,
 				4B3913C12ADE150700ADE9BC /* Folder */,
@@ -411,13 +454,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		4BD12AA22AD2C1AB0086910F /* Navigator */ = {
+		4BD12AA22AD2C1AB0086910F /* Dependency */ = {
 			isa = PBXGroup;
 			children = (
 				4BD12AA32AD2C1D50086910F /* AppNavigator.swift */,
 				4BEE0FB32AE50385003121AD /* AppAssembler.swift */,
+				4B572E8E2AE5EBA9003B7568 /* SampleAssembler.swift */,
+				4B572E952AE6644F003B7568 /* DummyAssembler.swift */,
 			);
-			path = Navigator;
+			path = Dependency;
 			sourceTree = "<group>";
 		};
 		4BD12AA52AD2C6880086910F /* Extension */ = {
@@ -561,7 +606,6 @@
 		4BEE0F962AE4F09A003121AD /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				4BD12AA22AD2C1AB0086910F /* Navigator */,
 				4BEE0F9D2AE4F12D003121AD /* UseCase */,
 				4BEE0F9C2AE4F126003121AD /* Repository */,
 				4BEE0F9B2AE4F115003121AD /* Entities */,
@@ -629,8 +673,8 @@
 		4BEE0FAC2AE4FD21003121AD /* Sample */ = {
 			isa = PBXGroup;
 			children = (
-				4BEE0FAD2AE4FD38003121AD /* SampleViewModel.swift */,
-				4BEE0FB12AE4FF35003121AD /* SampleView.swift */,
+				4B572E892AE5EB6E003B7568 /* ViewModel */,
+				4B572E8A2AE5EB7A003B7568 /* View */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
@@ -779,6 +823,7 @@
 				4BEE0FAB2AE4FAFC003121AD /* DefaultNoteRepository.swift in Sources */,
 				4BBA10842AD65D36001D09F0 /* RecentNoteCard.swift in Sources */,
 				4BEE0FA92AE4FA8C003121AD /* NoteRepository.swift in Sources */,
+				4B572E962AE6644F003B7568 /* DummyAssembler.swift in Sources */,
 				4BEE0FB22AE4FF35003121AD /* SampleView.swift in Sources */,
 				4B7C625C2AE3B61100E92F29 /* GlobalViewModel.swift in Sources */,
 				4B3913CF2ADF6F5700ADE9BC /* KeyboardReadable.swift in Sources */,
@@ -792,16 +837,19 @@
 				4BBA108F2AD679C6001D09F0 /* NoteFile.swift in Sources */,
 				4BD12AB12AD2CC380086910F /* LocalizedText.swift in Sources */,
 				4BEE0FA32AE4F37A003121AD /* TagResponse.swift in Sources */,
+				4B572E8F2AE5EBA9003B7568 /* SampleAssembler.swift in Sources */,
 				4BD12A6C2AD2BFC30086910F /* MeMoApp.swift in Sources */,
 				4BD12AC52AD2DD0C0086910F /* HomeView.swift in Sources */,
 				4BD12AA42AD2C1D50086910F /* AppNavigator.swift in Sources */,
 				4BE337BB2AE2A0D000E55318 /* ImageLoader.swift in Sources */,
 				4BEE0FA12AE4F313003121AD /* NoteContentResponse.swift in Sources */,
+				4B572E922AE65EBB003B7568 /* DummyViewModel.swift in Sources */,
 				4B3913C52ADE154000ADE9BC /* FolderViewModel.swift in Sources */,
 				4BD12AC72AD2DD310086910F /* HomeViewModel.swift in Sources */,
 				4B7C625A2AE3B60200E92F29 /* GlobalView.swift in Sources */,
 				4BEE0F1E2AE431A5003121AD /* MemoAlertModifier.swift in Sources */,
 				4BBA10912AD67D62001D09F0 /* Image+Default.swift in Sources */,
+				4B572E942AE65EE4003B7568 /* DummyView.swift in Sources */,
 				4BEE0FA72AE4F723003121AD /* NoteLocalDataSource.swift in Sources */,
 				4B3913CC2ADEA17600ADE9BC /* View+isHidden.swift in Sources */,
 				4BEE0F212AE434B4003121AD /* MeMoButton.swift in Sources */,

@@ -7,17 +7,16 @@
 
 import SwiftUI
 
-@Observable
-final class SampleViewModel {
+final class SampleViewModel: ObservableObject {
     
     private let noteRepository: NoteRepository
     
-    var notes: [NoteFileResponse] = []
+    @Published var notes: [NoteFileResponse] = []
     
-    var title = ""
-    var isSuccess = false
-    var isShowError = false
-    var errorText = ""
+    @Published var title = ""
+    @Published var isSuccess = false
+    @Published var isShowError = false
+    @Published var errorText = ""
     
     init(noteRepository: NoteRepository) {
         self.noteRepository = noteRepository
@@ -26,8 +25,11 @@ final class SampleViewModel {
     func createNote() {
         let note = NoteFileResponse(
             title: self.title,
-            notes: [.init(text: "Dummy notes is here")],
-            theme: "PURPLE"
+            tags: [.init(text: "")],
+            notes: [.init(text: "")],
+            theme: "PURPLE",
+            createdAt: .now,
+            modifiedAt: .now
         )
         
         let result = noteRepository.saveNote(note)
